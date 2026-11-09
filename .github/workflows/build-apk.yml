@@ -53,12 +53,12 @@ jobs:
           sed -i 's/<application/<uses-permission android:name="android.permission.ACCESS_NOTIFICATION_POLICY" \/>\n    <uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS" \/>\n    <uses-permission android:name="android.permission.SCHEDULE_EXACT_ALARM" \/>\n    <uses-permission android:name="android.permission.USE_EXACT_ALARM" \/>\n    <uses-permission android:name="android.permission.WAKE_LOCK" \/>\n    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" \/>\n    <uses-permission android:name="android.permission.REQUEST_IGNORE_BATTERY_OPTIMIZATIONS" \/>\n    <application/' "$MANIFEST"
           sed -i 's/<\/application>/<receiver android:name=".PrayerAlarmReceiver" android:enabled="true" android:exported="true">\n        <intent-filter>\n            <action android:name="android.intent.action.BOOT_COMPLETED" \/>\n            <action android:name="android.intent.action.QUICKBOOT_POWERON" \/>\n            <action android:name="android.intent.action.TIME_SET" \/>\n            <action android:name="android.intent.action.TIMEZONE_CHANGED" \/>\n        <\/intent-filter>\n    <\/receiver>\n    <\/application>/' "$MANIFEST"
 
-      - name: Create Multi-Device Compatible Alarm Receiver & Bridge
+      - name: Create Clean Silent Exact Alarm Receiver & 3-Permissions Bridge
         run: |
           PKG_DIR="android/app/src/main/java/com/dreamavenue/mosqueclock"
           mkdir -p "$PKG_DIR"
 
-          # 1. PrayerAlarmReceiver.java (Works across Samsung, Xiaomi, Vivo, Oppo, Realme, Infinix, Stock Android)
+          # 1. PrayerAlarmReceiver.java
           cat << 'EOF' > "$PKG_DIR/PrayerAlarmReceiver.java"
           package com.dreamavenue.mosqueclock;
 
@@ -80,19 +80,6 @@ jobs:
 
               public static void scheduleExactWakeup(Context context, AlarmManager am, long triggerAtMillis, PendingIntent operation) {
                   if (am == null) return;
-                  try {
-                      if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                          Intent showIntent = new Intent(context, MainActivity.class);
-                          PendingIntent showPi = PendingIntent.getActivity(
-                              context, 0, showIntent,
-                              PendingIntent.FLAG_UPDATE_CURRENT | (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M ? PendingIntent.FLAG_IMMUTABLE : 0)
-                          );
-                          AlarmManager.AlarmClockInfo info = new AlarmManager.AlarmClockInfo(triggerAtMillis, showPi);
-                          am.setAlarmClock(info, operation);
-                          return;
-                      }
-                  } catch (Exception ignored) {}
-
                   try {
                       if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                           am.setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, triggerAtMillis, operation);
@@ -128,6 +115,7 @@ jobs:
                           int min = obj.getInt("m");
                           int pre = obj.getInt("pre");
                           int dur = Math.max(1, obj.getInt("dur"));
+                          boolean skipImmediate = obj.optBoolean("skipImmediate", false);
 
                           Calendar cal = Calendar.getInstance();
                           cal.set(Calendar.HOUR_OF_DAY, hr);
@@ -139,8 +127,7 @@ jobs:
                           long startMs = cal.getTimeInMillis();
                           long endMs = startMs + (dur * 60L * 1000L);
 
-                          // If currently inside this prayer's silent window right now, engage silent mode for remaining time
-                          if (nowMs >= startMs && nowMs < endMs) {
+                          if (!skipImmediate && nowMs >= startMs && nowMs < endMs) {
                               int remainingMins = (int) Math.max(1L, Math.ceil((endMs - nowMs) / 60000.0));
                               applySilentState(context, true, remainingMins);
                           }
@@ -225,7 +212,6 @@ jobs:
                       int durationMins = intent.getIntExtra("DURATION_MINS", 20);
                       applySilentState(context, true, durationMins);
 
-                      // Schedule next day's occurrence for this prayer slot
                       int hour = intent.getIntExtra("HOUR", -1);
                       int minute = intent.getIntExtra("MINUTE", -1);
                       int reqCode = intent.getIntExtra("REQ_CODE", 2000);
@@ -262,6 +248,7 @@ jobs:
           cat << 'EOF' > "$PKG_DIR/MainActivity.java"
           package com.dreamavenue.mosqueclock;
 
+          import android.app.AlarmManager;
           import android.app.NotificationManager;
           import android.content.Context;
           import android.content.Intent;
@@ -291,27 +278,77 @@ jobs:
                   SilentBridge(Context c) { mContext = c; }
 
                   @JavascriptInterface
-                  public void requestPermissions() {
-                      if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                          NotificationManager nm = (NotificationManager) mContext.getSystemService(Context.NOTIFICATION_SERVICE);
-                          if (nm != null && !nm.isNotificationPolicyAccessGranted()) {
+                  public void openDndSettings() {
+                      try {
+                          if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                               Intent intent = new Intent(Settings.ACTION_NOTIFICATION_POLICY_ACCESS_SETTINGS);
                               intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                               mContext.startActivity(intent);
-                              return;
                           }
-                          PowerManager pm = (PowerManager) mContext.getSystemService(Context.POWER_SERVICE);
-                          if (pm != null && !pm.isIgnoringBatteryOptimizations(mContext.getPackageName())) {
-                              try {
+                      } catch (Exception ignored) {}
+                  }
+
+                  @JavascriptInterface
+                  public void openBatterySettings() {
+                      try {
+                          if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                              PowerManager pm = (PowerManager) mContext.getSystemService(Context.POWER_SERVICE);
+                              if (pm != null && !pm.isIgnoringBatteryOptimizations(mContext.getPackageName())) {
                                   Intent bIntent = new Intent(Settings.ACTION_REQUEST_IGNORE_BATTERY_OPTIMIZATIONS);
                                   bIntent.setData(Uri.parse("package:" + mContext.getPackageName()));
                                   bIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                                   mContext.startActivity(bIntent);
                                   return;
-                              } catch (Exception ignored) {}
+                              }
+                          }
+                          Intent appInfo = new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
+                          appInfo.setData(Uri.parse("package:" + mContext.getPackageName()));
+                          appInfo.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                          mContext.startActivity(appInfo);
+                      } catch (Exception ignored) {}
+                  }
+
+                  @JavascriptInterface
+                  public void openAlarmSettings() {
+                      try {
+                          if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+                              Intent aIntent = new Intent(Settings.ACTION_REQUEST_SCHEDULE_EXACT_ALARM);
+                              aIntent.setData(Uri.parse("package:" + mContext.getPackageName()));
+                              aIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                              mContext.startActivity(aIntent);
+                              return;
+                          }
+                      } catch (Exception ignored) {}
+                      try {
+                          Intent appInfo = new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
+                          appInfo.setData(Uri.parse("package:" + mContext.getPackageName()));
+                          appInfo.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                          mContext.startActivity(appInfo);
+                      } catch (Exception ignored) {}
+                  }
+
+                  @JavascriptInterface
+                  public void requestPermissions() {
+                      if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                          NotificationManager nm = (NotificationManager) mContext.getSystemService(Context.NOTIFICATION_SERVICE);
+                          if (nm != null && !nm.isNotificationPolicyAccessGranted()) {
+                              openDndSettings();
+                              return;
+                          }
+                          PowerManager pm = (PowerManager) mContext.getSystemService(Context.POWER_SERVICE);
+                          if (pm != null && !pm.isIgnoringBatteryOptimizations(mContext.getPackageName())) {
+                              openBatterySettings();
+                              return;
+                          }
+                          if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+                              AlarmManager am = (AlarmManager) mContext.getSystemService(Context.ALARM_SERVICE);
+                              if (am != null && !am.canScheduleExactAlarms()) {
+                                  openAlarmSettings();
+                                  return;
+                              }
                           }
                           new Handler(Looper.getMainLooper()).post(() ->
-                              Toast.makeText(mContext, "DND & Background Permissions Granted!", Toast.LENGTH_SHORT).show()
+                              Toast.makeText(mContext, "All 3 Permissions (DND, Battery & Alarms) Granted!", Toast.LENGTH_SHORT).show()
                           );
                       }
                   }
