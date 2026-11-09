@@ -1,0 +1,2623 @@
+<!DOCTYPE html>
+<html lang="ur" dir="rtl" id="html-root">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="theme-color" content="#0b1015">
+    <link rel="manifest" href="manifest.json">
+    <title>اسمارٹ مسجد ڈیجیٹل گھڑی (Smart Mosque Digital Clock - 100% Offline)</title>
+    <style>
+        /* ==========================================================================
+           100% OFFLINE SELF-CONTAINED CSS & UTILITY ENGINE (NO EXTERNAL CDNs)
+           ========================================================================== */
+        :root, body.theme-0 {
+            --bg-main: #0b1015;
+            --bg-card: #141c24;
+            --bg-inner: #080c10;
+            --text-main: #e6edf3;
+            --text-muted: #9ca3af;
+            --accent-gold: #eab308;
+            --led-red: #ff3333;
+            --led-green: #22c55e;
+            --shadow-dark: #050709;
+            --shadow-light: #202c38;
+            --border-col: #2c3a47;
+            --frame-border: #85621e;
+        }
+        body.theme-1 {
+            --bg-main: #151005;
+            --bg-card: #221a09;
+            --bg-inner: #0d0a03;
+            --text-main: #fef3c7;
+            --text-muted: #d97706;
+            --accent-gold: #facc15;
+            --led-red: #ff3b30;
+            --led-green: #32d74b;
+            --shadow-dark: #080602;
+            --shadow-light: #362910;
+            --border-col: #6b5017;
+            --frame-border: #ca8a04;
+        }
+        body.theme-2 {
+            --bg-main: #05160e;
+            --bg-card: #0b2418;
+            --bg-inner: #030d08;
+            --text-main: #ecfdf5;
+            --text-muted: #6ee7b7;
+            --accent-gold: #fbbf24;
+            --led-red: #fb7185;
+            --led-green: #34d399;
+            --shadow-dark: #020805;
+            --shadow-light: #143d29;
+            --border-col: #19593c;
+            --frame-border: #10b981;
+        }
+        body.theme-3 {
+            --bg-main: #071020;
+            --bg-card: #0f1c34;
+            --bg-inner: #040912;
+            --text-main: #f0f9ff;
+            --text-muted: #93c5fd;
+            --accent-gold: #facc15;
+            --led-red: #f87181;
+            --led-green: #4ade80;
+            --shadow-dark: #03060d;
+            --shadow-light: #182e54;
+            --border-col: #224075;
+            --frame-border: #3b82f6;
+        }
+        body.theme-4 {
+            --bg-main: #18110f;
+            --bg-card: #261b18;
+            --bg-inner: #0f0a09;
+            --text-main: #f5f5f4;
+            --text-muted: #a8a29e;
+            --accent-gold: #f59e0b;
+            --led-red: #ef4444;
+            --led-green: #10b981;
+            --shadow-dark: #090605;
+            --shadow-light: #382824;
+            --border-col: #523934;
+            --frame-border: #d97706;
+        }
+        body.theme-5 {
+            --bg-main: #e2e8f0;
+            --bg-card: #f8fafc;
+            --bg-inner: #e2e8f0;
+            --text-main: #0f172a;
+            --text-muted: #475569;
+            --accent-gold: #b45309;
+            --led-red: #dc2626;
+            --led-green: #15803d;
+            --shadow-dark: #cbd5e1;
+            --shadow-light: #ffffff;
+            --border-col: #94a3b8;
+            --frame-border: #b45309;
+        }
+        /* MOUJ SYNC Official Brand Palette (Obsidian Black #0A0A0E, Deep Ocean Charcoal #1C252B, Metallic Platinum #D4D7DF, Aurora Glow #A2D5F2) */
+        body.theme-6 {
+            --bg-main: #0A0A0E;
+            --bg-card: #1C252B;
+            --bg-inner: #0D1216;
+            --text-main: #D4D7DF;
+            --text-muted: #94A8B8;
+            --accent-gold: #A2D5F2;
+            --led-red: #FF4D4D;
+            --led-green: #38BDF8;
+            --shadow-dark: #040507;
+            --shadow-light: #28353E;
+            --border-col: #2E3D47;
+            --frame-border: #A2D5F2;
+        }
+        body.theme-6 .kalima-3d-banner {
+            background: linear-gradient(145deg, #1C252B, #0A0A0E);
+            border-color: #A2D5F2;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.9), inset 0 2px 6px rgba(162,213,242,0.25), inset 0 -2px 6px rgba(0,0,0,0.85);
+        }
+        body.theme-6 .kalima-arabic {
+            color: #D4D7DF;
+            text-shadow: 0 2px 4px #000000, 0 0 14px rgba(162, 213, 242, 0.55);
+        }
+        body.makruh-active {
+            --bg-main: #2b0808 !important;
+            --bg-card: #3a0c0c !important;
+        }
+        body.silent-mode-active {
+            --frame-border: #ef4444 !important;
+        }
+
+        * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+        body {
+            font-family: 'Jameel Noori Nastaleeq', 'Noto Nastaliq Urdu', 'Urdu Typesetting', 'Segoe UI', Tahoma, sans-serif;
+            background-color: var(--bg-main);
+            color: var(--text-main);
+            line-height: 2.1;
+            margin: 0;
+            padding: 10px 8px 104px 8px;
+            transition: background-color 0.4s ease;
+            position: relative;
+            overflow-x: hidden;
+            min-height: 100vh;
+        }
+        button, input, select {
+            font-family: inherit;
+            color: inherit;
+            background: none;
+            border: none;
+            cursor: pointer;
+        }
+
+        /* Offline Utility Classes (Replacing Tailwind CDN) */
+        .w-full { width: 100%; }
+        .max-w-md { max-width: 28rem; }
+        .mx-auto { margin-left: auto; margin-right: auto; }
+        .flex { display: flex; }
+        .inline-flex { display: inline-flex; }
+        .flex-col { flex-direction: column; }
+        .flex-wrap { flex-wrap: wrap; }
+        .items-center { align-items: center; }
+        .items-baseline { align-items: baseline; }
+        .justify-center { justify-content: center; }
+        .justify-between { justify-content: space-between; }
+        .shrink-0 { flex-shrink: 0; }
+        .grid { display: grid; }
+        .grid-cols-1 { grid-template-columns: repeat(1, minmax(0, 1fr)); }
+        .grid-cols-2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+        .grid-cols-3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+        .grid-cols-4 { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+        .grid-cols-5 { grid-template-columns: repeat(5, minmax(0, 1fr)); }
+        .gap-1 { gap: 0.25rem; }
+        .gap-1\.5 { gap: 0.375rem; }
+        .gap-2 { gap: 0.5rem; }
+        .gap-2\.5 { gap: 0.625rem; }
+        .gap-3 { gap: 0.75rem; }
+        .gap-3\.5 { gap: 0.875rem; }
+        .gap-4 { gap: 1rem; }
+        .p-2 { padding: 0.5rem; }
+        .p-2\.5 { padding: 0.625rem; }
+        .p-3 { padding: 0.75rem; }
+        .p-3\.5 { padding: 0.875rem; }
+        .p-4 { padding: 1rem; }
+        .px-1 { padding-left: 0.25rem; padding-right: 0.25rem; }
+        .px-2 { padding-left: 0.5rem; padding-right: 0.5rem; }
+        .px-2\.5 { padding-left: 0.625rem; padding-right: 0.625rem; }
+        .px-3 { padding-left: 0.75rem; padding-right: 0.75rem; }
+        .px-3\.5 { padding-left: 0.875rem; padding-right: 0.875rem; }
+        .px-4 { padding-left: 1rem; padding-right: 1rem; }
+        .py-0\.5 { padding-top: 0.125rem; padding-bottom: 0.125rem; }
+        .py-1 { padding-top: 0.25rem; padding-bottom: 0.25rem; }
+        .py-1\.5 { padding-top: 0.375rem; padding-bottom: 0.375rem; }
+        .py-2 { padding-top: 0.5rem; padding-bottom: 0.5rem; }
+        .py-2\.5 { padding-top: 0.625rem; padding-bottom: 0.625rem; }
+        .py-3\.5 { padding-top: 0.875rem; padding-bottom: 0.875rem; }
+        .pb-1 { padding-bottom: 0.25rem; }
+        .pb-2 { padding-bottom: 0.5rem; }
+        .pb-2\.5 { padding-bottom: 0.625rem; }
+        .pt-2\.5 { padding-top: 0.625rem; }
+        .mb-1 { margin-bottom: 0.25rem; }
+        .mb-1\.5 { margin-bottom: 0.375rem; }
+        .mb-2 { margin-bottom: 0.5rem; }
+        .mb-2\.5 { margin-bottom: 0.625rem; }
+        .mb-3 { margin-bottom: 0.75rem; }
+        .mb-4 { margin-bottom: 1rem; }
+        .mt-0\.5 { margin-top: 0.125rem; }
+        .mt-1 { margin-top: 0.25rem; }
+        .mt-2 { margin-top: 0.5rem; }
+        .mt-2\.5 { margin-top: 0.625rem; }
+        .mt-3 { margin-top: 0.75rem; }
+        .my-2 { margin-top: 0.5rem; margin-bottom: 0.5rem; }
+        .mx-2 { margin-left: 0.5rem; margin-right: 0.5rem; }
+        .ms-1 { margin-inline-start: 0.25rem; }
+        .ps-1 { padding-inline-start: 0.25rem; }
+        .text-center { text-align: center; }
+        .text-start { text-align: start; }
+        .text-end { text-align: end; }
+        .font-bold { font-weight: 700; }
+        .font-black { font-weight: 900; }
+        .text-\[10px\] { font-size: 10px; }
+        .text-\[11px\] { font-size: 11px; }
+        .text-xs { font-size: 0.78rem; }
+        .text-sm { font-size: 0.9rem; }
+        .text-base { font-size: 1.02rem; }
+        .text-lg { font-size: 1.15rem; }
+        .text-xl { font-size: 1.3rem; }
+        .text-2xl { font-size: 1.55rem; }
+        .text-4xl { font-size: 2.35rem; }
+        .leading-relaxed { line-height: 1.75; }
+        .leading-loose { line-height: 2.1; }
+        .truncate { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+        .hidden { display: none !important; }
+        .block { display: block; }
+        .cursor-pointer { cursor: pointer; }
+        .rounded-lg { border-radius: 0.5rem; }
+        .rounded-full { border-radius: 9999px; }
+        .border-b { border-bottom: 1px solid rgba(156, 163, 175, 0.25); }
+        .border-t { border-top: 1px solid rgba(156, 163, 175, 0.25); }
+
+        /* Color Utility Classes */
+        .text-yellow-400 { color: #facc15; }
+        .text-yellow-300 { color: #fde047; }
+        .text-amber-400 { color: #fbbf24; }
+        .text-amber-300 { color: #fcd34d; }
+        .text-emerald-400 { color: #34d399; }
+        .text-emerald-300 { color: #6ee7b7; }
+        .text-cyan-400 { color: #22d3ee; }
+        .text-cyan-300 { color: #67e8f9; }
+        .text-red-400 { color: #f87171; }
+        .text-red-300 { color: #fca5a5; }
+        .text-blue-300 { color: #93c5fd; }
+        .text-gray-200 { color: #e5e7eb; }
+        .text-gray-300 { color: #d1d5db; }
+        .text-gray-400 { color: var(--text-muted); }
+        .text-gray-500 { color: #6b7280; }
+        .text-black { color: #000000; }
+        .bg-emerald-400 { background-color: #34d399; }
+        .bg-emerald-500 { background-color: #10b981; }
+        .bg-amber-500 { background-color: #f59e0b; }
+        .bg-yellow-500 { background-color: #eab308; }
+        .bg-cyan-500 { background-color: #06b6d4; }
+        .bg-red-600 { background-color: #dc2626; }
+        .bg-gray-600 { background-color: #4b5563; }
+        .bg-gray-900 { background-color: #111827; color: #f9fafb; }
+        .w-2\.5 { width: 0.625rem; }
+        .h-2\.5 { height: 0.625rem; }
+        .w-4 { width: 1rem; }
+        .h-4 { height: 1rem; }
+        .w-5 { width: 1.25rem; }
+        .h-5 { height: 1.25rem; }
+        .w-20 { width: 5rem; }
+        .h-20 { height: 5rem; }
+        .fill-current { fill: currentColor; }
+
+        @media (min-width: 640px) {
+            .sm\:text-lg { font-size: 1.15rem; }
+            .sm\:text-xl { font-size: 1.3rem; }
+            .sm\:text-5xl { font-size: 2.9rem; }
+            .sm\:text-sm { font-size: 0.9rem; }
+            .sm\:grid-cols-3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+        }
+
+        /* Mosque Watermark & 3D Frame Styling */
+        .mosque-bg-watermark {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 380px;
+            height: 540px;
+            opacity: 0.04;
+            pointer-events: none;
+            z-index: 0;
+        }
+        .app-layer {
+            position: relative;
+            z-index: 2;
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .kalima-sticky-wrap {
+            position: sticky;
+            top: 6px;
+            z-index: 85;
+            width: 100%;
+            max-width: 28rem;
+            margin-bottom: 0.65rem;
+        }
+        .kalima-3d-banner {
+            background: linear-gradient(145deg, #1b2229, #0d1217);
+            border: 2px solid var(--frame-border);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.88), inset 0 2px 5px rgba(255,215,0,0.22), inset 0 -2px 6px rgba(0,0,0,0.85);
+            border-radius: 14px;
+            position: relative;
+        }
+        .collapsible-content {
+            display: none;
+            margin-top: 10px;
+            padding-top: 10px;
+            border-top: 1px solid rgba(156, 163, 175, 0.25);
+        }
+        .collapsible-content.open {
+            display: block;
+        }
+        .mouj-footer-card {
+            text-align: center;
+            padding: 14px 12px;
+            margin: 10px 0 18px 0;
+            border: 1.5px solid var(--frame-border);
+            background: linear-gradient(180deg, var(--bg-card) 0%, var(--bg-inner) 100%);
+            border-radius: 16px;
+            box-shadow: 6px 6px 13px var(--shadow-dark), -4px -4px 10px var(--shadow-light);
+        }
+        .kalima-arabic {
+            font-family: 'Amiri', 'Traditional Arabic', 'Scheherazade New', serif;
+            color: #fde047;
+            text-shadow: 0 2px 4px #000000, 0 0 12px rgba(250, 204, 21, 0.45);
+            letter-spacing: 0.5px;
+            line-height: 1.65;
+        }
+        .emboss-3d-text {
+            text-shadow: 0 2px 3px rgba(0, 0, 0, 0.85), 0 -1px 1px rgba(255, 255, 255, 0.15);
+        }
+        .digital-font {
+            font-family: 'Orbitron', 'Courier New', Consolas, monospace;
+            letter-spacing: 1px;
+            line-height: 1.25;
+        }
+        .led-red {
+            color: var(--led-red);
+            text-shadow: 0 0 10px rgba(255, 51, 51, 0.45), 0 2px 3px rgba(0,0,0,0.85);
+        }
+        .led-green {
+            color: var(--led-green);
+            text-shadow: 0 0 10px rgba(34, 197, 94, 0.45), 0 2px 3px rgba(0,0,0,0.85);
+        }
+        .emboss-card {
+            background: var(--bg-card);
+            box-shadow: 6px 6px 13px var(--shadow-dark), -4px -4px 10px var(--shadow-light), inset 0 1px 1px rgba(255,255,255,0.08);
+            border-radius: 15px;
+            border: 1.5px solid var(--border-col);
+        }
+        .inner-box {
+            background: var(--bg-inner);
+            box-shadow: inset 4px 4px 8px var(--shadow-dark), inset -3px -3px 6px var(--shadow-light);
+            border-radius: 11px;
+            border: 1px solid var(--border-col);
+        }
+        .spacious-input {
+            background: var(--bg-inner);
+            box-shadow: inset 3px 3px 6px var(--shadow-dark), inset -2px -2px 5px var(--shadow-light);
+            border-radius: 10px;
+            border: 1px solid var(--border-col);
+            min-height: 48px;
+            padding: 8px 12px !important;
+            line-height: 2.0 !important;
+            font-size: 0.85rem !important;
+            width: 100%;
+            color: var(--text-main);
+        }
+        .spacious-input:focus {
+            outline: none;
+            border-color: var(--accent-gold);
+        }
+        .spacious-btn {
+            min-height: 44px;
+            padding: 8px 12px !important;
+            line-height: 1.9 !important;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+        }
+        .next-prayer-highlight {
+            border: 2px solid var(--led-green) !important;
+            box-shadow: 0 0 16px rgba(34, 197, 94, 0.35), inset 0 0 8px rgba(34, 197, 94, 0.12);
+        }
+        .silent-banner-box {
+            background: linear-gradient(135deg, #450a0a, #7f1d1d);
+            border: 2px solid #f87171;
+            box-shadow: 0 0 18px rgba(239, 68, 68, 0.5);
+            border-radius: 12px;
+        }
+        .modal-backdrop {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.88);
+            z-index: 100;
+            overflow-y: auto;
+            padding: 16px 12px;
+        }
+        .modal-box {
+            max-width: 440px;
+            margin: 12px auto;
+            padding: 18px;
+        }
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            z-index: 90;
+            background: var(--bg-card);
+            border-top: 1.5px solid var(--border-col);
+            box-shadow: 0 -5px 16px rgba(0,0,0,0.75);
+        }
+        .nav-tab-active {
+            color: #facc15 !important;
+            border-top: 3px solid #facc15;
+            background: rgba(250, 204, 21, 0.09);
+        }
+        .sect-deobandi   { color: #22c55e; }
+        .sect-barelvi    { color: #06b6d4; }
+        .sect-ahlehadith { color: #eab308; }
+        .sect-jafari     { color: #c084fc; }
+        .urdu-list li { margin-bottom: 10px; line-height: 2.1; }
+        @keyframes pulseGlow {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.55; }
+        }
+        .animate-pulse { animation: pulseGlow 1.6s infinite ease-in-out; }
+    </style>
+</head>
+<body class="theme-6">
+
+    <!-- Background Mosque Silhouette -->
+    <svg class="mosque-bg-watermark" viewBox="0 0 200 300" fill="currentColor">
+        <path d="M100 10 C85 35 65 55 65 85 L65 115 L35 115 L35 300 L165 300 L165 115 L135 115 L135 85 C135 55 115 35 100 10 Z M100 135 C125 135 140 160 140 190 L140 285 L60 285 L60 190 C60 160 75 135 100 135 Z"/>
+        <rect x="12" y="45" width="14" height="255" rx="4"/>
+        <polygon points="19,20 10,45 28,45"/>
+        <rect x="174" y="45" width="14" height="255" rx="4"/>
+        <polygon points="181,20 172,45 190,45"/>
+    </svg>
+
+    <div class="app-layer">
+
+        <!-- 1. STICKY 3D EMBOSSED KALIMA TAYYABA HEADER (STAYS FIXED ON SCROLL) -->
+        <div class="kalima-sticky-wrap">
+            <div class="kalima-3d-banner py-2 px-3 text-center">
+                <div class="text-[11px] text-amber-300 kalima-arabic">بِسْمِ اللّٰهِ الرَّحْمٰنِ الرَّحِيْمِ</div>
+                <div class="text-base sm:text-lg font-bold kalima-arabic">لَا إِلٰهَ إِلَّا اللّٰهُ مُحَمَّدٌ رَّسُولُ اللّٰهِ</div>
+            </div>
+        </div>
+
+        <!-- 2. TOP ACTION HEADER -->
+        <div class="w-full max-w-md flex justify-between items-center mb-2.5 gap-1.5">
+            <div class="flex gap-1.5">
+                <button onclick="openModal('settings-modal')" class="inner-box px-3 py-1.5 text-xs font-bold text-yellow-400 flex items-center gap-1.5">
+                    ⚙️ <span id="lbl-settings">سیٹنگز</span>
+                </button>
+                <button onclick="openModal('help-modal')" class="inner-box px-2.5 py-1.5 text-xs font-bold text-cyan-400 flex items-center gap-1">
+                    ❓ <span id="lbl-help">رہنمائی</span>
+                </button>
+            </div>
+
+            <div class="flex gap-1.5">
+                <button onclick="cycleTheme()" class="inner-box px-3 py-1.5 text-xs font-bold text-amber-300 flex items-center gap-1">
+                    🎨 <span id="lbl-theme">رنگ</span>
+                </button>
+                <button onclick="toggleLanguage()" class="inner-box px-3 py-1.5 text-xs font-bold text-emerald-400 digital-font" id="btn-lang">
+                    EN
+                </button>
+            </div>
+        </div>
+
+        <!-- ACTIVE SILENT MODE / PRE-JAMAAT DND BANNER -->
+        <div id="silent-active-banner" class="w-full max-w-md silent-banner-box p-3 mb-2.5 text-center hidden">
+            <div class="flex justify-between items-center">
+                <span class="text-xs sm:text-sm font-bold text-yellow-300" id="silent-banner-title">📵 جماعت کا وقت — موبائل سائلنٹ موڈ فعال ہے</span>
+                <button onclick="dismissSilentBanner()" class="inner-box px-2 py-0.5 text-[11px] text-gray-200 font-bold">✕ بند کریں</button>
+            </div>
+            <p class="text-[11px] text-gray-200 mt-1 leading-relaxed" id="silent-banner-sub">
+                نماز کے احترام میں فون خاموش (Do Not Disturb) رکھا گیا ہے۔ نماز کے بعد خودکار نارمل ہو جائے گا۔
+            </p>
+        </div>
+
+        <!-- 3. MAIN 3D DIGITAL CLOCK & MOSQUE CARD -->
+        <div class="w-full max-w-md emboss-card p-4 mb-3 text-center">
+            <!-- Top Badges Row -->
+            <div class="flex justify-between items-center text-[11px] mb-2 px-1 gap-2">
+                <span id="status-badge" class="inner-box px-3 py-1 text-emerald-400 font-bold shrink-0">● وقتِ نماز</span>
+                <span id="calendar-source-badge" onclick="openModal('settings-modal')" class="inner-box px-3 py-1 text-amber-300 font-bold cursor-pointer truncate">📜 نقشہ: جامعہ اشرفیہ لاہور</span>
+            </div>
+
+            <!-- Mosque Title + Switcher Button -->
+            <div class="flex flex-wrap justify-center items-center gap-2 mt-1 mb-1">
+                <h1 class="text-base sm:text-xl font-bold text-yellow-400 emboss-3d-text leading-loose py-0.5" id="active-mosque-heading">جامع مسجد ڈریم ایونیو رائے ونڈ روڈ لاہور (IMD)</h1>
+                <button onclick="openModal('mosque-switcher-modal')" class="inner-box px-3 py-1 text-xs font-bold text-amber-300 flex items-center gap-1.5">
+                    🕌 <span id="lbl-switch-mosque">مسجد بدلیں (1+2)</span>
+                </button>
+            </div>
+            <p class="text-xs text-gray-400 mb-2.5 leading-relaxed" id="active-sect-subtitle">لاہور (دائمی نقشہ جامعہ اشرفیہ) • مسلکِ حنفی (دیوبندی)</p>
+
+            <!-- 3D Recessed Digital LED Clock -->
+            <div class="inner-box py-3.5 px-4 mb-3 flex justify-center items-baseline gap-2" dir="ltr">
+                <span id="clock-hm" class="digital-font led-red text-4xl sm:text-5xl font-black">00:00</span>
+                <span id="clock-sec" class="digital-font led-green text-xl font-bold">00</span>
+                <span id="clock-ampm" class="digital-font text-xs text-amber-400 font-bold">AM</span>
+            </div>
+
+            <!-- Next Jamaat & Countdown -->
+            <div class="flex justify-between items-center text-xs px-2 mb-3">
+                <div>
+                    <span class="text-gray-400" id="lbl-next-jamaat">اگلی جماعت:</span>
+                    <strong class="text-yellow-400 ms-1 text-sm emboss-3d-text" id="next-prayer-name">فجر</strong>
+                </div>
+                <div>
+                    <span class="text-gray-400" id="lbl-remaining">بقیہ وقت:</span>
+                    <strong class="digital-font led-green ms-1 text-sm" id="next-prayer-countdown" dir="ltr">00:00:00</strong>
+                </div>
+            </div>
+
+            <!-- Rotating Date Box (Gregorian / Hijri / Desi Bikrami) -->
+            <div onclick="rotateDateManual()" class="inner-box py-2 px-3.5 cursor-pointer flex justify-between items-center text-xs sm:text-sm font-bold">
+                <span id="date-type-label" class="text-amber-400 shrink-0">📅 عیسوی تاریخ</span>
+                <span id="date-value-text" class="text-center mx-2 leading-loose">جمعرات، 5 نومبر 2026ء</span>
+                <span id="date-counter-badge" class="text-[10px] text-gray-400 digital-font shrink-0">1/3</span>
+            </div>
+        </div>
+
+        <!-- ==================== TAB 1: HOME (PRAYER TIMETABLE) ==================== -->
+        <div id="tab-home" class="w-full max-w-md">
+            <div class="emboss-card p-3.5 mb-3">
+                <div class="flex justify-between items-center mb-2.5 pb-2 border-b">
+                    <span class="text-xs font-bold text-yellow-400 emboss-3d-text" id="lbl-timetable-heading">نمازوں کا نظام الاوقات</span>
+                    <button onclick="toggleAzanDisplayMode()" class="inner-box px-2.5 py-1 text-[11px] font-bold text-amber-300" id="btn-azan-mode">
+                        🔄 موڈ: اذانِ مسجد + اول وقت
+                    </button>
+                </div>
+
+                <div class="grid grid-cols-3 items-center mb-2 pb-1 text-xs">
+                    <span class="font-bold text-gray-400" id="col-prayer">نماز</span>
+                    <span class="font-bold text-red-400 text-center" id="col-azan">اذانِ مسجد (اول وقت)</span>
+                    <span class="font-bold text-emerald-400 text-end" id="col-jamaat">جماعت (مسجد)</span>
+                </div>
+
+                <div id="prayer-rows-container" class="flex flex-col gap-2.5"></div>
+
+                <!-- Dynamic Upcoming Jamaat Change Banner -->
+                <div class="inner-box p-2.5 mt-3 flex justify-between items-center text-xs">
+                    <div class="leading-relaxed">
+                        <span id="lbl-upcoming-prefix" class="text-amber-400 font-bold">🔔 اگلی تبدیلی:</span>
+                        <span id="home-upcoming-change-text" class="text-gray-200 ms-1">9 نومبر سے عصر کی جماعت 03:45 PM پر ہوگی۔</span>
+                    </div>
+                    <button id="btn-edit-schedule" onclick="openModal('schedule-modal')" class="inner-box px-2.5 py-1 text-[10px] text-yellow-400 font-bold shrink-0">ترمیم</button>
+                </div>
+
+                <div class="mt-2.5 pt-2 border-t flex flex-col gap-2">
+                    <button onclick="openModal('yearly-modal')" class="inner-box py-2 px-3 text-xs font-bold text-cyan-300 w-full flex justify-center items-center gap-2">
+                        📅 <span id="lbl-yearly-btn">ڈریم ایونیو سالانہ بورڈ چارٹ / 12 ماہ کا شیڈول دیکھیں</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- ==================== TAB 2: SECTS COMPARISON ==================== -->
+        <div id="tab-sects" class="w-full max-w-md hidden">
+            <div class="emboss-card p-3.5 mb-3">
+                <div class="flex justify-between items-center mb-2">
+                    <h2 class="text-xs font-bold text-yellow-400" id="lbl-sect-table-title">تمام مسالک کے اول وقت اور جمعہ کا تقابلی نقشہ</h2>
+                    <span id="sect-engine-tag" class="text-[10px] text-amber-300 font-bold">لاہور دائمی نقشہ</span>
+                </div>
+
+                <div class="grid grid-cols-5 text-[11px] font-bold text-center border-b pb-2 mb-2 gap-1">
+                    <div class="text-gray-300" id="sect-col-prayer">نماز</div>
+                    <div class="sect-deobandi" id="sect-col-deo">حنفی دیوبندی</div>
+                    <div class="sect-barelvi" id="sect-col-bar">حنفی بریلوی</div>
+                    <div class="sect-ahlehadith" id="sect-col-ahle">اہلِ حدیث/شافعی</div>
+                    <div class="sect-jafari" id="sect-col-jaf">فقہِ جعفریہ</div>
+                </div>
+
+                <div id="sect-comparison-rows" class="flex flex-col gap-2 text-center"></div>
+
+                <div id="sect-jumma-notes-box" class="inner-box p-3 mt-3 text-[11px] text-gray-300 leading-relaxed">
+                    <div class="font-bold text-yellow-400 mb-1">🕌 مسالک کے لحاظ سے جمعۃ المبارک کا معیاری وقت:</div>
+                    <div>• <strong class="sect-deobandi">حنفی دیوبندی:</strong> دوپہر 1:30 بجے (ڈریم ایونیو و دیگر مساجد)</div>
+                    <div>• <strong class="sect-barelvi">حنفی بریلوی:</strong> دوپہر 2:00 سے 2:30 بجے کے درمیان</div>
+                    <div>• <strong class="sect-ahlehadith">اہلِ حدیث / شافعی:</strong> دوپہر 1:00 بجے (اول وقت)</div>
+                    <div>• <strong class="sect-jafari">فقہِ جعفریہ:</strong> زوال کے بعد دوپہر 1:00 بجے</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ==================== TAB 3: NAWAFIL, ISHRAQ, ZAWAL & HADITH ==================== -->
+        <div id="tab-nawafil" class="w-full max-w-md hidden">
+            <div class="emboss-card p-3.5 mb-3">
+                <h2 class="text-xs font-bold text-yellow-400 mb-2.5 text-center">☀️ سحری، اشراق، زوال اور جامعہ اشرفیہ کے حاشیہ اصول</h2>
+                <div class="grid grid-cols-2 gap-2.5 text-center text-xs">
+                    <div class="inner-box p-3">
+                        <div class="text-gray-400">ختمِ سحری (صبح صادق سے 2m قبل)</div>
+                        <div id="val-tahajjud" class="digital-font text-cyan-400 font-bold text-sm mt-1" dir="ltr">04:57 AM</div>
+                    </div>
+                    <div class="inner-box p-3">
+                        <div class="text-gray-400">طلوعِ آفتاب (مکروہ آغاز)</div>
+                        <div id="val-sunrise" class="digital-font text-amber-400 font-bold text-sm mt-1" dir="ltr">06:22 AM</div>
+                    </div>
+                    <div class="inner-box p-3">
+                        <div class="text-gray-400">نمازِ اشراق (طلوع کے 12m بعد)</div>
+                        <div id="val-ishraq" class="digital-font text-emerald-400 font-bold text-sm mt-1" dir="ltr">06:34 AM</div>
+                    </div>
+                    <div class="inner-box p-3">
+                        <div class="text-gray-400">زوالِ آفتاب (±5 منٹ مکروہ)</div>
+                        <div id="val-zawal" class="digital-font text-red-400 font-bold text-sm mt-1" dir="ltr">11:46 AM</div>
+                    </div>
+                </div>
+                <div class="inner-box p-3 mt-2.5 text-[11px] text-gray-300 leading-relaxed">
+                    <div>📌 <strong>حاشیہ جامعہ اشرفیہ لاہور:</strong></div>
+                    <div>1. صبح صادق سے 2 منٹ پہلے کھانا پینا بند کر دیا جائے (ختمِ سحری)۔</div>
+                    <div>2. طلوعِ آفتاب کے وقت سے 12 منٹ بعد نمازِ اشراق ادا کی جا سکتی ہے۔</div>
+                    <div>3. زوال کے وقت سے 5 منٹ پہلے اور 5 منٹ بعد تک کوئی نماز نہ پڑھی جائے۔ ظہر کا وقت زوال کے 5 منٹ بعد شروع ہوتا ہے۔</div>
+                    <div>4. مغرب کی نماز عشاء کا وقت شروع ہونے سے 3 منٹ پہلے تک بوقتِ مجبوری ادا کی جا سکتی ہے (<span id="val-maghrib-limit" class="digital-font text-amber-300" dir="ltr">06:30 PM</span>)۔</div>
+                </div>
+            </div>
+
+            <div class="emboss-card p-3.5">
+                <div class="flex justify-between items-center text-xs mb-1.5">
+                    <span class="text-amber-400 font-bold">📖 فضیلتِ نماز و حدیثِ نبوی ﷺ</span>
+                    <button onclick="nextSpiritualQuote()" class="inner-box px-3 py-1 text-[10px] text-gray-300">اگلی حدیث ⬅</button>
+                </div>
+                <p id="spiritual-arabic" class="text-center text-emerald-400 font-bold text-sm my-2 leading-loose kalima-arabic"></p>
+                <p id="spiritual-translation" class="text-center text-xs text-gray-200 leading-loose"></p>
+            </div>
+        </div>
+
+        <!-- ==================== TAB 4: ANALOG CLOCKS ==================== -->
+        <div id="tab-analog" class="w-full max-w-md hidden">
+            <div class="emboss-card p-3.5 mb-3">
+                <h2 class="text-xs font-bold text-yellow-400 text-center mb-3">🕰️ روایتی سوئیوں والی مسجد گھڑیاں (ٹیپ کر کے وقت بدلیں)</h2>
+                <div id="analog-clocks-grid" class="grid grid-cols-2 sm:grid-cols-3 gap-3"></div>
+            </div>
+        </div>
+
+        <!-- ==================== MOUJ SYNC BRANDING & DUA CARD ==================== -->
+        <div class="w-full max-w-md mouj-footer-card">
+            <div id="mouj-logo-slot" style="max-width:145px; margin:0 auto 8px auto; border-radius:10px; overflow:hidden; border:1px solid rgba(162,213,242,0.35); box-shadow:0 4px 12px rgba(0,0,0,0.85); background:#0A0A0E;">
+                <img src="data:image/jpeg;base64,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" alt="MOUJ SYNC" style="width:100%; height:auto; display:block;">
+            </div>
+            <div class="text-xs text-gray-200 leading-loose">
+                <div id="mouj-dua-text">
+                    یہ کاوش محض اللہ کی رضا اور صدقہ جاریہ کے لیے ہے۔<br>
+                    براہِ کرم اپنی دعاؤں میں ہمیں بھی یاد رکھیں۔<br>
+                    اللہ پاک ہماری اس کوشش کو دنیا اور آخرت میں ہماری مغفرت کا سبب بنائے، آمین۔
+                </div>
+                <span id="mouj-signature-text" class="text-cyan-300 font-bold inline-block mt-1 text-sm">طالبِ دعا: موج سنک</span>
+            </div>
+        </div>
+
+    </div><!-- /.app-layer -->
+
+    <!-- ==================== FIXED BOTTOM NAVIGATION TABS ==================== -->
+    <nav class="bottom-nav">
+        <div class="max-w-md mx-auto grid grid-cols-4 text-center">
+            <button onclick="switchTab('home')" id="nav-btn-home" class="py-2.5 flex flex-col items-center justify-center text-xs font-bold text-gray-400 nav-tab-active">
+                <span class="text-base">🕌</span>
+                <span id="nav-lbl-home">اوقاتِ نماز</span>
+            </button>
+            <button onclick="switchTab('sects')" id="nav-btn-sects" class="py-2.5 flex flex-col items-center justify-center text-xs font-bold text-gray-400">
+                <span class="text-base">⚖️</span>
+                <span id="nav-lbl-sects">مسالک</span>
+            </button>
+            <button onclick="switchTab('nawafil')" id="nav-btn-nawafil" class="py-2.5 flex flex-col items-center justify-center text-xs font-bold text-gray-400">
+                <span class="text-base">☀️</span>
+                <span id="nav-lbl-nawafil">اشراق و حاشیہ</span>
+            </button>
+            <button onclick="switchTab('analog')" id="nav-btn-analog" class="py-2.5 flex flex-col items-center justify-center text-xs font-bold text-gray-400">
+                <span class="text-base">🕰️</span>
+                <span id="nav-lbl-analog">گھڑیاں</span>
+            </button>
+        </div>
+    </nav>
+
+    <!-- ==================== MODALS ==================== -->
+
+    <!-- 1. YEARLY MOSQUE SCHEDULE & IMD NOTICE BOARD MODAL -->
+    <div id="yearly-modal" class="modal-backdrop">
+        <div class="modal-box emboss-card">
+            <div class="flex justify-between items-center border-b pb-2.5 mb-3">
+                <h3 class="text-sm font-bold text-cyan-400">📅 مسجد کا سالانہ جماعت شیڈول اور ڈریم ایونیو بورڈ</h3>
+                <button onclick="closeModal('yearly-modal')" class="text-red-400 font-bold px-2 text-base">✕</button>
+            </div>
+
+            <div class="flex flex-col gap-3.5 text-xs leading-loose">
+                <div class="inner-box p-3.5">
+                    <label class="block font-bold text-yellow-400 mb-2">اس مسجد کے لیے جماعت کا خودکار نظام منتخب کریں:</label>
+                    <select id="select-jamaat-auto-mode" class="spacious-input font-bold mb-2" onchange="changeJamaatAutoMode()">
+                        <option value="imd_board" class="bg-gray-900">🕌 جامع مسجد ڈریم ایونیو (IMD) کا فکسڈ سالانہ بورڈ چارٹ</option>
+                        <option value="monthly_12" class="bg-gray-900">📅 آپشنل مسجد کا 12 ماہی کسٹم شیڈول</option>
+                        <option value="manual" class="bg-gray-900">✋ مینوئل موڈ (ہاتھ سے مقرر کردہ وقت)</option>
+                    </select>
+
+                    <div class="flex justify-between items-center mt-2 pt-2 border-t">
+                        <span class="text-emerald-300 font-bold">🌙 رمضان المبارک کا خصوصی اصول (فجر سحری+20m، مغرب اذان+10m)</span>
+                        <input type="checkbox" id="chk-ramadan-rule" class="w-5 h-5" onchange="toggleRamadanRule()">
+                    </div>
+                </div>
+
+                <!-- Month Editor for Optional Mosques -->
+                <div class="inner-box p-3">
+                    <label class="block text-amber-300 font-bold mb-1.5">کسی بھی مہینے کا طے شدہ وقت دیکھیں یا آپشنل مسجد کے لیے بدلیں:</label>
+                    <select id="yearly-month-select" class="spacious-input mb-3" onchange="renderYearlyMonthEditor()">
+                        <option value="0" class="bg-gray-900">جنوری (January)</option>
+                        <option value="1" class="bg-gray-900">فروری (February)</option>
+                        <option value="2" class="bg-gray-900">مارچ (March)</option>
+                        <option value="3" class="bg-gray-900">اپریل (April)</option>
+                        <option value="4" class="bg-gray-900">مئی (May)</option>
+                        <option value="5" class="bg-gray-900">جون (June)</option>
+                        <option value="6" class="bg-gray-900">جولائی (July)</option>
+                        <option value="7" class="bg-gray-900">اگست (August)</option>
+                        <option value="8" class="bg-gray-900">ستمبر (September)</option>
+                        <option value="9" class="bg-gray-900">اکتوبر (October)</option>
+                        <option value="10" class="bg-gray-900">نومبر (November)</option>
+                        <option value="11" class="bg-gray-900">دسمبر (December)</option>
+                    </select>
+
+                    <div id="yearly-month-fields" class="grid grid-cols-2 gap-2.5 text-center"></div>
+
+                    <button onclick="applySelectedMonthToCurrent()" class="mt-3 w-full spacious-btn bg-cyan-500 text-black font-bold rounded-lg text-xs">
+                        ✅ اس مہینے کا شیڈول محفوظ اور لاگو کریں
+                    </button>
+                </div>
+
+                <button onclick="closeModal('yearly-modal')" class="spacious-btn inner-box text-xs font-bold text-gray-300 w-full">بند کریں</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 2. MOSQUE SWITCHER MODAL (1 Primary + 2 Optional Mosques) -->
+    <div id="mosque-switcher-modal" class="modal-backdrop">
+        <div class="modal-box emboss-card">
+            <div class="flex justify-between items-center border-b pb-2.5 mb-3">
+                <h3 class="text-sm font-bold text-yellow-400">🕌 بنیادی مسجد اور 2 آپشنل مساجد</h3>
+                <button onclick="closeModal('mosque-switcher-modal')" class="text-red-400 font-bold px-2 text-base">✕</button>
+            </div>
+            <p class="text-xs text-gray-300 mb-3 leading-loose">
+                مسجد نمبر 1 بنیادی طور پر جامع مسجد ڈریم ایونیو (IMD) کے فکسڈ بورڈ پر ہے، جبکہ باقی 2 آپشنل مساجد کو آپ کسی بھی مسلک یا علاقے کے مطابق استعمال کر سکتے ہیں:
+            </p>
+            <div id="mosque-switcher-list" class="flex flex-col gap-3 mb-3"></div>
+            <button onclick="closeModal('mosque-switcher-modal'); openModal('settings-modal');" class="w-full spacious-btn inner-box text-xs font-bold text-cyan-400">
+                ⚙️ منتخب مسجد کی سیٹنگز اور مسلک تبدیل کریں
+            </button>
+        </div>
+    </div>
+
+    <!-- 3. JAMAAT & AZAN TIME EDITOR MODAL -->
+    <div id="edit-time-modal" class="modal-backdrop">
+        <div class="modal-box emboss-card text-center">
+            <div class="flex justify-between items-center border-b pb-2.5 mb-3">
+                <h3 class="text-sm font-bold text-yellow-400" id="edit-prayer-title">وقت تبدیل کریں</h3>
+                <button onclick="closeModal('edit-time-modal')" class="text-red-400 font-bold px-2 text-base">✕</button>
+            </div>
+
+            <div class="inner-box p-3.5 mb-3">
+                <label class="block text-xs font-bold text-emerald-400 mb-2">🟢 جماعت کا وقت:</label>
+                <input type="time" id="edit-time-input" class="inner-box px-4 py-2 text-2xl digital-font led-green mb-3" onchange="autoAdjustAzanFromJamaat()">
+                <div class="flex justify-center gap-2" dir="ltr">
+                    <button onclick="adjustEditMinutes(-15)" class="inner-box px-3 py-1.5 text-xs font-bold text-red-400">-15m</button>
+                    <button onclick="adjustEditMinutes(-5)" class="inner-box px-3 py-1.5 text-xs font-bold text-red-300">-5m</button>
+                    <button onclick="adjustEditMinutes(5)" class="inner-box px-3 py-1.5 text-xs font-bold text-emerald-300">+5m</button>
+                    <button onclick="adjustEditMinutes(15)" class="inner-box px-3 py-1.5 text-xs font-bold text-emerald-400">+15m</button>
+                </div>
+            </div>
+
+            <div class="inner-box p-3.5 mb-4">
+                <label class="block text-xs font-bold text-red-400 mb-2">🔴 اذان کا وقت:</label>
+                <input type="time" id="edit-azan-input" class="inner-box px-4 py-2 text-xl digital-font led-red mb-1.5">
+                <p class="text-[11px] text-gray-400 leading-relaxed">
+                    فجر اذان جماعت سے 20m قبل، ظہر و عصر 15m قبل، مغرب اول وقت پر، اور عشاء 15m قبل۔
+                </p>
+            </div>
+
+            <div class="grid grid-cols-2 gap-2.5">
+                <button onclick="closeModal('edit-time-modal')" class="spacious-btn inner-box text-xs font-bold text-gray-400">منسوخ کریں</button>
+                <button onclick="saveEditedJamaatTime()" class="spacious-btn bg-emerald-500 text-black rounded-lg text-xs font-bold">✅ محفوظ کریں</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 4. SETTINGS & SILENT MODE PERMISSIONS MODAL -->
+    <div id="settings-modal" class="modal-backdrop">
+        <div class="modal-box emboss-card">
+            <div class="flex justify-between items-center border-b pb-2.5 mb-4">
+                <h3 class="text-base font-bold text-yellow-400">⚙️ سیٹنگز، مساجد اور آٹو سائلنٹ موڈ</h3>
+                <button onclick="closeModal('settings-modal')" class="text-red-400 font-bold text-lg px-2">✕</button>
+            </div>
+
+            <div class="flex flex-col gap-3.5 text-xs">
+                <!-- 1. Select Mosque (1 Primary + 2 Optional) -->
+                <div class="inner-box p-3.5">
+                    <label class="block text-yellow-400 font-bold mb-2">1. مسجد منتخب کریں (1 بنیادی + 2 آپشنل مساجد):</label>
+                    <div class="grid grid-cols-1 gap-2">
+                        <button onclick="selectMosque(0)" id="mosque-tab-0" class="spacious-btn inner-box text-xs font-bold w-full"></button>
+                        <button onclick="selectMosque(1)" id="mosque-tab-1" class="spacious-btn inner-box text-xs font-bold w-full"></button>
+                        <button onclick="selectMosque(2)" id="mosque-tab-2" class="spacious-btn inner-box text-xs font-bold w-full"></button>
+                    </div>
+                </div>
+
+                <!-- 2. Silent Mode & Android Native Permissions -->
+                <div class="inner-box p-3.5">
+                    <div class="font-bold text-red-400 mb-2">2. 📵 نماز کے وقت آٹو ڈو ناٹ ڈسٹرب (Auto DND & Silent)</div>
+                    <div class="flex justify-between items-center mb-2.5">
+                        <span class="font-bold text-emerald-400">جماعت سے پہلے اور بعد خودکار سائلنٹ موڈ (DND)</span>
+                        <input type="checkbox" id="chk-auto-silent" class="w-5 h-5" checked onchange="saveSilentPreferences()">
+                    </div>
+
+                    <div class="mb-2.5">
+                        <label class="block text-gray-300 mb-1">جماعت سے کتنے منٹ پہلے موبائل سائلنٹ ہو؟</label>
+                        <select id="select-silent-pre" class="spacious-input font-bold" onchange="saveSilentPreferences()">
+                            <option value="smart" class="bg-gray-900" selected>سمارٹ آٹو موڈ (فجر 15m، مغرب 4m، جمعہ 20m، باقی 10m قبل)</option>
+                            <option value="azan" class="bg-gray-900">اذانِ مسجد کے وقت سے (فجر 20m، ظہر/عصر/عشاء 15m، جمعہ 30m قبل)</option>
+                            <option value="10" class="bg-gray-900">ہر نماز میں جماعت سے 10 منٹ پہلے</option>
+                            <option value="15" class="bg-gray-900">ہر نماز میں جماعت سے 15 منٹ پہلے</option>
+                            <option value="20" class="bg-gray-900">ہر نماز میں جماعت سے 20 منٹ پہلے</option>
+                            <option value="5" class="bg-gray-900">ہر نماز میں جماعت سے 5 منٹ پہلے</option>
+                            <option value="0" class="bg-gray-900">عین جماعت کے وقت (0 منٹ پہلے)</option>
+                        </select>
+                    </div>
+
+                    <div class="mb-2.5">
+                        <label class="block text-gray-300 mb-1">جماعت کے کتنے منٹ بعد تک موبائل سائلنٹ رہے؟</label>
+                        <select id="select-silent-duration" class="spacious-input font-bold" onchange="saveSilentPreferences()">
+                            <option value="smart" class="bg-gray-900">سمارٹ آٹو موڈ (فجر/عشاء 25m، ظہر 20m، عصر/مغرب 15m، جمعہ 30m)</option>
+                            <option value="15" class="bg-gray-900">15 منٹ بعد تک (مختصر جماعت)</option>
+                            <option value="20" class="bg-gray-900" selected>20 منٹ بعد تک (معیاری وقتِ نماز)</option>
+                            <option value="25" class="bg-gray-900">25 منٹ بعد تک (سنت و نوافل سمیت)</option>
+                            <option value="30" class="bg-gray-900">30 منٹ بعد تک (مکمل اطمینان)</option>
+                            <option value="45" class="bg-gray-900">45 منٹ بعد تک (جمعہ / طویل دورانیہ)</option>
+                        </select>
+                    </div>
+
+                    <div class="grid grid-cols-2 gap-2 mt-2">
+                        <button onclick="triggerTestSilentMode(); closeModal('settings-modal');" class="spacious-btn inner-box text-xs font-bold text-amber-300">
+                            🔊 سائلنٹ الرٹ ٹیسٹ (2m)
+                        </button>
+                        <button onclick="requestAndroidNativePermissions()" class="spacious-btn inner-box text-xs font-bold text-cyan-300">
+                            🛡️ اینڈرائیڈ DND پرمیشن
+                        </button>
+                    </div>
+
+                    <!-- Collapsible Toggle for Active DND Schedule & Timing Notes -->
+                    <button type="button" onclick="toggleCollapsible('dnd-schedule-drawer')" class="spacious-btn inner-box text-xs font-bold text-emerald-300 w-full mt-2.5">
+                        📋 <span id="lbl-dnd-drawer-btn">سیٹ کردہ سائلنٹ اوقات اور نوٹس دیکھیں (کلک کریں) ▼</span>
+                    </button>
+                    <div id="dnd-schedule-drawer" class="collapsible-content text-[11px] text-gray-300 leading-relaxed">
+                        <div id="settings-dnd-schedule-summary" class="mb-2 p-2 inner-box text-emerald-300 font-bold"></div>
+                        <div class="p-2 inner-box text-gray-300">
+                            <div class="font-bold text-amber-300 mb-1">📌 اہم ہدایات و اصول:</div>
+                            <div>• ڈیش بورڈ پر کسی بھی نماز کے وقت پر ٹیپ کر کے اذان یا جماعت کا وقت بدلا جا سکتا ہے۔</div>
+                            <div>• ڈریم ایونیو (IMD) مغرب جماعت: غروبِ آفتاب کے 6 منٹ بعد (3 منٹ اذان + 3 منٹ وقفہ)۔</div>
+                            <div>• اذان کا خودکار وقفہ: فجر جماعت سے 20m قبل، ظہر/عصر/عشاء 15m قبل، جمعہ 30m قبل۔</div>
+                            <div id="android-perm-status" class="text-cyan-300 mt-1">
+                                حالت: گٹ ہب APK میں بیک گراؤنڈ الارم کلاک سروس کے ذریعے فون مقررہ وقت پر خودکار DND میں جائے گا اور وقت پورا ہونے پر خودکار نارمل ہو جائے گا۔
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 3. Dual Perpetual Calendar Selector -->
+                <div class="inner-box p-3.5">
+                    <label class="block text-yellow-400 font-bold mb-2">3. دائمی نقشہ / کیلنڈر کا انتخاب:</label>
+                    <select id="select-calendar-engine" class="spacious-input font-bold mb-2.5" onchange="saveMosqueSettings()">
+                        <option value="lahore_chart" class="bg-gray-900">📜 نقشہ نمبر 1: دائمی نقشہ لاہور و مضافات (جامعہ اشرفیہ مستند چارٹ)</option>
+                        <option value="other_cities" class="bg-gray-900">🌍 نقشہ نمبر 2: دیگر شہروں کا آف لائن فلکیاتی کیلنڈر (کراچی، اسلام آباد وغیرہ)</option>
+                    </select>
+
+                    <div id="other-city-box" class="mt-2">
+                        <label class="block text-gray-300 font-bold mb-1">شہر منتخب کریں:</label>
+                        <select id="select-city" class="spacious-input font-bold" onchange="saveMosqueSettings()">
+                            <option value="lahore" class="bg-gray-900">لاہور (Lahore - 31.52° N, 74.35° E)</option>
+                            <option value="karachi" class="bg-gray-900">کراچی (Karachi - 24.86° N, 67.00° E)</option>
+                            <option value="islamabad" class="bg-gray-900">اسلام آباد / راولپنڈی (33.68° N, 73.04° E)</option>
+                            <option value="multan" class="bg-gray-900">ملتان (Multan - 30.15° N, 71.52° E)</option>
+                            <option value="faisalabad" class="bg-gray-900">فیصل آباد (Faisalabad - 31.45° N, 73.13° E)</option>
+                            <option value="peshawar" class="bg-gray-900">پشاور (Peshawar - 34.01° N, 71.52° E)</option>
+                            <option value="quetta" class="bg-gray-900">کوئٹہ (Quetta - 30.17° N, 66.97° E)</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- 4. Sect Selector (Auto-sets Jumu'ah for Optional Mosques) -->
+                <div class="inner-box p-3.5">
+                    <label class="block text-yellow-400 font-bold mb-2">4. فقہ / مسلک منتخب کریں (آپشنل مساجد میں جمعہ خودکار سیٹ ہوگا):</label>
+                    <select id="select-sect" class="spacious-input font-bold" onchange="handleSectChange()">
+                        <option value="deobandi" class="bg-gray-900">🟢 مسلکِ حنفی (دیوبندی — عصر مثلِ ثانی، جمعہ 1:30)</option>
+                        <option value="barelvi" class="bg-gray-900">🔵 مسلکِ حنفی (بریلوی — عصر مثلِ ثانی، جمعہ 2:00)</option>
+                        <option value="ahlehadith" class="bg-gray-900">🟡 مسلکِ اہلِ حدیث / شافعی (عصر مثلِ اول، جمعہ 1:00)</option>
+                        <option value="jafari" class="bg-gray-900">🟣 فقہِ جعفریہ (شیعہ معیار، جمعہ 1:00)</option>
+                    </select>
+                </div>
+
+                <!-- 5. Mosque Name Inputs -->
+                <div class="inner-box p-3.5">
+                    <label class="block text-yellow-400 font-bold mb-2">5. منتخب مسجد کا نام:</label>
+                    <div class="mb-2.5">
+                        <span class="block text-[11px] text-gray-400 mb-1">اردو نام:</span>
+                        <input type="text" id="input-mosque-name-ur" class="spacious-input font-bold" oninput="handleMosqueNameInput('ur')">
+                    </div>
+                    <div>
+                        <span class="block text-[11px] text-gray-400 mb-1">انگریزی نام (English Name):</span>
+                        <input type="text" id="input-mosque-name-en" class="spacious-input text-emerald-300 font-bold" dir="ltr" oninput="handleMosqueNameInput('en')">
+                    </div>
+                </div>
+
+                <!-- 6. Keep Screen Awake & Themes -->
+                <div class="inner-box p-3.5">
+                    <div class="flex justify-between items-center mb-3 pb-2 border-b">
+                        <span class="font-bold text-cyan-300">💡 اسکرین کو مسلسل آن رکھیں (Always-On WakeLock)</span>
+                        <input type="checkbox" id="chk-wakelock" class="w-5 h-5" checked onchange="toggleWakeLockSetting()">
+                    </div>
+                    <label class="block text-gray-200 font-bold mb-2">کلر اسکیم (7 تھیمز — موج سنک سمیت):</label>
+                    <button onclick="setTheme(6)" class="spacious-btn inner-box font-bold w-full mb-2 text-xs" style="background:linear-gradient(135deg, #0A0A0E, #1C252B); color:#D4D7DF; border:1.5px solid #A2D5F2;">
+                        💎 موج سنک پلاٹینم (MOUJ SYNC — Obsidian &amp; Aurora)
+                    </button>
+                    <div class="grid grid-cols-2 gap-2 text-xs">
+                        <button onclick="setTheme(0)" class="spacious-btn inner-box font-bold text-gray-200">⚫ رائل ڈارک</button>
+                        <button onclick="setTheme(1)" class="spacious-btn inner-box font-bold text-yellow-300">🟡 الحرمین گولڈ</button>
+                        <button onclick="setTheme(2)" class="spacious-btn inner-box font-bold text-emerald-300">🟢 مدینہ گرین</button>
+                        <button onclick="setTheme(3)" class="spacious-btn inner-box font-bold text-blue-300">🔵 مکہ نائٹ بلیو</button>
+                        <button onclick="setTheme(4)" class="spacious-btn inner-box font-bold text-amber-400">🟤 کلاسک برانز</button>
+                        <button onclick="setTheme(5)" class="spacious-btn inner-box font-bold text-black" style="background:#e2e8f0;">⚪ لائٹ موڈ</button>
+                    </div>
+                </div>
+
+                <button onclick="closeModal('settings-modal')" class="spacious-btn bg-yellow-500 text-black font-bold rounded-lg text-sm w-full">
+                    ✅ تمام سیٹنگز محفوظ کریں اور بند کریں
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 5. SCHEDULE ALERT MODAL -->
+    <div id="schedule-modal" class="modal-backdrop">
+        <div class="modal-box emboss-card">
+            <div class="flex justify-between items-center border-b pb-2.5 mb-3">
+                <h3 class="text-sm font-bold text-amber-400">🔔 جماعت کی تبدیلی کا پیشگی الرٹ</h3>
+                <button onclick="closeModal('schedule-modal')" class="text-red-400 font-bold text-base">✕</button>
+            </div>
+            <div class="flex flex-col gap-3.5 text-xs">
+                <div>
+                    <label class="block text-gray-300 mb-1.5">کون سی نماز کا وقت بدلنے والا ہے؟</label>
+                    <select id="sched-prayer" class="spacious-input">
+                        <option value="فجر" class="bg-gray-900">فجر</option>
+                        <option value="ظہر" class="bg-gray-900">ظہر</option>
+                        <option value="عصر" class="bg-gray-900" selected>عصر</option>
+                        <option value="مغرب" class="bg-gray-900">مغرب</option>
+                        <option value="عشاء" class="bg-gray-900">عشاء</option>
+                        <option value="جمعہ المبارک" class="bg-gray-900">جمعہ المبارک</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="block text-gray-300 mb-1.5">کب سے نافذ ہوگا؟</label>
+                    <input type="text" id="sched-day" value="9 نومبر" class="spacious-input font-bold">
+                </div>
+                <div>
+                    <label class="block text-gray-300 mb-1.5">نیا وقت کیا ہوگا؟</label>
+                    <input type="time" id="sched-time" value="15:45" class="spacious-input digital-font led-green text-center">
+                </div>
+                <button onclick="saveScheduleAlert()" class="spacious-btn bg-amber-500 text-black font-bold rounded-lg w-full">الرٹ محفوظ کریں</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 6. HELP MODAL -->
+    <div id="help-modal" class="modal-backdrop">
+        <div class="modal-box emboss-card">
+            <div class="flex justify-between items-center border-b pb-2.5 mb-3">
+                <h3 class="text-sm font-bold text-cyan-400">📘 مکمل رہنمائی اور آف لائن سسٹم کی تفصیل</h3>
+                <button onclick="closeModal('help-modal')" class="text-red-400 font-bold text-base">✕</button>
+            </div>
+            <div class="flex flex-col gap-3 text-xs">
+                <div class="inner-box p-3">
+                    <div class="font-bold text-yellow-400 mb-1">1. سو فیصد آف لائن پرپیچول کیلنڈر (بغیر انٹرنیٹ):</div>
+                    <p class="text-gray-200 leading-relaxed">
+                        یہ ایپ کسی انٹرنیٹ سرور سے منسلک نہیں ہے۔ اس میں جامعہ اشرفیہ لاہور کے 12 مہینوں کا مکمل دائمی نقشہ اور دیگر شہروں کا فلکیاتی فارمولا موبائل کے اندر ہی محفوظ ہے جو ہمیشہ آف لائن کام کرتا ہے۔
+                    </p>
+                </div>
+                <div class="inner-box p-3">
+                    <div class="font-bold text-yellow-400 mb-1">2. بنیادی مسجد (ڈریم ایونیو IMD) اور 2 آپشنل مساجد:</div>
+                    <p class="text-gray-200 leading-relaxed">
+                        پہلی مسجد جامع مسجد ڈریم ایونیو رائے ونڈ روڈ لاہور (IMD) کے سالانہ نوٹس بورڈ کے مطابق خودکار چلتی ہے، جبکہ دوسری اور تیسری آپشنل مساجد میں ہر مسلک (دیوبندی 1:30، بریلوی 2:00، اہلِ حدیث/شافعی 1:00) کے لحاظ سے الگ وقت رکھا جا سکتا ہے۔
+                    </p>
+                </div>
+                <div class="inner-box p-3">
+                    <div class="font-bold text-yellow-400 mb-1">3. نماز کے وقت آٹو سائلنٹ اور بیک گراؤنڈ سروس:</div>
+                    <p class="text-gray-200 leading-relaxed">
+                        جماعت سے 10 منٹ قبل یاددہانی بیپ بجتی ہے اور عین جماعت کے وقت سائلنٹ موڈ فعال ہو جاتا ہے۔ گٹ ہب اینڈرائیڈ بلڈ (APK) میں ڈو ناٹ ڈسٹرب (DND) اور بیک گراؤنڈ الارم پرمیشن کے ساتھ یہ ایپ سوائپ اپ کرنے کے بعد بھی فون کو خودکار سائلنٹ کرتی ہے۔
+                    </p>
+                </div>
+                <button onclick="closeModal('help-modal')" class="spacious-btn bg-cyan-500 text-black font-bold rounded-lg w-full">سمجھ آ گیا</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        /* ==========================================================================
+           1. JAMIA ASHRAFIA LAHORE 12-MONTH PERPETUAL CHART DATABASE
+              Verified from all 12 uploaded sheets (Jan - Dec)
+              Columns: [day, fajr, sunrise, zawal, zuhr, asrM1, asrM2, maghrib, isha]
+           ========================================================================== */
+        function hm(h, m) { return h * 60 + m; }
+
+        const LAHORE_CHART_ANCHORS = {
+            0: [ // JANUARY (Verified from Jan Sheet)
+                [1,  hm(5,35), hm(7,2),  hm(12,6),  hm(12,11), hm(14,52), hm(15,33), hm(17,10), hm(18,37)],
+                [5,  hm(5,36), hm(7,3),  hm(12,8),  hm(12,13), hm(14,55), hm(15,36), hm(17,13), hm(18,40)],
+                [10, hm(5,37), hm(7,3),  hm(12,10), hm(12,15), hm(14,58), hm(15,40), hm(17,18), hm(18,44)],
+                [15, hm(5,37), hm(7,3),  hm(12,12), hm(12,17), hm(15,3),  hm(15,45), hm(17,22), hm(18,48)],
+                [20, hm(5,37), hm(7,1),  hm(12,14), hm(12,19), hm(15,7),  hm(15,50), hm(17,27), hm(18,52)],
+                [25, hm(5,35), hm(7,0),  hm(12,15), hm(12,20), hm(15,11), hm(15,54), hm(17,31), hm(18,56)],
+                [31, hm(5,33), hm(6,56), hm(12,16), hm(12,21), hm(15,15), hm(15,59), hm(17,36), hm(19,0)]
+            ],
+            1: [ // FEBRUARY (Verified from Feb Sheet)
+                [1,  hm(5,32), hm(6,56), hm(12,16), hm(12,21), hm(15,16), hm(16,0),  hm(17,37), hm(19,0)],
+                [5,  hm(5,30), hm(6,53), hm(12,17), hm(12,22), hm(15,18), hm(16,3),  hm(17,41), hm(19,3)],
+                [10, hm(5,27), hm(6,49), hm(12,17), hm(12,22), hm(15,22), hm(16,7),  hm(17,45), hm(19,7)],
+                [15, hm(5,23), hm(6,45), hm(12,17), hm(12,22), hm(15,25), hm(16,11), hm(17,49), hm(19,11)],
+                [20, hm(5,19), hm(6,40), hm(12,16), hm(12,21), hm(15,28), hm(16,15), hm(17,53), hm(19,15)],
+                [25, hm(5,14), hm(6,35), hm(12,16), hm(12,21), hm(15,30), hm(16,18), hm(17,57), hm(19,18)],
+                [29, hm(5,9),  hm(6,30), hm(12,15), hm(12,20), hm(15,32), hm(16,21), hm(18,0),  hm(19,21)]
+            ],
+            2: [ // MARCH (Verified from March Sheet)
+                [1,  hm(5,9),  hm(6,30), hm(12,15), hm(12,20), hm(15,32), hm(16,21), hm(18,0),  hm(19,21)],
+                [5,  hm(5,5),  hm(6,26), hm(12,14), hm(12,19), hm(15,34), hm(16,23), hm(18,3),  hm(19,24)],
+                [10, hm(4,59), hm(6,20), hm(12,13), hm(12,18), hm(15,35), hm(16,26), hm(18,7),  hm(19,28)],
+                [15, hm(4,53), hm(6,13), hm(12,12), hm(12,17), hm(15,36), hm(16,29), hm(18,10), hm(19,31)],
+                [20, hm(4,46), hm(6,7),  hm(12,10), hm(12,15), hm(15,37), hm(16,31), hm(18,14), hm(19,35)],
+                [25, hm(4,39), hm(6,1),  hm(12,9),  hm(12,14), hm(15,38), hm(16,33), hm(18,17), hm(19,39)],
+                [31, hm(4,31), hm(5,53), hm(12,7),  hm(12,12), hm(15,39), hm(16,35), hm(18,21), hm(19,43)]
+            ],
+            3: [ // APRIL (Verified from April Sheet)
+                [1,  hm(4,30), hm(5,52), hm(12,7),  hm(12,12), hm(15,39), hm(16,36), hm(18,22), hm(19,44)],
+                [5,  hm(4,24), hm(5,47), hm(12,5),  hm(12,10), hm(15,39), hm(16,37), hm(18,25), hm(19,47)],
+                [10, hm(4,17), hm(5,41), hm(12,4),  hm(12,9),  hm(15,39), hm(16,39), hm(18,28), hm(19,52)],
+                [15, hm(4,10), hm(5,35), hm(12,3),  hm(12,8),  hm(15,39), hm(16,40), hm(18,31), hm(19,56)],
+                [20, hm(4,3),  hm(5,29), hm(12,2),  hm(12,7),  hm(15,39), hm(16,42), hm(18,35), hm(20,1)],
+                [25, hm(3,57), hm(5,24), hm(12,1),  hm(12,6),  hm(15,39), hm(16,43), hm(18,38), hm(20,5)],
+                [30, hm(3,50), hm(5,19), hm(12,0),  hm(12,5),  hm(15,39), hm(16,45), hm(18,41), hm(20,10)]
+            ],
+            4: [ // MAY (Verified from May Sheet)
+                [1,  hm(3,49), hm(5,18), hm(12,0),  hm(12,5),  hm(15,39), hm(16,45), hm(18,42), hm(20,11)],
+                [5,  hm(3,45), hm(5,14), hm(11,59), hm(12,4),  hm(15,39), hm(16,46), hm(18,45), hm(20,15)],
+                [10, hm(3,39), hm(5,10), hm(11,59), hm(12,4),  hm(15,39), hm(16,48), hm(18,48), hm(20,20)],
+                [15, hm(3,34), hm(5,7),  hm(11,59), hm(12,4),  hm(15,39), hm(16,50), hm(18,52), hm(20,25)],
+                [20, hm(3,29), hm(5,3),  hm(11,59), hm(12,4),  hm(15,39), hm(16,51), hm(18,55), hm(20,29)],
+                [25, hm(3,26), hm(5,1),  hm(11,59), hm(12,4),  hm(15,39), hm(16,53), hm(18,58), hm(20,34)],
+                [31, hm(3,22), hm(4,59), hm(12,0),  hm(12,5),  hm(15,40), hm(16,55), hm(19,2),  hm(20,39)]
+            ],
+            5: [ // JUNE (Verified from June Sheet; June 12 typo 33:18 corrected to 3:18)
+                [1,  hm(3,21), hm(4,59), hm(12,0),  hm(12,5),  hm(15,40), hm(16,55), hm(19,2),  hm(20,40)],
+                [5,  hm(3,20), hm(4,58), hm(12,1),  hm(12,6),  hm(15,41), hm(16,56), hm(19,5),  hm(20,43)],
+                [10, hm(3,18), hm(4,57), hm(12,2),  hm(12,7),  hm(15,41), hm(16,58), hm(19,7),  hm(20,46)],
+                [15, hm(3,18), hm(4,57), hm(12,3),  hm(12,8),  hm(15,42), hm(16,59), hm(19,9),  hm(20,48)],
+                [20, hm(3,18), hm(4,58), hm(12,4),  hm(12,9),  hm(15,43), hm(17,0),  hm(19,10), hm(20,50)],
+                [25, hm(3,20), hm(4,59), hm(12,5),  hm(12,10), hm(15,45), hm(17,2),  hm(19,11), hm(20,51)],
+                [30, hm(3,22), hm(5,1),  hm(12,6),  hm(12,11), hm(15,46), hm(17,2),  hm(19,12), hm(20,51)]
+            ],
+            6: [ // JULY (Verified from July Sheet)
+                [1,  hm(3,22), hm(5,1),  hm(12,6),  hm(12,11), hm(15,46), hm(17,2),  hm(19,12), hm(20,50)],
+                [5,  hm(3,24), hm(5,3),  hm(12,7),  hm(12,12), hm(15,47), hm(17,3),  hm(19,11), hm(20,49)],
+                [10, hm(3,28), hm(5,5),  hm(12,8),  hm(12,13), hm(15,48), hm(17,3),  hm(19,10), hm(20,47)],
+                [15, hm(3,31), hm(5,8),  hm(12,9),  hm(12,14), hm(15,48), hm(17,2),  hm(19,8),  hm(20,45)],
+                [20, hm(3,36), hm(5,11), hm(12,9),  hm(12,14), hm(15,49), hm(17,2),  hm(19,6),  hm(20,41)],
+                [25, hm(3,40), hm(5,14), hm(12,9),  hm(12,14), hm(15,49), hm(17,0),  hm(19,3),  hm(20,37)],
+                [31, hm(3,46), hm(5,18), hm(12,9),  hm(12,14), hm(15,49), hm(16,59), hm(19,0),  hm(20,32)]
+            ],
+            7: [ // AUGUST (Verified from Aug Sheet)
+                [1,  hm(3,46), hm(5,18), hm(12,9),  hm(12,14), hm(15,49), hm(16,58), hm(18,59), hm(20,31)],
+                [5,  hm(3,50), hm(5,21), hm(12,9),  hm(12,14), hm(15,48), hm(16,56), hm(18,55), hm(20,25)],
+                [10, hm(3,55), hm(5,24), hm(12,8),  hm(12,13), hm(15,47), hm(16,54), hm(18,50), hm(20,19)],
+                [15, hm(3,59), hm(5,27), hm(12,7),  hm(12,12), hm(15,46), hm(16,51), hm(18,45), hm(20,13)],
+                [20, hm(4,3),  hm(5,30), hm(12,6),  hm(12,11), hm(15,43), hm(16,47), hm(18,40), hm(20,6)],
+                [25, hm(4,8),  hm(5,34), hm(12,5),  hm(12,10), hm(15,41), hm(16,43), hm(18,34), hm(19,59)],
+                [31, hm(4,13), hm(5,37), hm(12,3),  hm(12,8),  hm(15,38), hm(16,39), hm(18,28), hm(19,52)]
+            ],
+            8: [ // SEPTEMBER (Verified from Sep Sheet)
+                [1,  hm(4,14), hm(5,38), hm(12,3),  hm(12,8),  hm(15,38), hm(16,38), hm(18,27), hm(19,51)],
+                [5,  hm(4,17), hm(5,40), hm(12,1),  hm(12,6),  hm(15,35), hm(16,34), hm(18,22), hm(19,45)],
+                [10, hm(4,21), hm(5,43), hm(12,0),  hm(12,5),  hm(15,32), hm(16,29), hm(18,16), hm(19,38)],
+                [15, hm(4,24), hm(5,46), hm(11,58), hm(12,3),  hm(15,28), hm(16,24), hm(18,9),  hm(19,31)],
+                [20, hm(4,28), hm(5,49), hm(11,56), hm(12,1),  hm(15,25), hm(16,19), hm(18,3),  hm(19,24)],
+                [25, hm(4,31), hm(5,52), hm(11,54), hm(11,59), hm(15,21), hm(16,13), hm(17,56), hm(19,17)],
+                [30, hm(4,35), hm(5,55), hm(11,53), hm(11,58), hm(15,16), hm(16,8),  hm(17,50), hm(19,10)]
+            ],
+            9: [ // OCTOBER (Verified from Oct Sheet)
+                [1,  hm(4,35), hm(5,56), hm(11,52), hm(11,57), hm(15,15), hm(16,7),  hm(17,48), hm(19,9)],
+                [5,  hm(4,38), hm(5,59), hm(11,51), hm(11,56), hm(15,12), hm(16,3),  hm(17,43), hm(19,4)],
+                [10, hm(4,41), hm(6,2),  hm(11,50), hm(11,55), hm(15,8),  hm(15,57), hm(17,37), hm(18,58)],
+                [15, hm(4,44), hm(6,5),  hm(11,48), hm(11,53), hm(15,4),  hm(15,52), hm(17,31), hm(18,52)],
+                [20, hm(4,48), hm(6,9),  hm(11,47), hm(11,52), hm(15,0),  hm(15,47), hm(17,25), hm(18,46)],
+                [25, hm(4,51), hm(6,13), hm(11,47), hm(11,52), hm(14,56), hm(15,42), hm(17,20), hm(18,42)],
+                [31, hm(4,55), hm(6,17), hm(11,46), hm(11,51), hm(14,51), hm(15,37), hm(17,15), hm(18,37)]
+            ],
+            10: [ // NOVEMBER (Verified from Nov Sheet)
+                [1,  hm(4,56), hm(6,18), hm(11,46), hm(11,51), hm(14,51), hm(15,36), hm(17,14), hm(18,36)],
+                [3,  hm(4,57), hm(6,20), hm(11,46), hm(11,51), hm(14,50), hm(15,35), hm(17,12), hm(18,35)],
+                [5,  hm(4,59), hm(6,22), hm(11,46), hm(11,51), hm(14,48), hm(15,33), hm(17,11), hm(18,33)],
+                [10, hm(5,2),  hm(6,26), hm(11,47), hm(11,52), hm(14,46), hm(15,30), hm(17,7),  hm(18,30)],
+                [15, hm(5,6),  hm(6,30), hm(11,47), hm(11,52), hm(14,43), hm(15,27), hm(17,3),  hm(18,28)],
+                [20, hm(5,10), hm(6,34), hm(11,48), hm(11,53), hm(14,42), hm(15,24), hm(17,1),  hm(18,26)],
+                [25, hm(5,14), hm(6,39), hm(11,50), hm(11,55), hm(14,40), hm(15,23), hm(17,0),  hm(18,25)],
+                [30, hm(5,17), hm(6,43), hm(11,51), hm(11,56), hm(14,40), hm(15,22), hm(16,59), hm(18,25)]
+            ],
+            11: [ // DECEMBER (Verified from Dec Sheet)
+                [1,  hm(5,18), hm(6,44), hm(11,52), hm(11,57), hm(14,40), hm(15,22), hm(16,59), hm(18,25)],
+                [5,  hm(5,21), hm(6,47), hm(11,53), hm(11,58), hm(14,40), hm(15,22), hm(16,59), hm(18,25)],
+                [10, hm(5,24), hm(6,51), hm(11,55), hm(12,0),  hm(14,41), hm(15,22), hm(17,0),  hm(18,26)],
+                [15, hm(5,27), hm(6,54), hm(11,58), hm(12,3),  hm(14,43), hm(15,24), hm(17,1),  hm(18,28)],
+                [20, hm(5,30), hm(6,57), hm(12,0),  hm(12,5),  hm(14,45), hm(15,26), hm(17,3),  hm(18,30)],
+                [25, hm(5,33), hm(7,0),  hm(12,3),  hm(12,8),  hm(14,47), hm(15,28), hm(17,5),  hm(18,33)],
+                [31, hm(5,35), hm(7,2),  hm(12,5),  hm(12,10), hm(14,51), hm(15,32), hm(17,9),  hm(18,36)]
+            ]
+        };
+
+        function getLahoreChartTimesForDate(dateObj, sectKey) {
+            const m = dateObj.getMonth();
+            const d = dateObj.getDate();
+            const anchors = LAHORE_CHART_ANCHORS[m] || LAHORE_CHART_ANCHORS[0];
+
+            let a1 = anchors[0], a2 = anchors[anchors.length - 1];
+            for (let i = 0; i < anchors.length - 1; i++) {
+                if (d >= anchors[i][0] && d <= anchors[i + 1][0]) {
+                    a1 = anchors[i];
+                    a2 = anchors[i + 1];
+                    break;
+                }
+            }
+
+            const ratio = (a2[0] === a1[0]) ? 0 : (d - a1[0]) / (a2[0] - a1[0]);
+            function interp(idx) {
+                return Math.round(a1[idx] + (a2[idx] - a1[idx]) * ratio);
+            }
+
+            let fajrMin    = interp(1);
+            let sunriseMin = interp(2);
+            let zawalMin   = interp(3);
+            let zuhrMin    = interp(4);
+            let asrM1Min   = interp(5);
+            let asrM2Min   = interp(6);
+            let maghribMin = interp(7);
+            let ishaMin    = interp(8);
+
+            let asrMin = (sectKey === "ahlehadith" || sectKey === "jafari") ? asrM1Min : asrM2Min;
+            if (sectKey === "barelvi") {
+                fajrMin += 2;
+                maghribMin += 2;
+            } else if (sectKey === "jafari") {
+                fajrMin -= 8;
+                maghribMin += 12;
+            }
+
+            return {
+                tahajjud:     minsToHHMM(fajrMin - 2),    // Jamia Ashrafia Margin Rule: Sehri ends 2m before Subh Sadiq
+                fajr:         minsToHHMM(fajrMin),
+                sunrise:      minsToHHMM(sunriseMin),
+                ishraq:       minsToHHMM(sunriseMin + 12), // Jamia Ashrafia Margin Rule: Ishraq 12m after Sunrise
+                zawal:        minsToHHMM(zawalMin),
+                zuhr:         minsToHHMM(zuhrMin),
+                asr:          minsToHHMM(asrMin),
+                maghrib:      minsToHHMM(maghribMin),
+                maghribLimit: minsToHHMM(ishaMin - 3),     // Jamia Ashrafia Margin Rule: Maghrib limit 3m before Isha
+                isha:         minsToHHMM(ishaMin),
+                rawMins: {
+                    fajr: fajrMin,
+                    sunrise: sunriseMin,
+                    zawalStart: zawalMin - 5,
+                    zawalEnd: zawalMin + 5,
+                    sunset: maghribMin,
+                    isha: ishaMin
+                }
+            };
+        }
+
+        /* ==========================================================================
+           2. JAMIA MASJID DREAM AVENUE (IMD) OFFICIAL BOARD SCHEDULE ENGINE
+              Exact Transitions from Uploaded Notice Board (Jan - Dec + Ramadan Rule)
+           ========================================================================== */
+        const IMD_BOARD_TRANSITIONS = [
+            { doy: 113,  monthUr: "جنوری",  monthEn: "Jan", day: 13, prayer: "عشاء", prayerEn: "Isha", time: "19:15" },
+            { doy: 116,  monthUr: "جنوری",  monthEn: "Jan", day: 16, prayer: "عصر",  prayerEn: "Asr",  time: "16:15" },
+            { doy: 202,  monthUr: "فروری",  monthEn: "Feb", day: 2,  prayer: "عصر و عشاء", prayerEn: "Asr & Isha", time: "16:30 / 19:30" },
+            { doy: 209,  monthUr: "فروری",  monthEn: "Feb", day: 9,  prayer: "فجر",  prayerEn: "Fajr", time: "06:00" },
+            { doy: 220,  monthUr: "فروری",  monthEn: "Feb", day: 20, prayer: "فجر",  prayerEn: "Fajr", time: "05:50" },
+            { doy: 221,  monthUr: "فروری",  monthEn: "Feb", day: 21, prayer: "عصر و عشاء", prayerEn: "Asr & Isha", time: "16:45 / 19:45" },
+            { doy: 302,  monthUr: "مارچ",   monthEn: "Mar", day: 2,  prayer: "فجر",  prayerEn: "Fajr", time: "05:40" },
+            { doy: 309,  monthUr: "مارچ",   monthEn: "Mar", day: 9,  prayer: "فجر",  prayerEn: "Fajr", time: "05:30" },
+            { doy: 313,  monthUr: "مارچ",   monthEn: "Mar", day: 13, prayer: "عشاء", prayerEn: "Isha", time: "20:00" },
+            { doy: 317,  monthUr: "مارچ",   monthEn: "Mar", day: 17, prayer: "فجر و عصر", prayerEn: "Fajr & Asr", time: "05:20 / 17:00" },
+            { doy: 325,  monthUr: "مارچ",   monthEn: "Mar", day: 25, prayer: "فجر",  prayerEn: "Fajr", time: "05:10" },
+            { doy: 402,  monthUr: "اپریل",  monthEn: "Apr", day: 2,  prayer: "فجر و عشاء", prayerEn: "Fajr & Isha", time: "05:00 / 20:15" },
+            { doy: 410,  monthUr: "اپریل",  monthEn: "Apr", day: 10, prayer: "فجر",  prayerEn: "Fajr", time: "04:50" },
+            { doy: 419,  monthUr: "اپریل",  monthEn: "Apr", day: 19, prayer: "فجر و عشاء", prayerEn: "Fajr & Isha", time: "04:40 / 20:30" },
+            { doy: 429,  monthUr: "اپریل",  monthEn: "Apr", day: 29, prayer: "فجر",  prayerEn: "Fajr", time: "04:30" },
+            { doy: 430,  monthUr: "اپریل",  monthEn: "Apr", day: 30, prayer: "عصر",  prayerEn: "Asr",  time: "17:15" },
+            { doy: 505,  monthUr: "مئی",    monthEn: "May", day: 5,  prayer: "عشاء", prayerEn: "Isha", time: "20:45" },
+            { doy: 509,  monthUr: "مئی",    monthEn: "May", day: 9,  prayer: "فجر",  prayerEn: "Fajr", time: "04:20" },
+            { doy: 520,  monthUr: "مئی",    monthEn: "May", day: 20, prayer: "عشاء", prayerEn: "Isha", time: "21:00" },
+            { doy: 525,  monthUr: "مئی",    monthEn: "May", day: 25, prayer: "فجر",  prayerEn: "Fajr", time: "04:10" },
+            { doy: 609,  monthUr: "جون",    monthEn: "Jun", day: 9,  prayer: "عشاء", prayerEn: "Isha", time: "21:15" },
+            { doy: 617,  monthUr: "جون",    monthEn: "Jun", day: 17, prayer: "عصر",  prayerEn: "Asr",  time: "17:30" },
+            { doy: 630,  monthUr: "جون",    monthEn: "Jun", day: 30, prayer: "فجر",  prayerEn: "Fajr", time: "04:20" },
+            { doy: 715,  monthUr: "جولائی", monthEn: "Jul", day: 15, prayer: "عشاء", prayerEn: "Isha", time: "21:00" },
+            { doy: 720,  monthUr: "جولائی", monthEn: "Jul", day: 20, prayer: "فجر",  prayerEn: "Fajr", time: "04:30" },
+            { doy: 726,  monthUr: "جولائی", monthEn: "Jul", day: 26, prayer: "عصر",  prayerEn: "Asr",  time: "17:15" },
+            { doy: 802,  monthUr: "اگست",   monthEn: "Aug", day: 2,  prayer: "عشاء", prayerEn: "Isha", time: "20:45" },
+            { doy: 804,  monthUr: "اگست",   monthEn: "Aug", day: 4,  prayer: "فجر",  prayerEn: "Fajr", time: "04:40" },
+            { doy: 814,  monthUr: "اگست",   monthEn: "Aug", day: 14, prayer: "عشاء", prayerEn: "Isha", time: "20:30" },
+            { doy: 821,  monthUr: "اگست",   monthEn: "Aug", day: 21, prayer: "فجر",  prayerEn: "Fajr", time: "04:50" },
+            { doy: 823,  monthUr: "اگست",   monthEn: "Aug", day: 23, prayer: "عصر",  prayerEn: "Asr",  time: "17:00" },
+            { doy: 826,  monthUr: "اگست",   monthEn: "Aug", day: 26, prayer: "عشاء", prayerEn: "Isha", time: "20:15" },
+            { doy: 906,  monthUr: "ستمبر",  monthEn: "Sep", day: 6,  prayer: "فجر و عشاء", prayerEn: "Fajr & Isha", time: "05:00 / 20:00" },
+            { doy: 909,  monthUr: "ستمبر",  monthEn: "Sep", day: 9,  prayer: "عصر",  prayerEn: "Asr",  time: "16:45" },
+            { doy: 916,  monthUr: "ستمبر",  monthEn: "Sep", day: 16, prayer: "عشاء", prayerEn: "Isha", time: "19:45" },
+            { doy: 923,  monthUr: "ستمبر",  monthEn: "Sep", day: 23, prayer: "فجر",  prayerEn: "Fajr", time: "05:10" },
+            { doy: 924,  monthUr: "ستمبر",  monthEn: "Sep", day: 24, prayer: "عصر",  prayerEn: "Asr",  time: "16:30" },
+            { doy: 926,  monthUr: "ستمبر",  monthEn: "Sep", day: 26, prayer: "عشاء", prayerEn: "Isha", time: "19:30" },
+            { doy: 1008, monthUr: "اکتوبر", monthEn: "Oct", day: 8,  prayer: "فجر، عصر و عشاء", prayerEn: "Fajr, Asr & Isha", time: "05:20 / 16:15 / 19:15" },
+            { doy: 1022, monthUr: "اکتوبر", monthEn: "Oct", day: 22, prayer: "فجر، عصر و عشاء", prayerEn: "Fajr, Asr & Isha", time: "05:30 / 16:00 / 19:00" },
+            { doy: 1104, monthUr: "نومبر",  monthEn: "Nov", day: 4,  prayer: "فجر",  prayerEn: "Fajr", time: "05:40" },
+            { doy: 1109, monthUr: "نومبر",  monthEn: "Nov", day: 9,  prayer: "عصر",  prayerEn: "Asr",  time: "15:45" },
+            { doy: 1115, monthUr: "نومبر",  monthEn: "Nov", day: 15, prayer: "فجر",  prayerEn: "Fajr", time: "05:50" },
+            { doy: 1127, monthUr: "نومبر",  monthEn: "Nov", day: 27, prayer: "فجر",  prayerEn: "Fajr", time: "06:00" },
+            { doy: 1209, monthUr: "دسمبر",  monthEn: "Dec", day: 9,  prayer: "فجر",  prayerEn: "Fajr", time: "06:10" },
+            { doy: 1228, monthUr: "دسمبر",  monthEn: "Dec", day: 28, prayer: "عصر",  prayerEn: "Asr",  time: "16:00" }
+        ];
+
+        function getDreamAvenueBoardJamaat(dateObj, startTimes, isRamadanRuleActive) {
+            const m = dateObj.getMonth() + 1;
+            const d = dateObj.getDate();
+            const doy = m * 100 + d;
+
+            // Fajr transitions (Corrected Jan 16 row per IMD Notice Board: stays 06:10 from Dec 9 until Feb 9)
+            let fajr = "06:10";
+            if      (doy >= 1209) fajr = "06:10";
+            else if (doy >= 1127) fajr = "06:00";
+            else if (doy >= 1115) fajr = "05:50";
+            else if (doy >= 1104) fajr = "05:40";
+            else if (doy >= 1022) fajr = "05:30";
+            else if (doy >= 1008) fajr = "05:20";
+            else if (doy >= 923)  fajr = "05:10";
+            else if (doy >= 906)  fajr = "05:00";
+            else if (doy >= 821)  fajr = "04:50";
+            else if (doy >= 804)  fajr = "04:40";
+            else if (doy >= 720)  fajr = "04:30";
+            else if (doy >= 630)  fajr = "04:20";
+            else if (doy >= 525)  fajr = "04:10";
+            else if (doy >= 509)  fajr = "04:20";
+            else if (doy >= 429)  fajr = "04:30";
+            else if (doy >= 419)  fajr = "04:40";
+            else if (doy >= 410)  fajr = "04:50";
+            else if (doy >= 402)  fajr = "05:00";
+            else if (doy >= 325)  fajr = "05:10";
+            else if (doy >= 317)  fajr = "05:20";
+            else if (doy >= 309)  fajr = "05:30";
+            else if (doy >= 302)  fajr = "05:40";
+            else if (doy >= 220)  fajr = "05:50";
+            else if (doy >= 209)  fajr = "06:00";
+
+            // Asr transitions from IMD Notice Board
+            let asr = "16:00";
+            if      (doy >= 1228) asr = "16:00";
+            else if (doy >= 1109) asr = "15:45";
+            else if (doy >= 1022) asr = "16:00";
+            else if (doy >= 1008) asr = "16:15";
+            else if (doy >= 924)  asr = "16:30";
+            else if (doy >= 909)  asr = "16:45";
+            else if (doy >= 823)  asr = "17:00";
+            else if (doy >= 726)  asr = "17:15";
+            else if (doy >= 617)  asr = "17:30";
+            else if (doy >= 430)  asr = "17:15";
+            else if (doy >= 317)  asr = "17:00";
+            else if (doy >= 221)  asr = "16:45";
+            else if (doy >= 202)  asr = "16:30";
+            else if (doy >= 116)  asr = "16:15";
+
+            // Isha transitions from IMD Notice Board
+            let isha = "19:00";
+            if      (doy >= 1022) isha = "19:00";
+            else if (doy >= 1008) isha = "19:15";
+            else if (doy >= 926)  isha = "19:30";
+            else if (doy >= 916)  isha = "19:45";
+            else if (doy >= 906)  isha = "20:00";
+            else if (doy >= 826)  isha = "20:15";
+            else if (doy >= 814)  isha = "20:30";
+            else if (doy >= 802)  isha = "20:45";
+            else if (doy >= 715)  isha = "21:00";
+            else if (doy >= 609)  isha = "21:15";
+            else if (doy >= 520)  isha = "21:00";
+            else if (doy >= 505)  isha = "20:45";
+            else if (doy >= 419)  isha = "20:30";
+            else if (doy >= 402)  isha = "20:15";
+            else if (doy >= 313)  isha = "20:00";
+            else if (doy >= 221)  isha = "19:45";
+            else if (doy >= 202)  isha = "19:30";
+            else if (doy >= 113)  isha = "19:15";
+
+            // Default Qari Sahib Maghrib Rule: 3m Azan + 3m Pause = +6m after Sunset
+            let maghribOffset = 6;
+
+            // IMD Notice Board Footnote for Ramadan: Fajr 20m after Sehri, Maghrib 10m after Azan
+            if (isRamadanRuleActive) {
+                fajr = minsToHHMM(hhmmToMins(startTimes.tahajjud) + 20);
+                maghribOffset = 10;
+            }
+
+            const maghribJamaat = minsToHHMM(hhmmToMins(startTimes.maghrib) + maghribOffset);
+
+            return {
+                fajr: fajr,
+                zuhr: "13:30",
+                asr: asr,
+                maghrib: maghribJamaat,
+                isha: isha,
+                jumma: "13:30"
+            };
+        }
+
+        function getNextImdBoardTransition(dateObj) {
+            const doy = (dateObj.getMonth() + 1) * 100 + dateObj.getDate();
+            for (const item of IMD_BOARD_TRANSITIONS) {
+                if (item.doy > doy) return item;
+            }
+            return IMD_BOARD_TRANSITIONS[0];
+        }
+
+        /* ==========================================================================
+           3. OTHER CITIES ASTRONOMICAL ENGINE & SECT DEFAULTS
+           ========================================================================== */
+        const CITIES = {
+            lahore:     { nameUr: "لاہور", nameEn: "Lahore", lat: 31.5204, lng: 74.3587 },
+            karachi:    { nameUr: "کراچی", nameEn: "Karachi", lat: 24.8607, lng: 67.0011 },
+            islamabad:  { nameUr: "اسلام آباد", nameEn: "Islamabad", lat: 33.6844, lng: 73.0479 },
+            multan:     { nameUr: "ملتان", nameEn: "Multan", lat: 30.1575, lng: 71.5249 },
+            faisalabad: { nameUr: "فیصل آباد", nameEn: "Faisalabad", lat: 31.4504, lng: 73.1350 },
+            peshawar:   { nameUr: "پشاور", nameEn: "Peshawar", lat: 34.0151, lng: 71.5249 },
+            quetta:     { nameUr: "کوئٹہ", nameEn: "Quetta", lat: 30.1798, lng: 66.9750 }
+        };
+
+        const SECT_INFO = {
+            deobandi:   { ur: "مسلکِ حنفی (دیوبندی)", en: "Maslak-e-Hanafi (Deobandi)", defaultZuhr: "13:30", defaultJumma: "13:30" },
+            barelvi:    { ur: "مسلکِ حنفی (بریلوی)", en: "Maslak-e-Hanafi (Barelvi)", defaultZuhr: "13:45", defaultJumma: "14:00" },
+            ahlehadith: { ur: "مسلکِ اہلِ حدیث / فقہِ شافعی", en: "Ahl-e-Hadith / Fiqh Shafi'i", defaultZuhr: "13:00", defaultJumma: "13:00" },
+            jafari:     { ur: "فقہِ جعفریہ", en: "Fiqh-e-Jafari", defaultZuhr: "12:45", defaultJumma: "13:00" }
+        };
+
+        const DEFAULT_AZAN_OFFSETS = {
+            fajr: 20, zuhr: 15, asr: 15, maghrib: 6, isha: 15, jumma: 30
+        };
+
+        const DEFAULT_YEARLY_JAMAAT = [
+            { fajr: "06:10", zuhr: "13:30", asr: "16:15", maghrib: "17:20", isha: "19:15", jumma: "13:30" },
+            { fajr: "05:50", zuhr: "13:30", asr: "16:45", maghrib: "17:50", isha: "19:45", jumma: "13:30" },
+            { fajr: "05:20", zuhr: "13:30", asr: "17:00", maghrib: "18:15", isha: "20:00", jumma: "13:30" },
+            { fajr: "04:40", zuhr: "13:30", asr: "17:15", maghrib: "18:38", isha: "20:30", jumma: "13:30" },
+            { fajr: "04:10", zuhr: "13:30", asr: "17:15", maghrib: "19:00", isha: "21:00", jumma: "13:30" },
+            { fajr: "04:20", zuhr: "13:30", asr: "17:30", maghrib: "19:15", isha: "21:15", jumma: "13:30" },
+            { fajr: "04:30", zuhr: "13:30", asr: "17:15", maghrib: "19:12", isha: "21:00", jumma: "13:30" },
+            { fajr: "04:50", zuhr: "13:30", asr: "17:00", maghrib: "18:45", isha: "20:30", jumma: "13:30" },
+            { fajr: "05:10", zuhr: "13:30", asr: "16:30", maghrib: "18:10", isha: "19:45", jumma: "13:30" },
+            { fajr: "05:30", zuhr: "13:30", asr: "16:00", maghrib: "17:35", isha: "19:00", jumma: "13:30" },
+            { fajr: "05:40", zuhr: "13:30", asr: "15:45", maghrib: "17:17", isha: "19:00", jumma: "13:30" },
+            { fajr: "06:10", zuhr: "13:30", asr: "16:00", maghrib: "17:05", isha: "19:00", jumma: "13:30" }
+        ];
+
+        const SPIRITUAL_QUOTES = [
+            {
+                ar: "إِنَّ الصَّلَاةَ كَانَتْ عَلَى الْمُؤْمِنِينَ كِتَابًا مَّوْقُوتًا",
+                ur: "بے شک نماز مومنوں پر مقررہ وقت کے حساب سے فرض کی گئی ہے۔ (سورۃ النساء: 103)",
+                en: "Indeed, prayer has been decreed upon the believers a decree of specified times. (Quran 4:103)"
+            },
+            {
+                ar: "صَلَاةُ الْجَمَاعَةِ تَفْضُلُ صَلَاةَ الْفَذِّ بِسَبْعٍ وَعِشْرِينَ دَرَجَةً",
+                ur: "باجماعت نماز اکیلے پڑھنے سے ستائیس (27) درجے زیادہ فضیلت رکھتی ہے۔ (صحیح بخاری)",
+                en: "Prayer in congregation is twenty-seven times superior to prayer offered alone. (Sahih Bukhari)"
+            },
+            {
+                ar: "مَنْ صَلَّى الْبَرْدَيْنِ دَخَلَ الْجَنَّةَ",
+                ur: "جس نے دو ٹھنڈے وقتوں (فجر اور عصر) کی نماز پابندی سے پڑھی وہ جنت میں داخل ہوگا۔ (صحیح بخاری)",
+                en: "Whoever prays the two cool prayers (Fajr and Asr) will enter Paradise. (Sahih Bukhari)"
+            }
+        ];
+
+        const DEFAULT_MOSQUES = [
+            {
+                roleUr: "بنیادی مسجد (Primary)",
+                roleEn: "Primary Mosque",
+                nameUr: "جامع مسجد ڈریم ایونیو رائے ونڈ روڈ لاہور (IMD)",
+                nameEn: "Jamia Masjid Dream Avenue Lahore (IMD)",
+                sect: "deobandi",
+                city: "lahore",
+                calendarEngine: "lahore_chart",
+                jamaatAutoMode: "imd_board",
+                ramadanRule: false,
+                yearlySchedule: JSON.parse(JSON.stringify(DEFAULT_YEARLY_JAMAAT)),
+                jamaat: { fajr: "05:40", zuhr: "13:30", asr: "16:00", maghrib: "17:17", isha: "19:00", jumma: "13:30" },
+                azan:   { fajr: "05:20", zuhr: "13:15", asr: "15:45", maghrib: "17:11", isha: "18:45", jumma: "13:00" },
+                alert:  { prayer: "عصر", day: "9 نومبر", time: "15:45" }
+            },
+            {
+                roleUr: "آپشنل مسجد 1 (Optional)",
+                roleEn: "Optional Mosque 1",
+                nameUr: "جامع مسجد مدینہ (آپشنل مسجد 1)",
+                nameEn: "Jamia Masjid Madina (Optional 1)",
+                sect: "barelvi",
+                city: "lahore",
+                calendarEngine: "lahore_chart",
+                jamaatAutoMode: "manual",
+                ramadanRule: false,
+                yearlySchedule: JSON.parse(JSON.stringify(DEFAULT_YEARLY_JAMAAT)),
+                jamaat: { fajr: "05:50", zuhr: "13:45", asr: "16:00", maghrib: "17:16", isha: "19:15", jumma: "14:00" },
+                azan:   { fajr: "05:30", zuhr: "13:30", asr: "15:45", maghrib: "17:13", isha: "19:00", jumma: "13:30" },
+                alert:  { prayer: "جمعہ المبارک", day: "جمعہ", time: "14:00" }
+            },
+            {
+                roleUr: "آپشنل مسجد 2 (Optional)",
+                roleEn: "Optional Mosque 2",
+                nameUr: "مسجدِ تقویٰ (آپشنل مسجد 2)",
+                nameEn: "Masjid-e-Taqwa (Optional 2)",
+                sect: "ahlehadith",
+                city: "karachi",
+                calendarEngine: "other_cities",
+                jamaatAutoMode: "manual",
+                ramadanRule: false,
+                yearlySchedule: JSON.parse(JSON.stringify(DEFAULT_YEARLY_JAMAAT)),
+                jamaat: { fajr: "05:25", zuhr: "13:00", asr: "15:15", maghrib: "17:15", isha: "18:45", jumma: "13:00" },
+                azan:   { fajr: "05:05", zuhr: "12:45", asr: "15:00", maghrib: "17:11", isha: "18:30", jumma: "12:30" },
+                alert:  { prayer: "جمعہ المبارک", day: "جمعہ", time: "13:00" }
+            }
+        ];
+
+        let state = {
+            lang: (function(){try{return localStorage.getItem("smc_lang")}catch(e){return null}})() || "ur",
+            themeIndex: parseInt((function(){try{return localStorage.getItem("smc_theme")}catch(e){return null}})() || "6", 10),
+            activeMosque: parseInt((function(){try{return localStorage.getItem("smc_active_mosque")}catch(e){return null}})() || "0", 10),
+            azanDisplayMode: (function(){try{return localStorage.getItem("smc_azan_mode")}catch(e){return null}})() || "both",
+            autoSilentEnabled: (function(){try{return localStorage.getItem("smc_auto_silent")}catch(e){return null}})() !== "false",
+            silentPreMode: (function(){try{return localStorage.getItem("smc_silent_pre")}catch(e){return null}})() || "smart",
+            silentDurationMode: (function(){try{return localStorage.getItem("smc_silent_duration_mode")}catch(e){return null}})() || "20",
+            silentDurationMins: parseInt((function(){try{return localStorage.getItem("smc_silent_duration")}catch(e){return null}})() || "20", 10) || 20,
+            wakeLockEnabled: (function(){try{return localStorage.getItem("smc_wakelock")}catch(e){return null}})() !== "false",
+            lastSmartPayload: "",
+            activeTab: "home",
+            dateSlide: 0,
+            quoteIdx: 0,
+            editingPrayerKey: null,
+            lastHighlightedKey: null,
+            lastRenderedMinute: -1,
+            cachedSolar: null,
+            lastBeepMinuteKey: "",
+            silentDismissedForKey: "",
+            wakeLockObj: null,
+            mosques: (function(){try{return JSON.parse(localStorage.getItem("smc_mosques_v8"))}catch(e){return null}})() || DEFAULT_MOSQUES
+        };
+
+        /* ==========================================================================
+           SAFE TIME HELPERS & ASTRONOMICAL CALCULATOR
+           ========================================================================== */
+        function minsToHHMM(totalMins) {
+            if (isNaN(totalMins)) return "00:00";
+            let m = Math.round(totalMins);
+            m = ((m % 1440) + 1440) % 1440;
+            const hh = Math.floor(m / 60).toString().padStart(2, "0");
+            const mm = (m % 60).toString().padStart(2, "0");
+            return `${hh}:${mm}`;
+        }
+
+        function hhmmToMins(hhmm) {
+            if (!hhmm || typeof hhmm !== "string" || !hhmm.includes(":")) return 0;
+            const parts = hhmm.split(":").map(Number);
+            return (parts[0] || 0) * 60 + (parts[1] || 0);
+        }
+
+        function format12Hour(hhmm) {
+            if (!hhmm || typeof hhmm !== "string" || !hhmm.includes(":")) return "--:--";
+            let [h, m] = hhmm.split(":").map(Number);
+            const ampm = h >= 12 ? "PM" : "AM";
+            h = h % 12 || 12;
+            return `${h.toString().padStart(2, "0")}:${m.toString().padStart(2, "0")} ${ampm}`;
+        }
+
+        function dtr(d) { return (d * Math.PI) / 180.0; }
+        function rtd(r) { return (r * 180.0) / Math.PI; }
+
+        function computeOtherCitiesAstronomical(dateObj, lat, lng, sectKey) {
+            const start = new Date(dateObj.getFullYear(), 0, 0);
+            const dayOfYear = Math.floor((dateObj - start) / 86400000);
+            const gamma = ((2 * Math.PI) / 365.0) * (dayOfYear - 1);
+
+            const eqTime = 229.18 * (0.000075 + 0.001868 * Math.cos(gamma) - 0.032077 * Math.sin(gamma)
+                         - 0.014615 * Math.cos(2 * gamma) - 0.040849 * Math.sin(2 * gamma));
+
+            const decl = 0.006918 - 0.399912 * Math.cos(gamma) + 0.070257 * Math.sin(gamma)
+                       - 0.006758 * Math.cos(2 * gamma) + 0.000907 * Math.sin(2 * gamma)
+                       - 0.002697 * Math.cos(3 * gamma) + 0.00148 * Math.sin(3 * gamma);
+
+            const tz = 5.0;
+            const solarNoonMin = 720 - 4 * lng - eqTime + tz * 60;
+
+            function angleOffsetMin(angleDeg) {
+                const cosHA = (Math.cos(dtr(90 + angleDeg)) - Math.sin(dtr(lat)) * Math.sin(decl))
+                            / (Math.cos(dtr(lat)) * Math.cos(decl));
+                if (cosHA > 1) return 0;
+                if (cosHA < -1) return 360;
+                return rtd(Math.acos(cosHA)) * 4.0;
+            }
+
+            function asrOffsetMin(shadowFactor) {
+                const targetAngle = Math.atan(1.0 / (shadowFactor + Math.tan(Math.abs(dtr(lat) - decl))));
+                const altDeg = rtd(targetAngle);
+                return angleOffsetMin(-altDeg);
+            }
+
+            let fajrAngle = 18.0, ishaAngle = 18.0, asrFactor = 2.0;
+            let maghribExtraMin = 1, zuhrExtraMin = 5, fajrExtraMin = 0;
+
+            if (sectKey === "barelvi") {
+                maghribExtraMin = 3; fajrExtraMin = 2;
+            } else if (sectKey === "ahlehadith") {
+                asrFactor = 1.0; maghribExtraMin = 0;
+            } else if (sectKey === "jafari") {
+                fajrAngle = 16.0; ishaAngle = 14.0; asrFactor = 1.0; maghribExtraMin = 13;
+            }
+
+            const sunriseMin = Math.round(solarNoonMin - angleOffsetMin(0.833));
+            const sunsetMin  = Math.round(solarNoonMin + angleOffsetMin(0.833));
+            const fajrMin    = Math.round(solarNoonMin - angleOffsetMin(fajrAngle) + fajrExtraMin);
+            const zawalMin   = Math.round(solarNoonMin);
+            const ishaMin    = Math.round(solarNoonMin + angleOffsetMin(ishaAngle));
+
+            return {
+                tahajjud:     minsToHHMM(fajrMin - 2),
+                fajr:         minsToHHMM(fajrMin),
+                sunrise:      minsToHHMM(sunriseMin),
+                ishraq:       minsToHHMM(sunriseMin + 12),
+                zawal:        minsToHHMM(zawalMin),
+                zuhr:         minsToHHMM(zawalMin + zuhrExtraMin),
+                asr:          minsToHHMM(Math.round(solarNoonMin + asrOffsetMin(asrFactor))),
+                maghrib:      minsToHHMM(sunsetMin + maghribExtraMin),
+                maghribLimit: minsToHHMM(ishaMin - 3),
+                isha:         minsToHHMM(ishaMin),
+                rawMins: {
+                    fajr: fajrMin,
+                    sunrise: sunriseMin,
+                    zawalStart: zawalMin - 5,
+                    zawalEnd: zawalMin + 5,
+                    sunset: sunsetMin,
+                    isha: ishaMin
+                }
+            };
+        }
+
+        function computeStartTimes(dateObj, mosqueObj, sectOverride) {
+            const sectKey = sectOverride || mosqueObj.sect;
+            if (mosqueObj.calendarEngine === "lahore_chart") {
+                return getLahoreChartTimesForDate(dateObj, sectKey);
+            } else {
+                const cityObj = CITIES[mosqueObj.city] || CITIES.karachi;
+                return computeOtherCitiesAstronomical(dateObj, cityObj.lat, cityObj.lng, sectKey);
+            }
+        }
+
+        /* ==========================================================================
+           4. UNIFIED PRE & POST JAMAAT AUTO-SILENT (DND) & ANDROID BRIDGE ENGINE
+           ========================================================================== */
+        const SMART_PRE_MINS = { fajr: 15, zuhr: 10, asr: 10, maghrib: 4, isha: 10, jumma: 20 };
+        const SMART_POST_MINS = { fajr: 25, zuhr: 20, asr: 15, maghrib: 15, isha: 25, jumma: 30 };
+
+        function toggleCollapsible(id) {
+            const el = document.getElementById(id);
+            if (!el) return;
+            el.classList.toggle("open");
+        }
+
+        function getPrayerSilentWindow(prayerKey, activeM) {
+            const jMin = hhmmToMins(activeM.jamaat[prayerKey]);
+            const aMin = hhmmToMins(activeM.azan[prayerKey]);
+
+            let preMins = 10;
+            if (state.silentPreMode === "smart") {
+                preMins = SMART_PRE_MINS[prayerKey] !== undefined ? SMART_PRE_MINS[prayerKey] : 10;
+            } else if (state.silentPreMode === "azan") {
+                const diff = jMin - aMin;
+                preMins = (diff > 0 && diff <= 60) ? diff : (DEFAULT_AZAN_OFFSETS[prayerKey] || 15);
+            } else {
+                const parsedPre = parseInt(state.silentPreMode, 10);
+                preMins = isNaN(parsedPre) ? 10 : parsedPre;
+            }
+
+            let postMins = 20;
+            if (state.silentDurationMode === "smart") {
+                postMins = SMART_POST_MINS[prayerKey] !== undefined ? SMART_POST_MINS[prayerKey] : 20;
+            } else {
+                const parsedPost = parseInt(state.silentDurationMode, 10);
+                postMins = isNaN(parsedPost) ? 20 : parsedPost;
+            }
+
+            const startMin = ((jMin - preMins) % 1440 + 1440) % 1440;
+            const endMin = ((jMin + postMins) % 1440 + 1440) % 1440;
+            const totalDur = Math.max(1, preMins + postMins);
+
+            return {
+                prayerKey: prayerKey,
+                jamaatMin: jMin,
+                preMins: preMins,
+                postMins: postMins,
+                startMin: startMin,
+                endMin: endMin,
+                totalDur: totalDur,
+                startHHMM: minsToHHMM(startMin),
+                endHHMM: minsToHHMM(endMin)
+            };
+        }
+
+        function syncSmartAlarmsToAndroid() {
+            try {
+                const now = new Date();
+                const isFriday = now.getDay() === 5;
+                const activeM = state.mosques[state.activeMosque];
+                const prayerKeys = ["fajr", isFriday ? "jumma" : "zuhr", "asr", "maghrib", "isha"];
+                const t = I18N[state.lang].prayers;
+
+                const alarmsPayload = [];
+                const summaryLines = [];
+
+                prayerKeys.forEach(k => {
+                    const win = getPrayerSilentWindow(k, activeM);
+                    const [jh, jm] = activeM.jamaat[k].split(":").map(Number);
+                    alarmsPayload.push({
+                        key: k,
+                        h: jh || 0,
+                        m: jm || 0,
+                        pre: win.preMins,
+                        post: win.postMins,
+                        dur: win.totalDur
+                    });
+                    summaryLines.push(
+                        `<div class="flex justify-between items-center py-0.5 border-b">` +
+                        `<span>🕌 ${t[k]} (${win.preMins}m قبل تا ${win.postMins}m بعد):</span>` +
+                        `<span class="digital-font text-amber-300" dir="ltr">${format12Hour(win.startHHMM)} → ${format12Hour(win.endHHMM)}</span>` +
+                        `</div>`
+                    );
+                });
+
+                const summaryEl = document.getElementById("settings-dnd-schedule-summary");
+                if (summaryEl) {
+                    if (state.autoSilentEnabled) {
+                        summaryEl.innerHTML = `<div class="text-yellow-400 mb-1">✅ آج کا خودکار ڈو ناٹ ڈسٹرب (DND) شیڈول:</div>` + summaryLines.join("");
+                    } else {
+                        summaryEl.innerHTML = `<div class="text-red-400">⚠️ آٹو سائلنٹ موڈ اس وقت بند (Off) ہے۔</div>`;
+                    }
+                }
+
+                if (window.AndroidSilentBridge && typeof window.AndroidSilentBridge.scheduleSmartAlarms === "function") {
+                    const payloadStr = state.autoSilentEnabled ? JSON.stringify(alarmsPayload) : "[]";
+                    if (state.lastSmartPayload !== payloadStr) {
+                        state.lastSmartPayload = payloadStr;
+                        window.AndroidSilentBridge.scheduleSmartAlarms(payloadStr);
+                    }
+                }
+            } catch (e) {}
+        }
+
+        function playGentleReminderBeep(beepCount = 2) {
+            try {
+                const AudioCtx = window.AudioContext || window.webkitAudioContext;
+                if (!AudioCtx) return;
+                const ctx = new AudioCtx();
+                for (let i = 0; i < beepCount; i++) {
+                    const osc = ctx.createOscillator();
+                    const gain = ctx.createGain();
+                    osc.type = "sine";
+                    osc.frequency.setValueAtTime(880, ctx.currentTime + i * 0.35);
+                    gain.gain.setValueAtTime(0.12, ctx.currentTime + i * 0.35);
+                    gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + i * 0.35 + 0.22);
+                    osc.connect(gain);
+                    gain.connect(ctx.destination);
+                    osc.start(ctx.currentTime + i * 0.35);
+                    osc.stop(ctx.currentTime + i * 0.35 + 0.24);
+                }
+                if (navigator.vibrate) {
+                    navigator.vibrate([200, 100, 200]);
+                }
+            } catch (e) {}
+        }
+
+        function setHardwareSilentMode(enableSilent, durationMins, prayerLabel) {
+            try {
+                if (window.AndroidSilentBridge && typeof window.AndroidSilentBridge.setSilentMode === "function") {
+                    window.AndroidSilentBridge.setSilentMode(enableSilent, Math.max(1, durationMins || 20), prayerLabel || "");
+                }
+            } catch (e) {}
+        }
+
+        function requestAndroidNativePermissions() {
+            const statusEl = document.getElementById("android-perm-status");
+            const drawerEl = document.getElementById("dnd-schedule-drawer");
+            if (drawerEl) drawerEl.classList.add("open");
+            if (window.AndroidSilentBridge && typeof window.AndroidSilentBridge.requestPermissions === "function") {
+                window.AndroidSilentBridge.requestPermissions();
+                if (statusEl) {
+                    statusEl.innerText = "✅ اینڈرائیڈ ڈو ناٹ ڈسٹرب (DND) اور بیک گراؤنڈ بیٹری پرمیشن کی سیٹنگ کھول دی گئی ہے۔";
+                }
+            } else {
+                playGentleReminderBeep(2);
+                if (statusEl) {
+                    statusEl.innerText = "ℹ️ اس وقت آپ براؤزر پریویو میں ہیں (آڈیو بیپ اور اسکرین الرٹ فعال ہے)۔ گٹ ہب APK میں یہ بٹن اینڈرائیڈ کی DND اور بیٹری سیٹنگ کھولے گا۔";
+                }
+            }
+        }
+
+        function triggerTestSilentMode() {
+            playGentleReminderBeep(2);
+            const banner = document.getElementById("silent-active-banner");
+            const title = document.getElementById("silent-banner-title");
+            const sub = document.getElementById("silent-banner-sub");
+            banner.classList.remove("hidden");
+            document.body.classList.add("silent-mode-active");
+            title.innerText = state.lang === "ur"
+                ? "📵 ٹیسٹ سائلنٹ موڈ فعال ہے (2 منٹ کے لیے)"
+                : "📵 Test Silent Mode Active (for 2 mins)";
+            sub.innerText = state.lang === "ur"
+                ? "فون ڈو ناٹ ڈسٹرب (DND) موڈ پر چلا گیا ہے اور 2 منٹ بعد خودکار طور پر نارمل ہو جائے گا۔"
+                : "Phone is now in Do Not Disturb (DND) mode and will restore automatically after 2 minutes.";
+            setHardwareSilentMode(true, 2, "Test");
+        }
+
+        function dismissSilentBanner() {
+            document.getElementById("silent-active-banner").classList.add("hidden");
+            document.body.classList.remove("silent-mode-active");
+            state.silentDismissedForKey = state.lastBeepMinuteKey;
+        }
+
+        function saveSilentPreferences() {
+            const chk = document.getElementById("chk-auto-silent");
+            const pre = document.getElementById("select-silent-pre");
+            const dur = document.getElementById("select-silent-duration");
+            if (chk) state.autoSilentEnabled = chk.checked;
+            if (pre) state.silentPreMode = pre.value || "smart";
+            if (dur) {
+                state.silentDurationMode = dur.value || "20";
+                state.silentDurationMins = parseInt(dur.value, 10) || 20;
+            }
+            try {
+                localStorage.setItem("smc_auto_silent", state.autoSilentEnabled.toString());
+                localStorage.setItem("smc_silent_pre", state.silentPreMode);
+                localStorage.setItem("smc_silent_duration_mode", state.silentDurationMode);
+                localStorage.setItem("smc_silent_duration", state.silentDurationMins.toString());
+            } catch (e) {}
+            state.lastSmartPayload = "";
+            syncSmartAlarmsToAndroid();
+            evaluateAutoSilentState(new Date(), state.mosques[state.activeMosque]);
+        }
+
+        function evaluateAutoSilentState(now, activeM) {
+            const banner = document.getElementById("silent-active-banner");
+            if (!state.autoSilentEnabled) {
+                banner.classList.add("hidden");
+                document.body.classList.remove("silent-mode-active");
+                return;
+            }
+
+            const curMin = now.getHours() * 60 + now.getMinutes();
+            const isFriday = now.getDay() === 5;
+            const prayerKeys = ["fajr", isFriday ? "jumma" : "zuhr", "asr", "maghrib", "isha"];
+            const t = I18N[state.lang].prayers;
+
+            let inSilentWindow = false;
+            let activeWindow = null;
+            let activePrayerName = "";
+
+            for (const k of prayerKeys) {
+                const win = getPrayerSilentWindow(k, activeM);
+                if (curMin >= win.startMin && curMin < win.endMin) {
+                    inSilentWindow = true;
+                    activeWindow = win;
+                    activePrayerName = t[k];
+                    const windowKey = `dnd_${k}_${now.getDate()}_${win.startMin}_${win.endMin}`;
+                    if (state.lastBeepMinuteKey !== windowKey) {
+                        state.lastBeepMinuteKey = windowKey;
+                        const remainingMins = Math.max(1, win.endMin - curMin);
+                        // If running in browser (no native AlarmManager), play gentle beep at window start
+                        if (!window.AndroidSilentBridge) {
+                            playGentleReminderBeep(2);
+                        } else if (curMin === win.startMin) {
+                            // Ensure hardware DND is active for exact remaining window
+                            setHardwareSilentMode(true, remainingMins, activePrayerName);
+                        }
+                    }
+                    break;
+                }
+            }
+
+            const title = document.getElementById("silent-banner-title");
+            const sub = document.getElementById("silent-banner-sub");
+
+            if (inSilentWindow && activeWindow) {
+                document.body.classList.add("silent-mode-active");
+                if (state.silentDismissedForKey !== state.lastBeepMinuteKey) {
+                    banner.classList.remove("hidden");
+                    title.innerText = state.lang === "ur"
+                        ? `📵 ${activePrayerName} — موبائل ڈو ناٹ ڈسٹرب (DND) فعال ہے`
+                        : `📵 ${activePrayerName} — Do Not Disturb (DND) Active`;
+                    sub.innerText = state.lang === "ur"
+                        ? `جماعت سے ${activeWindow.preMins}m قبل تا ${activeWindow.postMins}m بعد (${format12Hour(activeWindow.startHHMM)} تا ${format12Hour(activeWindow.endHHMM)}) فون خاموش رہے گا، پھر خودکار نارمل ہو جائے گا۔`
+                        : `Phone is silenced from ${format12Hour(activeWindow.startHHMM)} to ${format12Hour(activeWindow.endHHMM)} and will restore automatically.`;
+                }
+            } else {
+                banner.classList.add("hidden");
+                document.body.classList.remove("silent-mode-active");
+            }
+        }
+
+        /* ==========================================================================
+           5. PERSISTENT SCREEN WAKE LOCK (PREVENTS FREEZING WHEN OPEN)
+           ========================================================================== */
+        async function requestScreenWakeLock() {
+            try {
+                if ('wakeLock' in navigator && state.wakeLockEnabled) {
+                    if (state.wakeLockObj) return;
+                    state.wakeLockObj = await navigator.wakeLock.request('screen');
+                    state.wakeLockObj.addEventListener('release', () => {
+                        state.wakeLockObj = null;
+                    });
+                }
+            } catch (err) {
+                state.wakeLockObj = null;
+            }
+        }
+
+        function toggleWakeLockSetting() {
+            const chk = document.getElementById('chk-wakelock');
+            state.wakeLockEnabled = chk ? chk.checked : true;
+            try { localStorage.setItem("smc_wakelock", state.wakeLockEnabled.toString()); } catch (e) {}
+            if (state.wakeLockEnabled) {
+                requestScreenWakeLock();
+            } else if (state.wakeLockObj) {
+                state.wakeLockObj.release();
+                state.wakeLockObj = null;
+            }
+        }
+
+        document.addEventListener('visibilitychange', () => {
+            if (document.visibilityState === 'visible') {
+                requestScreenWakeLock();
+                renderAll();
+                tickClock();
+            }
+        });
+
+        // Re-verify WakeLock on any user touch/click so mobile browsers never drop it
+        document.addEventListener('click', () => {
+            if (state.wakeLockEnabled && !state.wakeLockObj) {
+                requestScreenWakeLock();
+            }
+        }, { passive: true });
+
+        /* ==========================================================================
+           6. TRANSLITERATION, HIJRI / BIKRAMI DATES & I18N
+           ========================================================================== */
+        function autoTransliterateUrToEn(urStr) {
+            const phraseMap = [
+                ["جامع مسجد", "Jamia Masjid"], ["مسجد", "Masjid"],
+                ["ڈریم ایونیو", "Dream Avenue"], ["رائے ونڈ روڈ", "Raiwind Road"],
+                ["لاہور", "Lahore"], ["مدینہ", "Madina"], ["مکی", "Makki"],
+                ["تقویٰ", "Taqwa"], ["النور", "Al-Noor"], ["رحمانیہ", "Rehmania"]
+            ];
+            let out = urStr;
+            phraseMap.forEach(([u, e]) => { out = out.split(u).join(e); });
+            return out;
+        }
+
+        function autoTransliterateEnToUr(enStr) {
+            const wordMap = [
+                [/jamia\s+masjid/gi, "جامع مسجد"], [/masjid/gi, "مسجد"],
+                [/dream\s+avenue/gi, "ڈریم ایونیو"], [/madina/gi, "مدینہ"],
+                [/makki/gi, "مکی"], [/taqwa/gi, "تقویٰ"], [/lahore/gi, "لاہور"]
+            ];
+            let out = enStr;
+            wordMap.forEach(([regex, ur]) => { out = out.replace(regex, ur); });
+            return out;
+        }
+
+        function handleMosqueNameInput(sourceLang) {
+            const m = state.mosques[state.activeMosque];
+            const urInp = document.getElementById("input-mosque-name-ur");
+            const enInp = document.getElementById("input-mosque-name-en");
+            if (sourceLang === "ur") {
+                m.nameUr = urInp.value;
+                m.nameEn = autoTransliterateUrToEn(urInp.value);
+                enInp.value = m.nameEn;
+            } else {
+                m.nameEn = enInp.value;
+                m.nameUr = autoTransliterateEnToUr(enInp.value);
+                urInp.value = m.nameUr;
+            }
+            saveState();
+            renderAll();
+        }
+
+        function computeHijriDate(dateObj) {
+            let day = dateObj.getDate(), month = dateObj.getMonth(), year = dateObj.getFullYear();
+            let m = month + 1, y = year;
+            if (m < 3) { y -= 1; m += 12; }
+            let a = Math.floor(y / 100);
+            let b = 2 - a + Math.floor(a / 4);
+            if (y < 1583) b = 0;
+            let jd = Math.floor(365.25 * (y + 4716)) + Math.floor(30.6001 * (m + 1)) + day + b - 1524;
+            let iyear = 10631.0 / 30.0, epochastro = 1948084, shift1 = 8.01 / 60.0;
+            let z = jd - epochastro;
+            let cyc = Math.floor(z / 10631.0);
+            z = z - 10631 * cyc;
+            let j = Math.floor((z - shift1) / iyear);
+            let iy = 30 * cyc + j;
+            z = z - Math.floor(j * iyear + shift1);
+            let im = Math.floor((z + 28.5001) / 29.5);
+            if (im === 13) im = 12;
+            let id = z - Math.floor(29.5001 * im - 29);
+
+            const monthsUr = ["محرم الحرام", "صفر المظفر", "ربیع الاول", "ربیع الثانی", "جمادی الاول", "جمادی الثانی", "رجب المرجب", "شعبان المعظم", "رمضان المبارک", "شوال المکرم", "ذوالقعدہ", "ذوالحجہ"];
+            const monthsEn = ["Muharram", "Safar", "Rabi' al-Awwal", "Rabi' al-Thani", "Jumada al-Ula", "Jumada al-Akhirah", "Rajab", "Sha'ban", "Ramadan", "Shawwal", "Dhu al-Qi'dah", "Dhu al-Hijjah"];
+            const mIndex = Math.max(0, Math.min(11, im - 1));
+            return { ur: `${id} ${monthsUr[mIndex]} ${iy} ہجری`, en: `${id} ${monthsEn[mIndex]} ${iy} AH`, monthIndex: mIndex };
+        }
+
+        function getFormattedDates() {
+            const now = new Date();
+            const daysUr = ["اتوار", "پیر", "منگل", "بدھ", "جمعرات", "جمعہ", "ہفتہ"];
+            const gregMonthsUr = ["جنوری", "فروری", "مارچ", "اپریل", "مئی", "جون", "جولائی", "اگست", "ستمبر", "اکتوبر", "نومبر", "دسمبر"];
+            const gregUr = `${daysUr[now.getDay()]}، ${now.getDate()} ${gregMonthsUr[now.getMonth()]} ${now.getFullYear()}ء`;
+            const gregEn = now.toLocaleDateString("en-US", { weekday: "short", day: "numeric", month: "short", year: "numeric" });
+            const hijri = computeHijriDate(now);
+            const desiMonthsUr = ["چیت", "بیساکھ", "جیٹھ", "ہاڑھ", "ساون", "بھادوں", "اسو", "کاتک", "مگھر", "پوہ", "ماگھ", "پھاگن"];
+            const desiMonthsEn = ["Chet", "Vaisakh", "Jeth", "Harh", "Sawan", "Bhadon", "Assu", "Katak", "Maghar", "Poh", "Magh", "Phagan"];
+            const doy = Math.floor((now - new Date(now.getFullYear(), 0, 0)) / 86400000);
+            const shifted = (doy + 292) % 365;
+            const mIdx = Math.floor(shifted / 30.4) % 12;
+            const dDay = (Math.floor(shifted % 30.4) + 1);
+            const bYear = now.getFullYear() + 57;
+
+            return [
+                { labelUr: "📅 عیسوی تاریخ", labelEn: "📅 Gregorian", valUr: gregUr, valEn: gregEn },
+                { labelUr: "🌙 اسلامی ہجری", labelEn: "🌙 Islamic Hijri", valUr: hijri.ur, valEn: hijri.en },
+                { labelUr: "🌾 دیسی تاریخ", labelEn: "🌾 Desi Bikrami", valUr: `${dDay} ${desiMonthsUr[mIdx]} ${bYear} بکرمی`, valEn: `${dDay} ${desiMonthsEn[mIdx]} ${bYear} Bikrami` }
+            ];
+        }
+
+        const I18N = {
+            ur: {
+                settings: "سیٹنگز", help: "رہنمائی", testSilent: "سائلنٹ ٹیسٹ", theme: "رنگ", switchMosque: "مسجد بدلیں (1+2)",
+                nextJamaat: "اگلی جماعت:", remaining: "بقیہ وقت:",
+                timetableHeading: "نمازوں کا نظام الاوقات",
+                colPrayer: "نماز", colJamaat: "جماعت (مسجد)",
+                awalLabel: "اول وقت:",
+                navHome: "اوقاتِ نماز", navSects: "مسالک", navNawafil: "اشراق و حاشیہ", navAnalog: "گھڑیاں",
+                prayers: { fajr: "فجر", zuhr: "ظہر", asr: "عصر", maghrib: "مغرب", isha: "عشاء", jumma: "جمعہ المبارک" }
+            },
+            en: {
+                settings: "Settings", help: "Help", testSilent: "Test Silent", theme: "Theme", switchMosque: "Switch Mosque",
+                nextJamaat: "Next Jamaat:", remaining: "Remaining:",
+                timetableHeading: "Prayer Timetable",
+                colPrayer: "Prayer", colJamaat: "Jamaat (Mosque)",
+                awalLabel: "Start:",
+                navHome: "Prayers", navSects: "Schools", navNawafil: "Ishraq & Rules", navAnalog: "Clocks",
+                prayers: { fajr: "Fajr", zuhr: "Zuhr", asr: "Asr", maghrib: "Maghrib", isha: "Isha", jumma: "Jumu'ah" }
+            }
+        };
+
+        /* ==========================================================================
+           7. MOSQUE SCHEDULE SYNC (IMD BOARD VS OPTIONAL MOSQUES)
+           ========================================================================== */
+        function syncActiveMosqueJamaatSchedule(now, startTimes) {
+            const m = state.mosques[state.activeMosque];
+            const hijri = computeHijriDate(now);
+            const isRamadanNow = m.ramadanRule || (hijri.monthIndex === 8);
+
+            if (m.jamaatAutoMode === "imd_board") {
+                const boardTimes = getDreamAvenueBoardJamaat(now, startTimes, isRamadanNow);
+                ["fajr", "zuhr", "asr", "maghrib", "isha", "jumma"].forEach(k => {
+                    m.jamaat[k] = boardTimes[k];
+                    if (k === "maghrib") {
+                        m.azan.maghrib = startTimes.maghrib;
+                    } else {
+                        m.azan[k] = minsToHHMM(hhmmToMins(m.jamaat[k]) - DEFAULT_AZAN_OFFSETS[k]);
+                    }
+                });
+            } else if (m.jamaatAutoMode === "monthly_12") {
+                const curMonth = now.getMonth();
+                const monthSched = m.yearlySchedule[curMonth];
+                if (monthSched) {
+                    ["fajr", "zuhr", "asr", "maghrib", "isha", "jumma"].forEach(k => {
+                        m.jamaat[k] = monthSched[k];
+                        m.azan[k] = (k === "maghrib")
+                            ? startTimes.maghrib
+                            : minsToHHMM(hhmmToMins(monthSched[k]) - DEFAULT_AZAN_OFFSETS[k]);
+                    });
+                }
+            } else {
+                // In manual mode for Optional Mosques, keep Maghrib synced with daily sunset +6m unless manually edited today
+                if (!m.manualMaghribOverride) {
+                    m.azan.maghrib = startTimes.maghrib;
+                    m.jamaat.maghrib = minsToHHMM(hhmmToMins(startTimes.maghrib) + 6);
+                }
+            }
+        }
+
+        function handleSectChange() {
+            const m = state.mosques[state.activeMosque];
+            const newSect = document.getElementById("select-sect").value;
+            m.sect = newSect;
+
+            // For Optional Mosques (index 1 & 2), automatically apply sect-specific Zuhr and Jumu'ah times
+            if (state.activeMosque !== 0 && SECT_INFO[newSect]) {
+                m.jamaat.zuhr = SECT_INFO[newSect].defaultZuhr;
+                m.jamaat.jumma = SECT_INFO[newSect].defaultJumma;
+                m.azan.zuhr = minsToHHMM(hhmmToMins(m.jamaat.zuhr) - 15);
+                m.azan.jumma = minsToHHMM(hhmmToMins(m.jamaat.jumma) - 30);
+            }
+            saveMosqueSettings();
+        }
+
+        function changeJamaatAutoMode() {
+            const m = state.mosques[state.activeMosque];
+            m.jamaatAutoMode = document.getElementById("select-jamaat-auto-mode").value;
+            saveState();
+            renderAll();
+        }
+
+        function toggleRamadanRule() {
+            const m = state.mosques[state.activeMosque];
+            m.ramadanRule = document.getElementById("chk-ramadan-rule").checked;
+            saveState();
+            renderAll();
+        }
+
+        function renderYearlyMonthEditor() {
+            const m = state.mosques[state.activeMosque];
+            const mIdx = parseInt(document.getElementById("yearly-month-select").value, 10);
+            const sched = m.yearlySchedule[mIdx];
+            const t = I18N[state.lang].prayers;
+            const keys = ["fajr", "zuhr", "asr", "maghrib", "isha", "jumma"];
+            document.getElementById("yearly-month-fields").innerHTML = keys.map(k => `
+                <div class="inner-box p-2">
+                    <label class="block text-[11px] text-gray-300 font-bold mb-1">${t[k]}</label>
+                    <input type="time" id="yr-inp-${k}" value="${sched[k]}" class="inner-box px-2 py-1 text-sm digital-font led-green w-full text-center">
+                </div>
+            `).join("");
+        }
+
+        function applySelectedMonthToCurrent() {
+            const m = state.mosques[state.activeMosque];
+            const mIdx = parseInt(document.getElementById("yearly-month-select").value, 10);
+            const keys = ["fajr", "zuhr", "asr", "maghrib", "isha", "jumma"];
+            keys.forEach(k => {
+                const val = document.getElementById(`yr-inp-${k}`).value;
+                if (val) m.yearlySchedule[mIdx][k] = val;
+            });
+            if (mIdx === new Date().getMonth()) {
+                keys.forEach(k => {
+                    m.jamaat[k] = m.yearlySchedule[mIdx][k];
+                    m.azan[k] = minsToHHMM(hhmmToMins(m.jamaat[k]) - DEFAULT_AZAN_OFFSETS[k]);
+                });
+            }
+            saveState();
+            renderAll();
+            closeModal("yearly-modal");
+        }
+
+        /* ==========================================================================
+           8. MAIN UI RENDERER & LIVE CLOCK TICKER
+           ========================================================================== */
+        function getNextPrayerKeyForNow(now, activeM) {
+            const nowSec = now.getHours() * 3600 + now.getMinutes() * 60 + now.getSeconds();
+            const isFriday = now.getDay() === 5;
+            const order = ["fajr", isFriday ? "jumma" : "zuhr", "asr", "maghrib", "isha"];
+            for (const k of order) {
+                const pSec = hhmmToMins(activeM.jamaat[k]) * 60;
+                if (pSec > nowSec) return k;
+            }
+            return "fajr";
+        }
+
+        function renderAll() {
+            const now = new Date();
+            const activeM = state.mosques[state.activeMosque];
+            const solar = computeStartTimes(now, activeM);
+            state.cachedSolar = solar;
+            syncActiveMosqueJamaatSchedule(now, solar);
+
+            const t = I18N[state.lang];
+            const root = document.getElementById("html-root");
+            // Keep layout direction fixed as RTL so buttons and columns never flip positions when switching language
+            root.setAttribute("dir", "rtl");
+            root.setAttribute("lang", state.lang);
+            document.getElementById("btn-lang").innerText = state.lang === "ur" ? "EN" : "اردو";
+
+            for (let i = 0; i < 7; i++) document.body.classList.remove(`theme-${i}`);
+            document.body.classList.add(`theme-${state.themeIndex}`);
+
+            document.getElementById("lbl-settings").innerText = t.settings;
+            document.getElementById("lbl-help").innerText = t.help;
+            document.getElementById("lbl-theme").innerText = t.theme;
+            document.getElementById("lbl-switch-mosque").innerText = t.switchMosque;
+            document.getElementById("lbl-next-jamaat").innerText = t.nextJamaat;
+            document.getElementById("lbl-remaining").innerText = t.remaining;
+            document.getElementById("lbl-timetable-heading").innerText = t.timetableHeading;
+            document.getElementById("col-prayer").innerText = t.colPrayer;
+            document.getElementById("col-jamaat").innerText = t.colJamaat;
+            document.getElementById("nav-lbl-home").innerText = t.navHome;
+            document.getElementById("nav-lbl-sects").innerText = t.navSects;
+            document.getElementById("nav-lbl-nawafil").innerText = t.navNawafil;
+            document.getElementById("nav-lbl-analog").innerText = t.navAnalog;
+
+            const calBadge = document.getElementById("calendar-source-badge");
+            const sectTag = document.getElementById("sect-engine-tag");
+            const cityObj = CITIES[activeM.city] || CITIES.lahore;
+            if (activeM.calendarEngine === "lahore_chart") {
+                calBadge.innerText = state.lang === "ur" ? "📜 نقشہ: جامعہ اشرفیہ لاہور" : "📜 Jamia Ashrafia Chart";
+                sectTag.innerText = state.lang === "ur" ? "دائمی نقشہ لاہور" : "Lahore Perpetual Chart";
+            } else {
+                calBadge.innerText = state.lang === "ur" ? `🌍 فلکیاتی: ${cityObj.nameUr}` : `🌍 Astro: ${cityObj.nameEn}`;
+                sectTag.innerText = state.lang === "ur" ? `فلکیاتی (${cityObj.nameUr})` : `Astronomical (${cityObj.nameEn})`;
+            }
+
+            // Azan Column Mode
+            const modeBtn = document.getElementById("btn-azan-mode");
+            const colAzan = document.getElementById("col-azan");
+            if (state.azanDisplayMode === "both") {
+                modeBtn.innerText = state.lang === "ur" ? "🔄 موڈ: اذانِ مسجد + اول وقت" : "🔄 Mode: Mosque Azan + Start";
+                colAzan.innerText = state.lang === "ur" ? "اذانِ مسجد (اول وقت)" : "Mosque Azan (Start)";
+            } else if (state.azanDisplayMode === "mosque_azan") {
+                modeBtn.innerText = state.lang === "ur" ? "🔄 موڈ: صرف اذانِ مسجد" : "🔄 Mode: Mosque Azan Only";
+                colAzan.innerText = state.lang === "ur" ? "اذانِ مسجد" : "Mosque Azan";
+            } else {
+                modeBtn.innerText = state.lang === "ur" ? "🔄 موڈ: صرف اول وقت" : "🔄 Mode: Start Time Only";
+                colAzan.innerText = state.lang === "ur" ? "اول وقت (آغاز)" : "Start Time";
+            }
+
+            // Mosque Switcher Buttons
+            state.mosques.forEach((m, idx) => {
+                const btn = document.getElementById(`mosque-tab-${idx}`);
+                if (btn) {
+                    const active = idx === state.activeMosque;
+                    const roleTag = idx === 0 ? "[بنیادی]" : `[آپشنل ${idx}]`;
+                    btn.innerText = `🕌 ${roleTag} ${state.lang === "ur" ? m.nameUr : m.nameEn} ${active ? ' ✓' : ''}`;
+                    btn.className = active
+                        ? "spacious-btn inner-box text-xs font-bold w-full text-yellow-400"
+                        : "spacious-btn inner-box text-xs font-bold w-full text-gray-400";
+                }
+            });
+
+            const switcherList = document.getElementById("mosque-switcher-list");
+            if (switcherList) {
+                switcherList.innerHTML = state.mosques.map((m, idx) => {
+                    const active = idx === state.activeMosque;
+                    const title = state.lang === "ur" ? m.nameUr : m.nameEn;
+                    const sectTitle = state.lang === "ur" ? SECT_INFO[m.sect].ur : SECT_INFO[m.sect].en;
+                    const roleText = idx === 0 ? "⭐ بنیادی مسجد (فکسڈ ڈریم ایونیو بورڈ)" : `🔹 آپشنل مسجد ${idx} (جمعہ: ${format12Hour(m.jamaat.jumma)})`;
+                    return `
+                        <button onclick="selectMosque(${idx}); closeModal('mosque-switcher-modal');" class="inner-box p-3.5 flex justify-between items-center text-start ${active ? 'next-prayer-highlight' : ''}">
+                            <div>
+                                <div class="text-[10px] text-cyan-300 font-bold">${roleText}</div>
+                                <div class="font-bold text-sm ${active ? 'text-yellow-400' : 'text-gray-200'} leading-loose">🕌 ${title}</div>
+                                <div class="text-[11px] text-gray-400">${sectTitle}</div>
+                            </div>
+                            <span class="text-xs font-bold ${active ? 'text-emerald-400' : 'text-gray-400'}">${active ? '✓ فعال' : 'منتخب کریں'}</span>
+                        </button>
+                    `;
+                }).join("");
+            }
+
+            const sectObj = SECT_INFO[activeM.sect] || SECT_INFO.deobandi;
+            const locText = activeM.calendarEngine === "lahore_chart"
+                ? (state.lang === "ur" ? "لاہور (دائمی نقشہ جامعہ اشرفیہ)" : "Lahore (Jamia Ashrafia Chart)")
+                : (state.lang === "ur" ? `${cityObj.nameUr} (فلکیاتی کیلنڈر)` : `${cityObj.nameEn} (Astronomical)`);
+
+            document.getElementById("active-mosque-heading").innerText = state.lang === "ur" ? activeM.nameUr : activeM.nameEn;
+            document.getElementById("active-sect-subtitle").innerText =
+                state.lang === "ur" ? `${locText} • ${sectObj.ur}` : `${locText} • ${sectObj.en}`;
+
+            // Upcoming Jamaat Change Banner & Yearly Schedule Button
+            const upPrefix = document.getElementById("lbl-upcoming-prefix");
+            const upBanner = document.getElementById("home-upcoming-change-text");
+            const editSchedBtn = document.getElementById("btn-edit-schedule");
+            const yearlyBtn = document.getElementById("lbl-yearly-btn");
+            if (upPrefix) upPrefix.innerText = state.lang === "ur" ? "🔔 اگلی تبدیلی:" : "🔔 Next Change:";
+            if (editSchedBtn) editSchedBtn.innerText = state.lang === "ur" ? "ترمیم" : "Edit";
+            if (yearlyBtn) {
+                yearlyBtn.innerText = state.lang === "ur"
+                    ? "ڈریم ایونیو سالانہ بورڈ چارٹ / 12 ماہ کا شیڈول دیکھیں"
+                    : "View Dream Avenue Annual Board Chart / 12-Month Schedule";
+            }
+            if (activeM.jamaatAutoMode === "imd_board") {
+                const nextTr = getNextImdBoardTransition(now);
+                upBanner.innerText = state.lang === "ur"
+                    ? `${nextTr.day} ${nextTr.monthUr} سے ${nextTr.prayer} کی جماعت کا وقت ${nextTr.time} ہوگا (ڈریم ایونیو بورڈ)۔`
+                    : `From ${nextTr.day} ${nextTr.monthEn}, ${nextTr.prayerEn} Jamaat will be at ${nextTr.time} (IMD Board).`;
+            } else {
+                const al = activeM.alert || { prayer: "عصر", day: "جمعہ", time: "15:45" };
+                upBanner.innerText = state.lang === "ur"
+                    ? `${al.day} سے ${al.prayer} کی جماعت کا وقت ${format12Hour(al.time)} ہوگا۔`
+                    : `From ${al.day}, ${al.prayer} Jamaat will be at ${format12Hour(al.time)}.`;
+            }
+
+            // Sects Tab & Mouj Sync Footer Language Sync
+            const sectTitleEl = document.getElementById("lbl-sect-table-title");
+            if (sectTitleEl) {
+                sectTitleEl.innerText = state.lang === "ur"
+                    ? "تمام مسالک کے اول وقت اور جمعہ کا تقابلی نقشہ"
+                    : "Comparative Start Times & Jumu'ah Across Schools";
+            }
+            const scPrayer = document.getElementById("sect-col-prayer");
+            const scDeo = document.getElementById("sect-col-deo");
+            const scBar = document.getElementById("sect-col-bar");
+            const scAhle = document.getElementById("sect-col-ahle");
+            const scJaf = document.getElementById("sect-col-jaf");
+            if (scPrayer) scPrayer.innerText = state.lang === "ur" ? "نماز" : "Prayer";
+            if (scDeo) scDeo.innerText = state.lang === "ur" ? "حنفی دیوبندی" : "Deobandi";
+            if (scBar) scBar.innerText = state.lang === "ur" ? "حنفی بریلوی" : "Barelvi";
+            if (scAhle) scAhle.innerText = state.lang === "ur" ? "اہلِ حدیث/شافعی" : "Ahl-e-Hadith";
+            if (scJaf) scJaf.innerText = state.lang === "ur" ? "فقہِ جعفریہ" : "Jafari";
+
+            const sectJummaBox = document.getElementById("sect-jumma-notes-box");
+            if (sectJummaBox) {
+                sectJummaBox.innerHTML = state.lang === "ur"
+                    ? `<div class="font-bold text-yellow-400 mb-1">🕌 مسالک کے لحاظ سے جمعۃ المبارک کا معیاری وقت:</div>
+                       <div>• <strong class="sect-deobandi">حنفی دیوبندی:</strong> دوپہر 1:30 بجے (ڈریم ایونیو و دیگر مساجد)</div>
+                       <div>• <strong class="sect-barelvi">حنفی بریلوی:</strong> دوپہر 2:00 سے 2:30 بجے کے درمیان</div>
+                       <div>• <strong class="sect-ahlehadith">اہلِ حدیث / شافعی:</strong> دوپہر 1:00 بجے (اول وقت)</div>
+                       <div>• <strong class="sect-jafari">فقہِ جعفریہ:</strong> زوال کے بعد دوپہر 1:00 بجے</div>`
+                    : `<div class="font-bold text-yellow-400 mb-1">🕌 Standard Jumu'ah Jamaat Times by School:</div>
+                       <div>• <strong class="sect-deobandi">Hanafi Deobandi:</strong> 01:30 PM (Dream Avenue &amp; Mosques)</div>
+                       <div>• <strong class="sect-barelvi">Hanafi Barelvi:</strong> Between 02:00 PM &amp; 02:30 PM</div>
+                       <div>• <strong class="sect-ahlehadith">Ahl-e-Hadith / Shafi'i:</strong> 01:00 PM (Early Time)</div>
+                       <div>• <strong class="sect-jafari">Fiqh Jafari:</strong> 01:00 PM (After Zawal)</div>`;
+            }
+
+            const moujDuaEl = document.getElementById("mouj-dua-text");
+            const moujSigEl = document.getElementById("mouj-signature-text");
+            if (moujDuaEl && moujSigEl) {
+                if (state.lang === "ur") {
+                    moujDuaEl.innerHTML = "یہ کاوش محض اللہ کی رضا اور صدقہ جاریہ کے لیے ہے۔<br>براہِ کرم اپنی دعاؤں میں ہمیں بھی یاد رکھیں۔<br>اللہ پاک ہماری اس کوشش کو دنیا اور آخرت میں ہماری مغفرت کا سبب بنائے، آمین۔";
+                    moujSigEl.innerText = "طالبِ دعا: موج سنک";
+                } else {
+                    moujDuaEl.innerHTML = "This effort is purely for the sake of Allah and Sadaqah Jariyah.<br>Please remember us in your prayers.<br>May Allah accept this effort as a means of our forgiveness in this world and the Hereafter. Ameen.";
+                    moujSigEl.innerText = "Requested for Prayers: MOUJ SYNC";
+                }
+            }
+
+            // Nawafil & Margin Rules Values
+            document.getElementById("val-tahajjud").innerText     = format12Hour(solar.tahajjud);
+            document.getElementById("val-sunrise").innerText      = format12Hour(solar.sunrise);
+            document.getElementById("val-ishraq").innerText       = format12Hour(solar.ishraq);
+            document.getElementById("val-zawal").innerText        = format12Hour(solar.zawal);
+            document.getElementById("val-maghrib-limit").innerText = format12Hour(solar.maghribLimit);
+
+            // Prayer Rows
+            const nextKey = getNextPrayerKeyForNow(now, activeM);
+            state.lastHighlightedKey = nextKey;
+
+            const allKeys = ["fajr", "zuhr", "asr", "maghrib", "isha", "jumma"];
+            document.getElementById("prayer-rows-container").innerHTML = allKeys.map(k => {
+                const isNext = k === nextKey;
+                const awalStr = k === "jumma" ? format12Hour(solar.zuhr) : format12Hour(solar[k]);
+                const mosqueAzanStr = format12Hour(activeM.azan[k]);
+                const jamaatStr = format12Hour(activeM.jamaat[k]);
+
+                let middleColHtml = "";
+                if (state.azanDisplayMode === "both") {
+                    middleColHtml = `
+                        <div onclick="openEditJamaatModal('${k}')" class="cursor-pointer text-center py-0.5">
+                            <div class="digital-font led-red text-xs sm:text-sm font-bold" dir="ltr">${mosqueAzanStr}</div>
+                            <div class="text-[10px] text-gray-400 leading-relaxed mt-0.5">${t.awalLabel} <span class="digital-font text-amber-300" dir="ltr">${awalStr}</span></div>
+                        </div>
+                    `;
+                } else if (state.azanDisplayMode === "mosque_azan") {
+                    middleColHtml = `<div onclick="openEditJamaatModal('${k}')" class="digital-font led-red text-xs sm:text-sm font-bold text-center cursor-pointer" dir="ltr">${mosqueAzanStr}</div>`;
+                } else {
+                    middleColHtml = `<div class="digital-font led-red text-xs sm:text-sm font-bold text-center" dir="ltr">${awalStr}</div>`;
+                }
+
+                return `
+                    <div class="inner-box px-3 py-2.5 grid grid-cols-3 items-center ${isNext ? 'next-prayer-highlight' : ''}">
+                        <div class="font-bold text-sm flex items-center gap-2">
+                            <span class="w-2.5 h-2.5 rounded-full shrink-0 ${isNext ? 'bg-emerald-400' : 'bg-gray-600'}"></span>
+                            <span class="leading-loose emboss-3d-text">${t.prayers[k]}</span>
+                        </div>
+                        ${middleColHtml}
+                        <div class="text-end">
+                            <button onclick="openEditJamaatModal('${k}')" class="inner-box px-2.5 py-1.5 digital-font led-green text-xs sm:text-sm font-bold" dir="ltr">
+                                ${jamaatStr} ✎
+                            </button>
+                        </div>
+                    </div>
+                `;
+            }).join("");
+
+            // Sect Comparison Table (Includes Jumu'ah Comparison Row)
+            const order = ["fajr", "zuhr", "asr", "maghrib", "isha"];
+            const sDeo  = computeStartTimes(now, activeM, "deobandi");
+            const sBar  = computeStartTimes(now, activeM, "barelvi");
+            const sAhle = computeStartTimes(now, activeM, "ahlehadith");
+            const sJaf  = computeStartTimes(now, activeM, "jafari");
+
+            let sectRowsHtml = order.map(k => `
+                <div class="inner-box py-2 px-1 grid grid-cols-5 items-center text-[11px] gap-1">
+                    <div class="font-bold text-gray-200">${t.prayers[k]}</div>
+                    <div class="digital-font sect-deobandi font-bold" dir="ltr">${sDeo[k]}</div>
+                    <div class="digital-font sect-barelvi font-bold" dir="ltr">${sBar[k]}</div>
+                    <div class="digital-font sect-ahlehadith font-bold" dir="ltr">${sAhle[k]}</div>
+                    <div class="digital-font sect-jafari font-bold" dir="ltr">${sJaf[k]}</div>
+                </div>
+            `).join("");
+
+            sectRowsHtml += `
+                <div class="inner-box py-2 px-1 grid grid-cols-5 items-center text-[11px] gap-1">
+                    <div class="font-bold text-yellow-400">${t.prayers.jumma}</div>
+                    <div class="digital-font sect-deobandi font-bold" dir="ltr">01:30 PM</div>
+                    <div class="digital-font sect-barelvi font-bold" dir="ltr">02:00 PM</div>
+                    <div class="digital-font sect-ahlehadith font-bold" dir="ltr">01:00 PM</div>
+                    <div class="digital-font sect-jafari font-bold" dir="ltr">01:00 PM</div>
+                </div>
+            `;
+            document.getElementById("sect-comparison-rows").innerHTML = sectRowsHtml;
+
+            // Analog Clocks
+            document.getElementById("analog-clocks-grid").innerHTML = allKeys.map(k => {
+                const [hh, mm] = activeM.jamaat[k].split(":").map(Number);
+                const hourAngle = ((hh % 12) + mm / 60) * 30;
+                const minAngle = mm * 6;
+                return `
+                    <div onclick="openEditJamaatModal('${k}')" class="inner-box p-2.5 flex flex-col items-center cursor-pointer">
+                        <div class="text-xs font-bold text-yellow-400 mb-1">${t.prayers[k]}</div>
+                        <svg viewBox="0 0 100 100" class="w-20 h-20">
+                            <circle cx="50" cy="50" r="45" fill="#0b0f13" stroke="#eab308" stroke-width="3"/>
+                            <line x1="50" y1="8" x2="50" y2="14" stroke="#9ca3af" stroke-width="2"/>
+                            <line x1="92" y1="50" x2="86" y2="50" stroke="#9ca3af" stroke-width="2"/>
+                            <line x1="50" y1="92" x2="50" y2="86" stroke="#9ca3af" stroke-width="2"/>
+                            <line x1="8" y1="50" x2="14" y2="50" stroke="#9ca3af" stroke-width="2"/>
+                            <line x1="50" y1="50" x2="50" y2="26" stroke="#ff3b3b" stroke-width="3.5" stroke-linecap="round" transform="rotate(${hourAngle} 50 50)"/>
+                            <line x1="50" y1="50" x2="50" y2="16" stroke="#22c55e" stroke-width="2.5" stroke-linecap="round" transform="rotate(${minAngle} 50 50)"/>
+                            <circle cx="50" cy="50" r="3.5" fill="#eab308"/>
+                        </svg>
+                        <div class="digital-font led-green text-xs font-bold mt-1" dir="ltr">${format12Hour(activeM.jamaat[k])}</div>
+                    </div>
+                `;
+            }).join("");
+
+            renderQuote();
+            updateDateDisplay();
+            syncSmartAlarmsToAndroid();
+        }
+
+        function tickClock() {
+            const now = new Date();
+            let h = now.getHours();
+            const m = now.getMinutes().toString().padStart(2, "0");
+            const s = now.getSeconds().toString().padStart(2, "0");
+            const ampm = h >= 12 ? "PM" : "AM";
+            h = h % 12 || 12;
+
+            document.getElementById("clock-hm").innerText = `${h.toString().padStart(2, "0")}:${m}`;
+            document.getElementById("clock-sec").innerText = s;
+            document.getElementById("clock-ampm").innerText = ampm;
+
+            if (now.getSeconds() % 6 === 0) {
+                state.dateSlide = (state.dateSlide + 1) % 3;
+                updateDateDisplay();
+            }
+
+            const activeM = state.mosques[state.activeMosque];
+            const curMinOfDay = now.getHours() * 60 + now.getMinutes();
+
+            // Re-evaluate solar & silent mode once per minute to keep CPU usage ultra-low
+            if (curMinOfDay !== state.lastRenderedMinute || !state.cachedSolar) {
+                state.lastRenderedMinute = curMinOfDay;
+                state.cachedSolar = computeStartTimes(now, activeM);
+                evaluateAutoSilentState(now, activeM);
+            }
+
+            const solar = state.cachedSolar;
+            const nowSec = now.getHours() * 3600 + now.getMinutes() * 60 + now.getSeconds();
+            const isFriday = now.getDay() === 5;
+            const order = ["fajr", isFriday ? "jumma" : "zuhr", "asr", "maghrib", "isha"];
+            let targetKey = "fajr";
+            let targetSec = hhmmToMins(activeM.jamaat.fajr) * 60 + 86400;
+
+            for (const k of order) {
+                const pSec = hhmmToMins(activeM.jamaat[k]) * 60;
+                if (pSec > nowSec) {
+                    targetKey = k;
+                    targetSec = pSec;
+                    break;
+                }
+            }
+
+            if (targetKey !== state.lastHighlightedKey) {
+                renderAll();
+            }
+
+            const diff = Math.max(0, targetSec - nowSec);
+            const ch = Math.floor(diff / 3600).toString().padStart(2, "0");
+            const cm = Math.floor((diff % 3600) / 60).toString().padStart(2, "0");
+            const cs = (diff % 60).toString().padStart(2, "0");
+
+            document.getElementById("next-prayer-name").innerText = I18N[state.lang].prayers[targetKey];
+            document.getElementById("next-prayer-countdown").innerText = `${ch}:${cm}:${cs}`;
+
+            const isMakruh =
+                (curMinOfDay >= solar.rawMins.sunrise && curMinOfDay < solar.rawMins.sunrise + 12) ||
+                (curMinOfDay >= solar.rawMins.zawalStart && curMinOfDay <= solar.rawMins.zawalEnd) ||
+                (curMinOfDay >= solar.rawMins.sunset - 5 && curMinOfDay < solar.rawMins.sunset);
+
+            const badge = document.getElementById("status-badge");
+            if (isMakruh) {
+                document.body.classList.add("makruh-active");
+                badge.innerText = state.lang === "ur" ? "⚠️ مکروہ وقت" : "⚠️ Makruh Time";
+                badge.className = "inner-box px-2.5 py-1 text-red-400 font-bold animate-pulse";
+            } else {
+                document.body.classList.remove("makruh-active");
+                badge.innerText = state.lang === "ur" ? "● وقتِ نماز" : "● Prayer Time";
+                badge.className = "inner-box px-2.5 py-1 text-emerald-400 font-bold";
+            }
+        }
+
+        /* ==========================================================================
+           9. UI CONTROLS, MODALS & STATE PERSISTENCE
+           ========================================================================== */
+        function renderQuote() {
+            const q = SPIRITUAL_QUOTES[state.quoteIdx % SPIRITUAL_QUOTES.length];
+            document.getElementById("spiritual-arabic").innerText = q.ar;
+            document.getElementById("spiritual-translation").innerText = state.lang === "ur" ? q.ur : q.en;
+        }
+
+        function nextSpiritualQuote() {
+            state.quoteIdx = (state.quoteIdx + 1) % SPIRITUAL_QUOTES.length;
+            renderQuote();
+        }
+
+        function updateDateDisplay() {
+            const list = getFormattedDates();
+            const item = list[state.dateSlide % list.length];
+            document.getElementById("date-type-label").innerText = state.lang === "ur" ? item.labelUr : item.labelEn;
+            document.getElementById("date-value-text").innerText = state.lang === "ur" ? item.valUr : item.valEn;
+            document.getElementById("date-counter-badge").innerText = `${(state.dateSlide % 3) + 1}/3`;
+        }
+
+        function rotateDateManual() {
+            state.dateSlide = (state.dateSlide + 1) % 3;
+            updateDateDisplay();
+        }
+
+        function toggleAzanDisplayMode() {
+            const modes = ["both", "mosque_azan", "awal_waqt"];
+            state.azanDisplayMode = modes[(modes.indexOf(state.azanDisplayMode) + 1) % modes.length];
+            try { localStorage.setItem("smc_azan_mode", state.azanDisplayMode); } catch (e) {}
+            renderAll();
+        }
+
+        function switchTab(tabName) {
+            state.activeTab = tabName;
+            ["home", "sects", "nawafil", "analog"].forEach(t => {
+                document.getElementById(`tab-${t}`).classList.toggle("hidden", t !== tabName);
+                document.getElementById(`nav-btn-${t}`).classList.toggle("nav-tab-active", t === tabName);
+            });
+        }
+
+        function setTheme(idx) {
+            state.themeIndex = idx;
+            saveState();
+            renderAll();
+        }
+
+        function cycleTheme() {
+            state.themeIndex = (state.themeIndex + 1) % 7;
+            saveState();
+            renderAll();
+        }
+
+        function toggleLanguage() {
+            state.lang = state.lang === "ur" ? "en" : "ur";
+            saveState();
+            renderAll();
+        }
+
+        function saveState() {
+            try {
+                localStorage.setItem("smc_mosques_v8", JSON.stringify(state.mosques));
+                localStorage.setItem("smc_active_mosque", state.activeMosque.toString());
+                localStorage.setItem("smc_lang", state.lang);
+                localStorage.setItem("smc_theme", state.themeIndex.toString());
+            } catch (e) {}
+        }
+
+        function selectMosque(idx) {
+            state.activeMosque = idx;
+            saveState();
+            const m = state.mosques[state.activeMosque];
+            document.getElementById("input-mosque-name-ur").value = m.nameUr;
+            document.getElementById("input-mosque-name-en").value = m.nameEn;
+            document.getElementById("select-sect").value = m.sect;
+            document.getElementById("select-calendar-engine").value = m.calendarEngine || "lahore_chart";
+            document.getElementById("select-city").value = m.city || "lahore";
+            renderAll();
+        }
+
+        function openModal(id) {
+            const m = state.mosques[state.activeMosque];
+            if (id === "settings-modal") {
+                document.getElementById("input-mosque-name-ur").value = m.nameUr;
+                document.getElementById("input-mosque-name-en").value = m.nameEn;
+                document.getElementById("select-sect").value = m.sect;
+                document.getElementById("select-calendar-engine").value = m.calendarEngine || "lahore_chart";
+                document.getElementById("select-city").value = m.city || "lahore";
+                document.getElementById("chk-auto-silent").checked = state.autoSilentEnabled;
+                const preSel = document.getElementById("select-silent-pre");
+                if (preSel) preSel.value = state.silentPreMode || "smart";
+                const durSel = document.getElementById("select-silent-duration");
+                if (durSel) durSel.value = state.silentDurationMode || "20";
+                document.getElementById("chk-wakelock").checked = state.wakeLockEnabled;
+                syncSmartAlarmsToAndroid();
+            } else if (id === "yearly-modal") {
+                document.getElementById("select-jamaat-auto-mode").value = m.jamaatAutoMode || "imd_board";
+                document.getElementById("chk-ramadan-rule").checked = !!m.ramadanRule;
+                document.getElementById("yearly-month-select").value = new Date().getMonth().toString();
+                renderYearlyMonthEditor();
+            }
+            document.getElementById(id).style.display = "block";
+        }
+
+        function closeModal(id) {
+            document.getElementById(id).style.display = "none";
+        }
+
+        function saveMosqueSettings() {
+            const m = state.mosques[state.activeMosque];
+            m.sect = document.getElementById("select-sect").value;
+            m.calendarEngine = document.getElementById("select-calendar-engine").value;
+            m.city = document.getElementById("select-city").value;
+            saveState();
+            renderAll();
+        }
+
+        function openEditJamaatModal(prayerKey) {
+            state.editingPrayerKey = prayerKey;
+            const m = state.mosques[state.activeMosque];
+            document.getElementById("edit-prayer-title").innerText =
+                `${I18N[state.lang].prayers[prayerKey]} — جماعت و اذان کا وقت`;
+            document.getElementById("edit-time-input").value = m.jamaat[prayerKey];
+            document.getElementById("edit-azan-input").value = m.azan[prayerKey];
+            openModal("edit-time-modal");
+        }
+
+        function autoAdjustAzanFromJamaat() {
+            if (!state.editingPrayerKey) return;
+            const jVal = document.getElementById("edit-time-input").value;
+            const offset = DEFAULT_AZAN_OFFSETS[state.editingPrayerKey] || 15;
+            document.getElementById("edit-azan-input").value = minsToHHMM(hhmmToMins(jVal) - offset);
+        }
+
+        function adjustEditMinutes(delta) {
+            const inp = document.getElementById("edit-time-input");
+            const total = hhmmToMins(inp.value || "12:00") + delta;
+            inp.value = minsToHHMM(total);
+            autoAdjustAzanFromJamaat();
+        }
+
+        function saveEditedJamaatTime() {
+            if (!state.editingPrayerKey) return;
+            const jVal = document.getElementById("edit-time-input").value;
+            const aVal = document.getElementById("edit-azan-input").value;
+            const m = state.mosques[state.activeMosque];
+            m.jamaatAutoMode = "manual";
+            if (state.editingPrayerKey === "maghrib") m.manualMaghribOverride = true;
+            if (jVal) m.jamaat[state.editingPrayerKey] = jVal;
+            if (aVal) m.azan[state.editingPrayerKey] = aVal;
+            saveState();
+            renderAll();
+            closeModal("edit-time-modal");
+        }
+
+        function saveScheduleAlert() {
+            const m = state.mosques[state.activeMosque];
+            m.alert = {
+                prayer: document.getElementById("sched-prayer").value,
+                day: document.getElementById("sched-day").value,
+                time: document.getElementById("sched-time").value
+            };
+            saveState();
+            renderAll();
+            closeModal("schedule-modal");
+        }
+
+        window.onload = () => {
+            renderAll();
+            tickClock();
+            setInterval(tickClock, 1000);
+            requestScreenWakeLock();
+            if ('serviceWorker' in navigator) {
+                navigator.serviceWorker.register('./sw.js').catch(() => {});
+            }
+        };
+    </script>
+</body>
+</html>
+

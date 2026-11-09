@@ -1,0 +1,6 @@
+{
+  "appId": "com.dreamavenue.mosqueclock",
+  "appName": "Masjid Clock",
+  "webDir": "www",
+  "bundledWebRuntime": false
+}

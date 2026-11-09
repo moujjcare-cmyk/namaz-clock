@@ -1,0 +1,26 @@
+{
+  "id": "/namaz-app/",
+  "name": "Masjid Clock",
+  "short_name": "MasjidClock",
+  "description": "Smart Mosque Digital Clock with Auto DND and Silent Mode for Prayer Times",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#0b1015",
+  "theme_color": "#0b1015",
+  "icons": [
+    {
+      "src": "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 192 192'%3E%3Crect width='192' height='192' rx='32' fill='%230b1015'/%3E%3Cpath d='M96 28 C82 48 64 64 64 90 L64 115 L40 115 L40 168 L152 168 L152 115 L128 115 L128 90 C128 64 110 48 96 28 Z' fill='%23eab308'/%3E%3C/svg%3E",
+      "sizes": "192x192",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'%3E%3Crect width='512' height='512' rx='80' fill='%230b1015'/%3E%3Cpath d='M256 72 C218 128 170 170 170 240 L170 306 L106 306 L106 448 L406 448 L406 306 L342 306 L342 240 C342 170 294 128 256 72 Z' fill='%23eab308'/%3E%3C/svg%3E",
+      "sizes": "512x512",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

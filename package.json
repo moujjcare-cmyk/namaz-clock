@@ -1,0 +1,15 @@
+{
+  "name": "smart-mosque-digital-clock",
+  "version": "1.0.0",
+  "description": "Smart Mosque Digital Clock with Lahore Jamia Ashrafia Chart & Auto Silent Bridge",
+  "main": "index.html",
+  "scripts": {
+    "start": "npx serve .",
+    "build": "mkdir -p www && cp index.html manifest.json sw.js www/"
+  },
+  "dependencies": {
+    "@capacitor/core": "^6.0.0",
+    "@capacitor/cli": "^6.0.0",
+    "@capacitor/android": "^6.0.0"
+  }
+}
