@@ -311,6 +311,112 @@
             box-shadow: 0 8px 20px rgba(0,0,0,0.88), inset 0 2px 5px rgba(255,215,0,0.22), inset 0 -2px 6px rgba(0,0,0,0.85);
             border-radius: 14px;
             position: relative;
+            min-height: 62px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 8px 14px 8px 66px;
+        }
+        /* 3D Glowing Neon Ring Badge on the Left of Sticky Kalima Banner */
+        .kalima-neon-ring-btn {
+            position: absolute;
+            left: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            padding: 0;
+            background: transparent;
+            border: none;
+            z-index: 5;
+        }
+        .kalima-neon-outer {
+            position: absolute;
+            inset: 0;
+            border-radius: 50%;
+            transition: all 0.35s ease;
+        }
+        .kalima-neon-inner {
+            width: 38px;
+            height: 38px;
+            border-radius: 50%;
+            background: radial-gradient(circle at 30% 30%, #1c252b, #070a0e);
+            box-shadow: inset 2px 2px 5px #000000, inset -1px -1px 3px rgba(255,255,255,0.12);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            z-index: 2;
+            padding: 2px;
+            line-height: 1.05;
+        }
+        .kalima-neon-icon {
+            font-size: 11px;
+            line-height: 1;
+        }
+        .kalima-neon-txt {
+            font-size: 7.5px;
+            font-weight: 800;
+            letter-spacing: 0.2px;
+            margin-top: 1px;
+            text-align: center;
+            white-space: nowrap;
+        }
+        /* State 1: Armed / Standby (Aurora Cyan) */
+        .ring-state-armed .kalima-neon-outer {
+            border: 2.5px solid #38bdf8;
+            box-shadow: 0 0 11px rgba(56, 189, 248, 0.75), inset 0 0 7px rgba(162, 213, 242, 0.55);
+            animation: ringBreatheCyan 3s infinite ease-in-out;
+        }
+        .ring-state-armed .kalima-neon-txt {
+            color: #a2d5f2;
+            text-shadow: 0 0 5px rgba(56, 189, 248, 0.7);
+        }
+        /* State 2: Active DND (Neon Red Pulse) */
+        .ring-state-active .kalima-neon-outer {
+            border: 2.5px solid #ef4444;
+            box-shadow: 0 0 15px rgba(239, 68, 68, 0.95), inset 0 0 9px rgba(239, 68, 68, 0.7);
+            animation: ringPulseRed 1.2s infinite ease-in-out;
+        }
+        .ring-state-active .kalima-neon-txt {
+            color: #fca5a5;
+            text-shadow: 0 0 6px rgba(239, 68, 68, 0.9);
+        }
+        /* State 3: Pre-Jamaat 10m Reminder (Golden Amber Glow) */
+        .ring-state-warn .kalima-neon-outer {
+            border: 2.5px solid #f59e0b;
+            box-shadow: 0 0 13px rgba(245, 158, 11, 0.85), inset 0 0 8px rgba(245, 158, 11, 0.6);
+            animation: ringPulseAmber 1.6s infinite ease-in-out;
+        }
+        .ring-state-warn .kalima-neon-txt {
+            color: #fde047;
+            text-shadow: 0 0 6px rgba(245, 158, 11, 0.85);
+        }
+        /* State 4: Disabled / Off (Muted Dark Metallic) */
+        .ring-state-off .kalima-neon-outer {
+            border: 2px solid #475569;
+            box-shadow: inset 0 0 4px rgba(0,0,0,0.8);
+            opacity: 0.7;
+        }
+        .ring-state-off .kalima-neon-txt {
+            color: #94a3b8;
+        }
+        @keyframes ringBreatheCyan {
+            0%, 100% { box-shadow: 0 0 8px rgba(56, 189, 248, 0.55), inset 0 0 5px rgba(162, 213, 242, 0.4); }
+            50% { box-shadow: 0 0 15px rgba(56, 189, 248, 0.95), inset 0 0 9px rgba(162, 213, 242, 0.75); }
+        }
+        @keyframes ringPulseRed {
+            0%, 100% { transform: scale(1); box-shadow: 0 0 10px rgba(239, 68, 68, 0.6); }
+            50% { transform: scale(1.07); box-shadow: 0 0 20px rgba(239, 68, 68, 1); }
+        }
+        @keyframes ringPulseAmber {
+            0%, 100% { transform: scale(1); box-shadow: 0 0 9px rgba(245, 158, 11, 0.55); }
+            50% { transform: scale(1.05); box-shadow: 0 0 17px rgba(245, 158, 11, 0.95); }
         }
         .collapsible-content {
             display: none;
@@ -454,11 +560,20 @@
 
     <div class="app-layer">
 
-        <!-- 1. STICKY 3D EMBOSSED KALIMA TAYYABA HEADER (STAYS FIXED ON SCROLL) -->
+        <!-- 1. STICKY 3D EMBOSSED KALIMA TAYYABA HEADER WITH LEFT 3D GLOWING RING -->
         <div class="kalima-sticky-wrap">
-            <div class="kalima-3d-banner py-2 px-3 text-center">
-                <div class="text-[11px] text-amber-300 kalima-arabic">بِسْمِ اللّٰهِ الرَّحْمٰنِ الرَّحِيْمِ</div>
-                <div class="text-base sm:text-lg font-bold kalima-arabic">لَا إِلٰهَ إِلَّا اللّٰهُ مُحَمَّدٌ رَّسُولُ اللّٰهِ</div>
+            <div class="kalima-3d-banner text-center">
+                <button type="button" id="kalima-sync-ring" onclick="openModal('settings-modal')" class="kalima-neon-ring-btn ring-state-armed" title="آٹو سائلنٹ گارڈ اسٹیٹس">
+                    <span class="kalima-neon-outer"></span>
+                    <span class="kalima-neon-inner">
+                        <span id="kalima-ring-icon" class="kalima-neon-icon">🛡️</span>
+                        <span id="kalima-ring-label" class="kalima-neon-txt">سائلنٹ آن</span>
+                    </span>
+                </button>
+                <div class="w-full text-center">
+                    <div class="text-[11px] text-amber-300 kalima-arabic">بِسْمِ اللّٰهِ الرَّحْمٰنِ الرَّحِيْمِ</div>
+                    <div class="text-base sm:text-lg font-bold kalima-arabic">لَا إِلٰهَ إِلَّا اللّٰهُ مُحَمَّدٌ رَّسُولُ اللّٰهِ</div>
+                </div>
             </div>
         </div>
 
@@ -556,19 +671,13 @@
 
                 <div id="prayer-rows-container" class="flex flex-col gap-2.5"></div>
 
-                <!-- Dynamic Upcoming Jamaat Change Banner -->
-                <div class="inner-box p-2.5 mt-3 flex justify-between items-center text-xs">
+                <!-- Dynamic Upcoming Jamaat Change Banner (Shown when IMD Preset or Custom Alert is active) -->
+                <div id="home-upcoming-banner-box" class="inner-box p-2.5 mt-3 flex justify-between items-center text-xs">
                     <div class="leading-relaxed">
                         <span id="lbl-upcoming-prefix" class="text-amber-400 font-bold">🔔 اگلی تبدیلی:</span>
-                        <span id="home-upcoming-change-text" class="text-gray-200 ms-1">9 نومبر سے عصر کی جماعت 03:45 PM پر ہوگی۔</span>
+                        <span id="home-upcoming-change-text" class="text-gray-200 ms-1">15 نومبر سے فجر کی جماعت کا وقت 05:50 ہوگا۔</span>
                     </div>
                     <button id="btn-edit-schedule" onclick="openModal('schedule-modal')" class="inner-box px-2.5 py-1 text-[10px] text-yellow-400 font-bold shrink-0">ترمیم</button>
-                </div>
-
-                <div class="mt-2.5 pt-2 border-t flex flex-col gap-2">
-                    <button onclick="openModal('yearly-modal')" class="inner-box py-2 px-3 text-xs font-bold text-cyan-300 w-full flex justify-center items-center gap-2">
-                        📅 <span id="lbl-yearly-btn">ڈریم ایونیو سالانہ بورڈ چارٹ / 12 ماہ کا شیڈول دیکھیں</span>
-                    </button>
                 </div>
             </div>
         </div>
@@ -657,9 +766,8 @@
             </div>
             <div class="text-xs text-gray-200 leading-loose">
                 <div id="mouj-dua-text">
-                    یہ کاوش محض اللہ کی رضا اور صدقہ جاریہ کے لیے ہے۔<br>
-                    براہِ کرم اپنی دعاؤں میں ہمیں بھی یاد رکھیں۔<br>
-                    اللہ پاک ہماری اس کوشش کو دنیا اور آخرت میں ہماری مغفرت کا سبب بنائے، آمین۔
+                    یہ ادنیٰ سی کاوش محض اللہ تعالیٰ کی رضا اور نماز کے ادب کے لیے ہے۔<br>
+                    اللہ پاک اس کوشش کو ہم سب کی دنیا اور آخرت میں مغفرت و نجات کا ذریعہ بنائے، اور مساجد کا وقار قائم رکھنے کی توفیق عطا فرمائے، آمین۔
                 </div>
                 <span id="mouj-signature-text" class="text-cyan-300 font-bold inline-block mt-1 text-sm">طالبِ دعا: موج سنک</span>
             </div>
@@ -744,19 +852,19 @@
         </div>
     </div>
 
-    <!-- 2. MOSQUE SWITCHER MODAL (1 Primary + 2 Optional Mosques) -->
+    <!-- 2. MOSQUE SWITCHER MODAL (3 Open Mosque Slots + Favorite Star) -->
     <div id="mosque-switcher-modal" class="modal-backdrop">
         <div class="modal-box emboss-card">
             <div class="flex justify-between items-center border-b pb-2.5 mb-3">
-                <h3 class="text-sm font-bold text-yellow-400">🕌 بنیادی مسجد اور 2 آپشنل مساجد</h3>
+                <h3 class="text-sm font-bold text-yellow-400">🕌 مساجد کے 3 سلاٹس اور فیورٹ مسجد کا انتخاب</h3>
                 <button onclick="closeModal('mosque-switcher-modal')" class="text-red-400 font-bold px-2 text-base">✕</button>
             </div>
             <p class="text-xs text-gray-300 mb-3 leading-loose">
-                مسجد نمبر 1 بنیادی طور پر جامع مسجد ڈریم ایونیو (IMD) کے فکسڈ بورڈ پر ہے، جبکہ باقی 2 آپشنل مساجد کو آپ کسی بھی مسلک یا علاقے کے مطابق استعمال کر سکتے ہیں:
+                آپ تینوں سلاٹس میں اپنی مرضی کی مساجد (محلے، دفتر یا متبادل مسجد) سیٹ کر سکتے ہیں۔ جس مسجد پر ⭐ (فیورٹ) لگائیں گے، ایپ کھلتے ہی وہی سامنے آئے گی اور سائلنٹ موڈ اسی پر چلے گا:
             </p>
             <div id="mosque-switcher-list" class="flex flex-col gap-3 mb-3"></div>
             <button onclick="closeModal('mosque-switcher-modal'); openModal('settings-modal');" class="w-full spacious-btn inner-box text-xs font-bold text-cyan-400">
-                ⚙️ منتخب مسجد کی سیٹنگز اور مسلک تبدیل کریں
+                ⚙️ منتخب مسجد کا نام، شہر اور شیڈول تبدیل کریں
             </button>
         </div>
     </div>
@@ -804,17 +912,50 @@
             </div>
 
             <div class="flex flex-col gap-3.5 text-xs">
-                <!-- 1. Select Mosque (1 Primary + 2 Optional) -->
+                <!-- 1. Select Mosque Slot, Edit Mosque Name & Set Favorite Star -->
                 <div class="inner-box p-3.5">
-                    <label class="block text-yellow-400 font-bold mb-2">1. مسجد منتخب کریں (1 بنیادی + 2 آپشنل مساجد):</label>
-                    <div class="grid grid-cols-1 gap-2">
-                        <button onclick="selectMosque(0)" id="mosque-tab-0" class="spacious-btn inner-box text-xs font-bold w-full"></button>
-                        <button onclick="selectMosque(1)" id="mosque-tab-1" class="spacious-btn inner-box text-xs font-bold w-full"></button>
-                        <button onclick="selectMosque(2)" id="mosque-tab-2" class="spacious-btn inner-box text-xs font-bold w-full"></button>
+                    <label class="block text-yellow-400 font-bold mb-2">1. مسجد سلاٹ منتخب کریں، نام بدلیں اور فیورٹ (⭐) بنائیں:</label>
+                    <div class="grid grid-cols-1 gap-2 mb-3">
+                        <button type="button" onclick="selectMosque(0)" id="mosque-tab-0" class="spacious-btn inner-box text-xs font-bold w-full"></button>
+                        <button type="button" onclick="selectMosque(1)" id="mosque-tab-1" class="spacious-btn inner-box text-xs font-bold w-full"></button>
+                        <button type="button" onclick="selectMosque(2)" id="mosque-tab-2" class="spacious-btn inner-box text-xs font-bold w-full"></button>
+                    </div>
+
+                    <!-- Mosque Name Editor Right Here in Section 1 -->
+                    <div class="inner-box p-3 mb-2.5">
+                        <div class="flex justify-between items-center mb-1.5">
+                            <span class="text-xs font-bold text-emerald-400" id="lbl-edit-slot-title">✏️ منتخب مسجد کا نام تبدیل کریں:</span>
+                            <span class="text-[10px] text-gray-400">ہر سلاٹ کا اپنا نام رکھ سکتے ہیں</span>
+                        </div>
+                        <div class="mb-2">
+                            <span class="block text-[11px] text-gray-300 mb-1">اردو نام (یہاں اپنی مسجد کا نام لکھیں):</span>
+                            <input type="text" id="input-mosque-name-ur" placeholder="مثلاً جامع مسجد بلال / جامع مسجد مدینہ..." class="spacious-input font-bold" oninput="handleMosqueNameInput('ur')">
+                        </div>
+                        <div class="mb-2.5">
+                            <span class="block text-[11px] text-gray-300 mb-1">انگریزی نام (English Name):</span>
+                            <input type="text" id="input-mosque-name-en" placeholder="e.g. Jamia Masjid Bilal..." class="spacious-input text-emerald-300 font-bold" dir="ltr" oninput="handleMosqueNameInput('en')">
+                        </div>
+                        <div class="pt-2 border-t">
+                            <span class="block text-[11px] text-amber-300 font-bold mb-1">اس سلاٹ کے لیے جماعت کے وقت کا نظام:</span>
+                            <select id="select-slot-jamaat-mode" class="spacious-input font-bold" onchange="changeSlotJamaatModeFromSettings()">
+                                <option value="manual" class="bg-gray-900">✋ اپنی مسجد کا وقت (ہاتھ سے وقت مقرر کریں)</option>
+                                <option value="imd_board" class="bg-gray-900">🕌 ڈریم ایونیو (IMD) سالانہ آٹو بورڈ چارٹ</option>
+                                <option value="monthly_12" class="bg-gray-900">📅 12 مہینوں کا کسٹم شیڈول</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-2 gap-2 pt-2 border-t">
+                        <button type="button" onclick="setFavoriteMosque(state.activeMosque)" id="btn-set-fav-mosque" class="spacious-btn inner-box text-xs font-bold text-amber-300">
+                            ⭐ اسے فیورٹ مسجد بنائیں
+                        </button>
+                        <button type="button" onclick="closeModal('settings-modal'); openModal('yearly-modal');" class="spacious-btn inner-box text-xs font-bold text-cyan-300">
+                            📅 سالانہ / ڈریم ایونیو چارٹ
+                        </button>
                     </div>
                 </div>
 
-                <!-- 2. Silent Mode & Android Native Permissions -->
+                <!-- 2. Silent Mode & 3 Android Native Permissions -->
                 <div class="inner-box p-3.5">
                     <div class="font-bold text-red-400 mb-2">2. 📵 نماز کے وقت آٹو ڈو ناٹ ڈسٹرب (Auto DND & Silent)</div>
                     <div class="flex justify-between items-center mb-2.5">
@@ -847,12 +988,31 @@
                         </select>
                     </div>
 
+                    <!-- 3 Required Android Permissions Direct Buttons -->
+                    <div class="inner-box p-2.5 mb-2.5">
+                        <div class="font-bold text-cyan-300 mb-1.5 text-[11px]">🛡️ موبائل کی 3 ضروری اجازتیں (ایک بار آن کریں):</div>
+                        <div class="grid grid-cols-1 gap-1.5">
+                            <button type="button" onclick="openSpecificPermission('dnd')" class="spacious-btn inner-box text-xs font-bold text-yellow-300 justify-between px-3">
+                                <span>1. ڈو ناٹ ڈسٹرب (DND) پرمیشن</span>
+                                <span id="perm-badge-dnd" class="text-emerald-400">کھولیں ⬅</span>
+                            </button>
+                            <button type="button" onclick="openSpecificPermission('battery')" class="spacious-btn inner-box text-xs font-bold text-cyan-300 justify-between px-3">
+                                <span>2. بیٹری سیور استثنیٰ (Don't Optimise)</span>
+                                <span id="perm-badge-battery" class="text-emerald-400">کھولیں ⬅</span>
+                            </button>
+                            <button type="button" onclick="openSpecificPermission('alarm')" class="spacious-btn inner-box text-xs font-bold text-amber-300 justify-between px-3">
+                                <span>3. بیک گراؤنڈ الارم و ایپ انفو سیٹنگ</span>
+                                <span id="perm-badge-alarm" class="text-emerald-400">کھولیں ⬅</span>
+                            </button>
+                        </div>
+                    </div>
+
                     <div class="grid grid-cols-2 gap-2 mt-2">
-                        <button onclick="triggerTestSilentMode(); closeModal('settings-modal');" class="spacious-btn inner-box text-xs font-bold text-amber-300">
-                            🔊 سائلنٹ الرٹ ٹیسٹ (2m)
+                        <button type="button" onclick="triggerTestSilentMode(); closeModal('settings-modal');" class="spacious-btn inner-box text-xs font-bold text-amber-300">
+                            🔊 سائلنٹ ٹیسٹ (2m)
                         </button>
-                        <button onclick="requestAndroidNativePermissions()" class="spacious-btn inner-box text-xs font-bold text-cyan-300">
-                            🛡️ اینڈرائیڈ DND پرمیشن
+                        <button type="button" onclick="requestAndroidNativePermissions()" class="spacious-btn inner-box text-xs font-bold text-emerald-400">
+                            ✅ تینوں پرمیشنز چیک کریں
                         </button>
                     </div>
 
@@ -867,32 +1027,23 @@
                             <div>• ڈیش بورڈ پر کسی بھی نماز کے وقت پر ٹیپ کر کے اذان یا جماعت کا وقت بدلا جا سکتا ہے۔</div>
                             <div>• ڈریم ایونیو (IMD) مغرب جماعت: غروبِ آفتاب کے 6 منٹ بعد (3 منٹ اذان + 3 منٹ وقفہ)۔</div>
                             <div>• اذان کا خودکار وقفہ: فجر جماعت سے 20m قبل، ظہر/عصر/عشاء 15m قبل، جمعہ 30m قبل۔</div>
-                            <div id="android-perm-status" class="text-cyan-300 mt-1">
-                                حالت: گٹ ہب APK میں بیک گراؤنڈ الارم کلاک سروس کے ذریعے فون مقررہ وقت پر خودکار DND میں جائے گا اور وقت پورا ہونے پر خودکار نارمل ہو جائے گا۔
-                            </div>
+                            <div id="android-perm-status" class="text-cyan-300 mt-1"></div>
                         </div>
                     </div>
                 </div>
 
-                <!-- 3. Dual Perpetual Calendar Selector -->
+                <!-- 3. Dual Perpetual Calendar Selector + 55 Cities with Search Bar -->
                 <div class="inner-box p-3.5">
-                    <label class="block text-yellow-400 font-bold mb-2">3. دائمی نقشہ / کیلنڈر کا انتخاب:</label>
+                    <label class="block text-yellow-400 font-bold mb-2">3. دائمی نقشہ اور پاکستان کے 55+ شہروں کا انتخاب:</label>
                     <select id="select-calendar-engine" class="spacious-input font-bold mb-2.5" onchange="saveMosqueSettings()">
                         <option value="lahore_chart" class="bg-gray-900">📜 نقشہ نمبر 1: دائمی نقشہ لاہور و مضافات (جامعہ اشرفیہ مستند چارٹ)</option>
-                        <option value="other_cities" class="bg-gray-900">🌍 نقشہ نمبر 2: دیگر شہروں کا آف لائن فلکیاتی کیلنڈر (کراچی، اسلام آباد وغیرہ)</option>
+                        <option value="other_cities" class="bg-gray-900">🌍 نقشہ نمبر 2: پاکستان کے دیگر 55+ شہروں کا آف لائن فلکیاتی کیلنڈر</option>
                     </select>
 
                     <div id="other-city-box" class="mt-2">
-                        <label class="block text-gray-300 font-bold mb-1">شہر منتخب کریں:</label>
-                        <select id="select-city" class="spacious-input font-bold" onchange="saveMosqueSettings()">
-                            <option value="lahore" class="bg-gray-900">لاہور (Lahore - 31.52° N, 74.35° E)</option>
-                            <option value="karachi" class="bg-gray-900">کراچی (Karachi - 24.86° N, 67.00° E)</option>
-                            <option value="islamabad" class="bg-gray-900">اسلام آباد / راولپنڈی (33.68° N, 73.04° E)</option>
-                            <option value="multan" class="bg-gray-900">ملتان (Multan - 30.15° N, 71.52° E)</option>
-                            <option value="faisalabad" class="bg-gray-900">فیصل آباد (Faisalabad - 31.45° N, 73.13° E)</option>
-                            <option value="peshawar" class="bg-gray-900">پشاور (Peshawar - 34.01° N, 71.52° E)</option>
-                            <option value="quetta" class="bg-gray-900">کوئٹہ (Quetta - 30.17° N, 66.97° E)</option>
-                        </select>
+                        <label class="block text-gray-300 font-bold mb-1">🔍 شہر تلاش کریں یا فہرست سے چنیں (اردو / English):</label>
+                        <input type="text" id="input-city-search" placeholder="شہر کا نام لکھیں مثلاً سرگودھا، گوجرانوالہ، Sargodha..." class="spacious-input mb-2" oninput="filterCityDropdown()">
+                        <select id="select-city" class="spacious-input font-bold" onchange="saveMosqueSettings()"></select>
                     </div>
                 </div>
 
@@ -907,18 +1058,7 @@
                     </select>
                 </div>
 
-                <!-- 5. Mosque Name Inputs -->
-                <div class="inner-box p-3.5">
-                    <label class="block text-yellow-400 font-bold mb-2">5. منتخب مسجد کا نام:</label>
-                    <div class="mb-2.5">
-                        <span class="block text-[11px] text-gray-400 mb-1">اردو نام:</span>
-                        <input type="text" id="input-mosque-name-ur" class="spacious-input font-bold" oninput="handleMosqueNameInput('ur')">
-                    </div>
-                    <div>
-                        <span class="block text-[11px] text-gray-400 mb-1">انگریزی نام (English Name):</span>
-                        <input type="text" id="input-mosque-name-en" class="spacious-input text-emerald-300 font-bold" dir="ltr" oninput="handleMosqueNameInput('en')">
-                    </div>
-                </div>
+
 
                 <!-- 6. Keep Screen Awake & Themes -->
                 <div class="inner-box p-3.5">
@@ -988,21 +1128,27 @@
             </div>
             <div class="flex flex-col gap-3 text-xs">
                 <div class="inner-box p-3">
-                    <div class="font-bold text-yellow-400 mb-1">1. سو فیصد آف لائن پرپیچول کیلنڈر (بغیر انٹرنیٹ):</div>
+                    <div class="font-bold text-yellow-400 mb-1">1. پہلی بار انسٹال کرنے کے بعد 3 لازمی سیٹنگز (1 منٹ گائیڈ):</div>
                     <p class="text-gray-200 leading-relaxed">
-                        یہ ایپ کسی انٹرنیٹ سرور سے منسلک نہیں ہے۔ اس میں جامعہ اشرفیہ لاہور کے 12 مہینوں کا مکمل دائمی نقشہ اور دیگر شہروں کا فلکیاتی فارمولا موبائل کے اندر ہی محفوظ ہے جو ہمیشہ آف لائن کام کرتا ہے۔
+                        ایپ انسٹال کرنے کے بعد <strong>⚙️ سیٹنگز</strong> میں جا کر یہ 3 اجازتیں ایک بار آن کر لیں تاکہ ایپ بند ہونے پر بھی فون نماز میں خودکار خاموش ہو:<br>
+                        • <strong>1. ڈو ناٹ ڈسٹرب (DND):</strong> لسٹ میں Masjid Clock کو Allow کر دیں۔<br>
+                        • <strong>2. بیٹری سیور استثنیٰ:</strong> Battery میں جا کر Allow background activity اور Don't optimise کر دیں۔<br>
+                        • <strong>3. الارم پرمیشن:</strong> Alarms &amp; reminders کو Allow کر دیں۔
                     </p>
                 </div>
                 <div class="inner-box p-3">
-                    <div class="font-bold text-yellow-400 mb-1">2. بنیادی مسجد (ڈریم ایونیو IMD) اور 2 آپشنل مساجد:</div>
+                    <div class="font-bold text-yellow-400 mb-1">2. مساجد کے 3 سلاٹس اور فیورٹ (⭐) مسجد کا انتخاب:</div>
                     <p class="text-gray-200 leading-relaxed">
-                        پہلی مسجد جامع مسجد ڈریم ایونیو رائے ونڈ روڈ لاہور (IMD) کے سالانہ نوٹس بورڈ کے مطابق خودکار چلتی ہے، جبکہ دوسری اور تیسری آپشنل مساجد میں ہر مسلک (دیوبندی 1:30، بریلوی 2:00، اہلِ حدیث/شافعی 1:00) کے لحاظ سے الگ وقت رکھا جا سکتا ہے۔
+                        آپ تینوں سلاٹس میں اپنے محلے، دفتر یا کسی بھی مسجد کا نام اور جماعت کے اوقات سیٹ کر سکتے ہیں اور جس مسجد کو چاہیں <strong>⭐ فیورٹ</strong> بنا سکتے ہیں۔ اگر آپ جامع مسجد ڈریم ایونیو (IMD) لاہور کا 12 ماہی خودکار بورڈ چارٹ استعمال کرنا چاہیں تو سیٹنگز سے اسے ایک کلک پر فعال کر سکتے ہیں۔
                     </p>
                 </div>
                 <div class="inner-box p-3">
-                    <div class="font-bold text-yellow-400 mb-1">3. نماز کے وقت آٹو سائلنٹ اور بیک گراؤنڈ سروس:</div>
+                    <div class="font-bold text-yellow-400 mb-1">3. کلمہ طیبہ کے بائیں طرف چمکتا ہوا سرکل (Glowing Ring):</div>
                     <p class="text-gray-200 leading-relaxed">
-                        جماعت سے 10 منٹ قبل یاددہانی بیپ بجتی ہے اور عین جماعت کے وقت سائلنٹ موڈ فعال ہو جاتا ہے۔ گٹ ہب اینڈرائیڈ بلڈ (APK) میں ڈو ناٹ ڈسٹرب (DND) اور بیک گراؤنڈ الارم پرمیشن کے ساتھ یہ ایپ سوائپ اپ کرنے کے بعد بھی فون کو خودکار سائلنٹ کرتی ہے۔
+                        • <strong class="text-cyan-300">نیلا روشن دائرہ (سائلنٹ آن):</strong> سسٹم الرٹ ہے اور اگلی نماز پر فون خودکار خاموش ہو جائے گا۔<br>
+                        • <strong class="text-amber-300">سنہری دائرہ (تیاری):</strong> جماعت میں 10 منٹ یا کم وقت باقی ہے۔<br>
+                        • <strong class="text-red-400">سرخ پلسنگ دائرہ (سائلنٹ):</strong> نماز جاری ہے اور موبائل خاموش (DND) ہے۔<br>
+                        • <strong class="text-gray-400">سرمئی دائرہ (آف):</strong> آٹو سائلنٹ موڈ بند ہے۔
                     </p>
                 </div>
                 <button onclick="closeModal('help-modal')" class="spacious-btn bg-cyan-500 text-black font-bold rounded-lg w-full">سمجھ آ گیا</button>
@@ -1345,13 +1491,67 @@
            3. OTHER CITIES ASTRONOMICAL ENGINE & SECT DEFAULTS
            ========================================================================== */
         const CITIES = {
-            lahore:     { nameUr: "لاہور", nameEn: "Lahore", lat: 31.5204, lng: 74.3587 },
-            karachi:    { nameUr: "کراچی", nameEn: "Karachi", lat: 24.8607, lng: 67.0011 },
-            islamabad:  { nameUr: "اسلام آباد", nameEn: "Islamabad", lat: 33.6844, lng: 73.0479 },
-            multan:     { nameUr: "ملتان", nameEn: "Multan", lat: 30.1575, lng: 71.5249 },
-            faisalabad: { nameUr: "فیصل آباد", nameEn: "Faisalabad", lat: 31.4504, lng: 73.1350 },
-            peshawar:   { nameUr: "پشاور", nameEn: "Peshawar", lat: 34.0151, lng: 71.5249 },
-            quetta:     { nameUr: "کوئٹہ", nameEn: "Quetta", lat: 30.1798, lng: 66.9750 }
+            lahore:         { nameUr: "لاہور", nameEn: "Lahore", lat: 31.5204, lng: 74.3587 },
+            karachi:        { nameUr: "کراچی", nameEn: "Karachi", lat: 24.8607, lng: 67.0011 },
+            islamabad:      { nameUr: "اسلام آباد", nameEn: "Islamabad", lat: 33.6844, lng: 73.0479 },
+            rawalpindi:     { nameUr: "راولپنڈی", nameEn: "Rawalpindi", lat: 33.5651, lng: 73.0169 },
+            faisalabad:     { nameUr: "فیصل آباد", nameEn: "Faisalabad", lat: 31.4504, lng: 73.1350 },
+            multan:         { nameUr: "ملتان", nameEn: "Multan", lat: 30.1575, lng: 71.5249 },
+            gujranwala:     { nameUr: "گوجرانوالہ", nameEn: "Gujranwala", lat: 32.1877, lng: 74.1945 },
+            sialkot:        { nameUr: "سیالکوٹ", nameEn: "Sialkot", lat: 32.4945, lng: 74.5229 },
+            sargodha:       { nameUr: "سرگودھا", nameEn: "Sargodha", lat: 32.0836, lng: 72.6711 },
+            bahawalpur:     { nameUr: "بہاولپور", nameEn: "Bahawalpur", lat: 29.3956, lng: 71.6836 },
+            rahimyarkhan:   { nameUr: "رحیم یار خان", nameEn: "Rahim Yar Khan", lat: 28.4202, lng: 70.2952 },
+            sahiwal:        { nameUr: "ساہیوال", nameEn: "Sahiwal", lat: 30.6682, lng: 73.1114 },
+            gujrat:         { nameUr: "گجرات", nameEn: "Gujrat", lat: 32.5731, lng: 74.0750 },
+            sheikhupura:    { nameUr: "شیخوپورہ", nameEn: "Sheikhupura", lat: 31.7167, lng: 73.9850 },
+            kasur:          { nameUr: "قصور", nameEn: "Kasur", lat: 31.1179, lng: 74.4408 },
+            okara:          { nameUr: "اوکاڑہ", nameEn: "Okara", lat: 30.8138, lng: 73.4534 },
+            jhang:          { nameUr: "جھنگ", nameEn: "Jhang", lat: 31.2781, lng: 72.3317 },
+            dgkhan:         { nameUr: "ڈیرہ غازی خان", nameEn: "Dera Ghazi Khan", lat: 30.0489, lng: 70.6455 },
+            muzaffargarh:   { nameUr: "مظفر گڑھ", nameEn: "Muzaffargarh", lat: 30.0736, lng: 71.1805 },
+            chiniot:        { nameUr: "چنیوٹ", nameEn: "Chiniot", lat: 31.7200, lng: 72.9789 },
+            kamoke:         { nameUr: "کامونکی", nameEn: "Kamoke", lat: 31.9753, lng: 74.2230 },
+            hafizabad:      { nameUr: "حافظ آباد", nameEn: "Hafizabad", lat: 32.0709, lng: 73.6880 },
+            mandibahauddin: { nameUr: "منڈی بہاؤالدین", nameEn: "Mandi Bahauddin", lat: 32.5861, lng: 73.4917 },
+            narowal:        { nameUr: "نارووال", nameEn: "Narowal", lat: 32.1020, lng: 74.8730 },
+            pakpattan:      { nameUr: "پاکپتن", nameEn: "Pakpattan", lat: 30.3394, lng: 73.3867 },
+            vehari:         { nameUr: "وہاڑی", nameEn: "Vehari", lat: 30.0419, lng: 72.3528 },
+            khanewal:       { nameUr: "خانیوال", nameEn: "Khanewal", lat: 30.3017, lng: 71.9321 },
+            tobatek:        { nameUr: "ٹوبہ ٹیک سنگھ", nameEn: "Toba Tek Singh", lat: 30.9709, lng: 72.4826 },
+            bahawalnagar:   { nameUr: "بہاولنگر", nameEn: "Bahawalnagar", lat: 29.9986, lng: 73.2536 },
+            chakwal:        { nameUr: "چکوال", nameEn: "Chakwal", lat: 32.9328, lng: 72.8630 },
+            jhelum:         { nameUr: "جہلم", nameEn: "Jhelum", lat: 32.9425, lng: 73.7257 },
+            attock:         { nameUr: "اٹک", nameEn: "Attock", lat: 33.7667, lng: 72.3667 },
+            mianwali:       { nameUr: "میانوالی", nameEn: "Mianwali", lat: 32.5839, lng: 71.5264 },
+            khushab:        { nameUr: "خوشاب", nameEn: "Khushab", lat: 32.2967, lng: 72.3525 },
+            bhakkar:        { nameUr: "بھکر", nameEn: "Bhakkar", lat: 31.6253, lng: 71.0657 },
+            layyah:         { nameUr: "لیہ", nameEn: "Layyah", lat: 30.9693, lng: 70.9428 },
+            lodhran:        { nameUr: "لودھراں", nameEn: "Lodhran", lat: 29.5405, lng: 71.6336 },
+            hyderabad:      { nameUr: "حیدرآباد", nameEn: "Hyderabad", lat: 25.3960, lng: 68.3578 },
+            sukkur:         { nameUr: "سکھر", nameEn: "Sukkur", lat: 27.7052, lng: 68.8574 },
+            larkana:        { nameUr: "لاڑکانہ", nameEn: "Larkana", lat: 27.5570, lng: 68.2028 },
+            nawabshah:      { nameUr: "نواب شاہ", nameEn: "Nawabshah", lat: 26.2442, lng: 68.4100 },
+            mirpurkhas:     { nameUr: "میرپور خاص", nameEn: "Mirpur Khas", lat: 25.5276, lng: 69.0159 },
+            jacobabad:      { nameUr: "جیکب آباد", nameEn: "Jacobabad", lat: 28.2769, lng: 68.4514 },
+            peshawar:       { nameUr: "پشاور", nameEn: "Peshawar", lat: 34.0151, lng: 71.5249 },
+            mardan:         { nameUr: "مردان", nameEn: "Mardan", lat: 34.1986, lng: 72.0404 },
+            abbottabad:     { nameUr: "ایبٹ آباد", nameEn: "Abbottabad", lat: 34.1688, lng: 73.2215 },
+            swat:           { nameUr: "سوات / مینگورہ", nameEn: "Swat / Mingora", lat: 34.7717, lng: 72.3602 },
+            kohat:          { nameUr: "کوہاٹ", nameEn: "Kohat", lat: 33.5889, lng: 71.4429 },
+            dikhan:         { nameUr: "ڈیرہ اسماعیل خان", nameEn: "Dera Ismail Khan", lat: 31.8626, lng: 70.9019 },
+            mansehra:       { nameUr: "مانسہرہ", nameEn: "Mansehra", lat: 34.3313, lng: 73.1980 },
+            haripur:        { nameUr: "ہری پور", nameEn: "Haripur", lat: 33.9946, lng: 72.9106 },
+            nowshera:       { nameUr: "نوشہرہ", nameEn: "Nowshera", lat: 34.0153, lng: 71.9747 },
+            charsadda:      { nameUr: "چارسدہ", nameEn: "Charsadda", lat: 34.1453, lng: 71.7308 },
+            quetta:         { nameUr: "کوئٹہ", nameEn: "Quetta", lat: 30.1798, lng: 66.9750 },
+            gwadar:         { nameUr: "گوادر", nameEn: "Gwadar", lat: 25.1216, lng: 62.3254 },
+            khuzdar:        { nameUr: "خضدار", nameEn: "Khuzdar", lat: 27.8165, lng: 66.6057 },
+            turbat:         { nameUr: "تربت", nameEn: "Turbat", lat: 26.0081, lng: 63.0383 },
+            muzaffarabad:   { nameUr: "مظفر آباد (کشمیر)", nameEn: "Muzaffarabad (AJK)", lat: 34.3700, lng: 73.4711 },
+            mirpurajk:      { nameUr: "میرپور (آزاد کشمیر)", nameEn: "Mirpur (AJK)", lat: 33.1480, lng: 73.7537 },
+            gilgit:         { nameUr: "گلگت", nameEn: "Gilgit", lat: 35.9208, lng: 74.3144 },
+            skardu:         { nameUr: "اسکردو", nameEn: "Skardu", lat: 35.2971, lng: 75.6333 }
         };
 
         const SECT_INFO = {
@@ -1400,8 +1600,8 @@
 
         const DEFAULT_MOSQUES = [
             {
-                roleUr: "بنیادی مسجد (Primary)",
-                roleEn: "Primary Mosque",
+                roleUr: "مسجد سلاٹ 1 (مقامی / گھر)",
+                roleEn: "Mosque Slot 1 (Home / Local)",
                 nameUr: "جامع مسجد ڈریم ایونیو رائے ونڈ روڈ لاہور (IMD)",
                 nameEn: "Jamia Masjid Dream Avenue Lahore (IMD)",
                 sect: "deobandi",
@@ -1410,15 +1610,15 @@
                 jamaatAutoMode: "imd_board",
                 ramadanRule: false,
                 yearlySchedule: JSON.parse(JSON.stringify(DEFAULT_YEARLY_JAMAAT)),
-                jamaat: { fajr: "05:40", zuhr: "13:30", asr: "16:00", maghrib: "17:17", isha: "19:00", jumma: "13:30" },
-                azan:   { fajr: "05:20", zuhr: "13:15", asr: "15:45", maghrib: "17:11", isha: "18:45", jumma: "13:00" },
-                alert:  { prayer: "عصر", day: "9 نومبر", time: "15:45" }
+                jamaat: { fajr: "05:40", zuhr: "13:30", asr: "15:45", maghrib: "17:17", isha: "19:00", jumma: "13:30" },
+                azan:   { fajr: "05:20", zuhr: "13:15", asr: "15:30", maghrib: "17:11", isha: "18:45", jumma: "13:00" },
+                alert:  { prayer: "فجر", day: "15 نومبر", time: "05:50" }
             },
             {
-                roleUr: "آپشنل مسجد 1 (Optional)",
-                roleEn: "Optional Mosque 1",
-                nameUr: "جامع مسجد مدینہ (آپشنل مسجد 1)",
-                nameEn: "Jamia Masjid Madina (Optional 1)",
+                roleUr: "مسجد سلاٹ 2 (دفتر / مارکیٹ)",
+                roleEn: "Mosque Slot 2 (Office / Work)",
+                nameUr: "جامع مسجد مدینہ (سلاٹ 2)",
+                nameEn: "Jamia Masjid Madina (Slot 2)",
                 sect: "barelvi",
                 city: "lahore",
                 calendarEngine: "lahore_chart",
@@ -1430,13 +1630,13 @@
                 alert:  { prayer: "جمعہ المبارک", day: "جمعہ", time: "14:00" }
             },
             {
-                roleUr: "آپشنل مسجد 2 (Optional)",
-                roleEn: "Optional Mosque 2",
-                nameUr: "مسجدِ تقویٰ (آپشنل مسجد 2)",
-                nameEn: "Masjid-e-Taqwa (Optional 2)",
+                roleUr: "مسجد سلاٹ 3 (متبادل مسجد)",
+                roleEn: "Mosque Slot 3 (Alternate)",
+                nameUr: "مسجدِ تقویٰ (سلاٹ 3)",
+                nameEn: "Masjid-e-Taqwa (Slot 3)",
                 sect: "ahlehadith",
-                city: "karachi",
-                calendarEngine: "other_cities",
+                city: "lahore",
+                calendarEngine: "lahore_chart",
                 jamaatAutoMode: "manual",
                 ramadanRule: false,
                 yearlySchedule: JSON.parse(JSON.stringify(DEFAULT_YEARLY_JAMAAT)),
@@ -1449,7 +1649,10 @@
         let state = {
             lang: (function(){try{return localStorage.getItem("smc_lang")}catch(e){return null}})() || "ur",
             themeIndex: parseInt((function(){try{return localStorage.getItem("smc_theme")}catch(e){return null}})() || "6", 10),
-            activeMosque: parseInt((function(){try{return localStorage.getItem("smc_active_mosque")}catch(e){return null}})() || "0", 10),
+            favoriteMosque: parseInt((function(){try{return localStorage.getItem("smc_fav_mosque")}catch(e){return null}})() || "0", 10),
+            activeMosque: parseInt((function(){try{return localStorage.getItem("smc_fav_mosque") || localStorage.getItem("smc_active_mosque")}catch(e){return null}})() || "0", 10),
+            completedPrayersToday: (function(){try{return JSON.parse(localStorage.getItem("smc_done_prayers") || "{}")}catch(e){return {}}})(),
+            suppressImmediateDndOnSwitch: false,
             azanDisplayMode: (function(){try{return localStorage.getItem("smc_azan_mode")}catch(e){return null}})() || "both",
             autoSilentEnabled: (function(){try{return localStorage.getItem("smc_auto_silent")}catch(e){return null}})() !== "false",
             silentPreMode: (function(){try{return localStorage.getItem("smc_silent_pre")}catch(e){return null}})() || "smart",
@@ -1629,6 +1832,108 @@
             };
         }
 
+        function updateKalimaGlowingRing(mode) {
+            const btn = document.getElementById("kalima-sync-ring");
+            const icon = document.getElementById("kalima-ring-icon");
+            const lbl = document.getElementById("kalima-ring-label");
+            if (!btn || !icon || !lbl) return;
+
+            btn.classList.remove("ring-state-armed", "ring-state-active", "ring-state-warn", "ring-state-off");
+            const isUr = state.lang === "ur";
+
+            if (!state.autoSilentEnabled || mode === "off") {
+                btn.classList.add("ring-state-off");
+                icon.innerText = "⚪";
+                lbl.innerText = isUr ? "سائلنٹ آف" : "OFF";
+            } else if (mode === "active") {
+                btn.classList.add("ring-state-active");
+                icon.innerText = "📵";
+                lbl.innerText = isUr ? "سائلنٹ ہے" : "SILENT";
+            } else if (mode === "warn") {
+                btn.classList.add("ring-state-warn");
+                icon.innerText = "🔔";
+                lbl.innerText = isUr ? "تیاری" : "SOON";
+            } else {
+                btn.classList.add("ring-state-armed");
+                icon.innerText = "🛡️";
+                lbl.innerText = isUr ? "سائلنٹ آن" : "READY";
+            }
+        }
+
+        function markPrayerSilentCompletedToday(prayerKey) {
+            const todayKey = new Date().toDateString();
+            if (!state.completedPrayersToday || state.completedPrayersToday.date !== todayKey) {
+                state.completedPrayersToday = { date: todayKey, done: {} };
+            }
+            state.completedPrayersToday.done[prayerKey] = true;
+            try {
+                localStorage.setItem("smc_done_prayers", JSON.stringify(state.completedPrayersToday));
+            } catch (e) {}
+        }
+
+        function isPrayerSilentCompletedToday(prayerKey) {
+            const todayKey = new Date().toDateString();
+            if (!state.completedPrayersToday || state.completedPrayersToday.date !== todayKey) {
+                return false;
+            }
+            return !!(state.completedPrayersToday.done && state.completedPrayersToday.done[prayerKey]);
+        }
+
+        function populateCityDropdown(filterStr = "") {
+            const sel = document.getElementById("select-city");
+            if (!sel) return;
+            const activeM = state.mosques[state.activeMosque];
+            const currentCity = activeM.city || "lahore";
+            const q = (filterStr || "").trim().toLowerCase();
+
+            const entries = Object.entries(CITIES).filter(([key, c]) => {
+                if (!q) return true;
+                return c.nameUr.includes(q) || c.nameEn.toLowerCase().includes(q) || key.includes(q);
+            });
+
+            if (entries.length === 0) {
+                sel.innerHTML = `<option value="${currentCity}" class="bg-gray-900">${CITIES[currentCity].nameUr} (${CITIES[currentCity].nameEn})</option>`;
+                return;
+            }
+
+            sel.innerHTML = entries.map(([key, c]) =>
+                `<option value="${key}" class="bg-gray-900" ${key === currentCity ? 'selected' : ''}>${c.nameUr} (${c.nameEn} - ${c.lat.toFixed(2)}°N, ${c.lng.toFixed(2)}°E)</option>`
+            ).join("");
+
+            if (q && entries.length > 0 && !entries.some(([k]) => k === currentCity)) {
+                sel.value = entries[0][0];
+                saveMosqueSettings();
+            }
+        }
+
+        function filterCityDropdown() {
+            const inp = document.getElementById("input-city-search");
+            populateCityDropdown(inp ? inp.value : "");
+        }
+
+        function setFavoriteMosque(idx) {
+            state.favoriteMosque = idx;
+            state.activeMosque = idx;
+            try {
+                localStorage.setItem("smc_fav_mosque", idx.toString());
+            } catch (e) {}
+            saveState();
+            renderAll();
+        }
+
+        function editMosqueNameFromSwitcher(idx) {
+            selectMosque(idx);
+            closeModal("mosque-switcher-modal");
+            openModal("settings-modal");
+            setTimeout(() => {
+                const inp = document.getElementById("input-mosque-name-ur");
+                if (inp) {
+                    inp.focus();
+                    inp.select();
+                }
+            }, 150);
+        }
+
         function syncSmartAlarmsToAndroid() {
             try {
                 const now = new Date();
@@ -1643,13 +1948,15 @@
                 prayerKeys.forEach(k => {
                     const win = getPrayerSilentWindow(k, activeM);
                     const [jh, jm] = activeM.jamaat[k].split(":").map(Number);
+                    const alreadyDone = isPrayerSilentCompletedToday(k) || state.suppressImmediateDndOnSwitch;
                     alarmsPayload.push({
                         key: k,
                         h: jh || 0,
                         m: jm || 0,
                         pre: win.preMins,
                         post: win.postMins,
-                        dur: win.totalDur
+                        dur: win.totalDur,
+                        skipImmediate: alreadyDone
                     });
                     summaryLines.push(
                         `<div class="flex justify-between items-center py-0.5 border-b">` +
@@ -1709,6 +2016,33 @@
             } catch (e) {}
         }
 
+        function openSpecificPermission(permType) {
+            const statusEl = document.getElementById("android-perm-status");
+            if (window.AndroidSilentBridge) {
+                if (permType === "dnd" && typeof window.AndroidSilentBridge.openDndSettings === "function") {
+                    window.AndroidSilentBridge.openDndSettings();
+                    return;
+                }
+                if (permType === "battery" && typeof window.AndroidSilentBridge.openBatterySettings === "function") {
+                    window.AndroidSilentBridge.openBatterySettings();
+                    return;
+                }
+                if (permType === "alarm" && typeof window.AndroidSilentBridge.openAlarmSettings === "function") {
+                    window.AndroidSilentBridge.openAlarmSettings();
+                    return;
+                }
+                if (typeof window.AndroidSilentBridge.requestPermissions === "function") {
+                    window.AndroidSilentBridge.requestPermissions();
+                    return;
+                }
+            }
+            const drawerEl = document.getElementById("dnd-schedule-drawer");
+            if (drawerEl) drawerEl.classList.add("open");
+            if (statusEl) {
+                statusEl.innerText = "ℹ️ گٹ ہب APK میں یہ بٹن آپ کو براہِ راست موبائل کی اس پرمیشن سیٹنگ پر لے جائے گا۔";
+            }
+        }
+
         function requestAndroidNativePermissions() {
             const statusEl = document.getElementById("android-perm-status");
             const drawerEl = document.getElementById("dnd-schedule-drawer");
@@ -1716,36 +2050,43 @@
             if (window.AndroidSilentBridge && typeof window.AndroidSilentBridge.requestPermissions === "function") {
                 window.AndroidSilentBridge.requestPermissions();
                 if (statusEl) {
-                    statusEl.innerText = "✅ اینڈرائیڈ ڈو ناٹ ڈسٹرب (DND) اور بیک گراؤنڈ بیٹری پرمیشن کی سیٹنگ کھول دی گئی ہے۔";
+                    statusEl.innerText = "✅ تینوں ضروری پرمیشنز (DND، بیٹری استثنیٰ، اور بیک گراؤنڈ الارم) چیک کر لی گئی ہیں۔";
                 }
             } else {
                 playGentleReminderBeep(2);
                 if (statusEl) {
-                    statusEl.innerText = "ℹ️ اس وقت آپ براؤزر پریویو میں ہیں (آڈیو بیپ اور اسکرین الرٹ فعال ہے)۔ گٹ ہب APK میں یہ بٹن اینڈرائیڈ کی DND اور بیٹری سیٹنگ کھولے گا۔";
+                    statusEl.innerText = "ℹ️ گٹ ہب APK میں یہ بٹن تینوں ضروری پرمیشنز (DND، بیٹری اور الارم) کو چیک اور آن کروائے گا۔";
                 }
             }
         }
 
         function triggerTestSilentMode() {
             playGentleReminderBeep(2);
+            state.testSilentUntilMs = Date.now() + 120000; // 2 minutes (120,000 ms)
             const banner = document.getElementById("silent-active-banner");
             const title = document.getElementById("silent-banner-title");
             const sub = document.getElementById("silent-banner-sub");
             banner.classList.remove("hidden");
             document.body.classList.add("silent-mode-active");
+            updateKalimaGlowingRing("active");
             title.innerText = state.lang === "ur"
-                ? "📵 ٹیسٹ سائلنٹ موڈ فعال ہے (2 منٹ کے لیے)"
-                : "📵 Test Silent Mode Active (for 2 mins)";
+                ? "📵 ٹیسٹ سائلنٹ موڈ فعال ہے (02:00 باقی)"
+                : "📵 Test Silent Mode Active (02:00 left)";
             sub.innerText = state.lang === "ur"
-                ? "فون ڈو ناٹ ڈسٹرب (DND) موڈ پر چلا گیا ہے اور 2 منٹ بعد خودکار طور پر نارمل ہو جائے گا۔"
-                : "Phone is now in Do Not Disturb (DND) mode and will restore automatically after 2 minutes.";
+                ? "کلمہ طیبہ والا سرکل سرخ (سائلنٹ) ہو چکا ہے اور 2 منٹ پورا ہونے پر خودکار نیلے (سائلنٹ آن / Ready) پر واپس آ جائے گا۔"
+                : "The Kalima ring is now Red (Silent) and will automatically return to Blue (Ready) after 2 minutes.";
             setHardwareSilentMode(true, 2, "Test");
         }
 
         function dismissSilentBanner() {
+            if (state.testSilentUntilMs && state.testSilentUntilMs > Date.now()) {
+                state.testSilentUntilMs = 0;
+                setHardwareSilentMode(false, 0, "TestCancel");
+            }
             document.getElementById("silent-active-banner").classList.add("hidden");
             document.body.classList.remove("silent-mode-active");
             state.silentDismissedForKey = state.lastBeepMinuteKey;
+            evaluateAutoSilentState(new Date(), state.mosques[state.activeMosque]);
         }
 
         function saveSilentPreferences() {
@@ -1771,9 +2112,16 @@
 
         function evaluateAutoSilentState(now, activeM) {
             const banner = document.getElementById("silent-active-banner");
+            if (state.testSilentUntilMs && state.testSilentUntilMs > Date.now()) {
+                updateKalimaGlowingRing("active");
+                document.body.classList.add("silent-mode-active");
+                banner.classList.remove("hidden");
+                return;
+            }
             if (!state.autoSilentEnabled) {
                 banner.classList.add("hidden");
                 document.body.classList.remove("silent-mode-active");
+                updateKalimaGlowingRing("off");
                 return;
             }
 
@@ -1783,12 +2131,29 @@
             const t = I18N[state.lang].prayers;
 
             let inSilentWindow = false;
+            let isNearWarning = false;
             let activeWindow = null;
             let activePrayerName = "";
 
             for (const k of prayerKeys) {
                 const win = getPrayerSilentWindow(k, activeM);
+
+                // If we just passed the end of a silent window, mark this prayer completed today
+                if (curMin >= win.endMin && curMin <= win.endMin + 2) {
+                    markPrayerSilentCompletedToday(k);
+                }
+
+                // Check if within 10 minutes before silent window starts
+                const minsToStart = win.startMin - curMin;
+                if (minsToStart > 0 && minsToStart <= 10) {
+                    isNearWarning = true;
+                }
+
                 if (curMin >= win.startMin && curMin < win.endMin) {
+                    // Prevent re-triggering DND if this prayer already finished today or user just switched mosques after jamaat time
+                    if (isPrayerSilentCompletedToday(k) || (state.suppressImmediateDndOnSwitch && curMin > win.startMin)) {
+                        continue;
+                    }
                     inSilentWindow = true;
                     activeWindow = win;
                     activePrayerName = t[k];
@@ -1796,11 +2161,9 @@
                     if (state.lastBeepMinuteKey !== windowKey) {
                         state.lastBeepMinuteKey = windowKey;
                         const remainingMins = Math.max(1, win.endMin - curMin);
-                        // If running in browser (no native AlarmManager), play gentle beep at window start
                         if (!window.AndroidSilentBridge) {
                             playGentleReminderBeep(2);
                         } else if (curMin === win.startMin) {
-                            // Ensure hardware DND is active for exact remaining window
                             setHardwareSilentMode(true, remainingMins, activePrayerName);
                         }
                     }
@@ -1812,6 +2175,7 @@
             const sub = document.getElementById("silent-banner-sub");
 
             if (inSilentWindow && activeWindow) {
+                updateKalimaGlowingRing("active");
                 document.body.classList.add("silent-mode-active");
                 if (state.silentDismissedForKey !== state.lastBeepMinuteKey) {
                     banner.classList.remove("hidden");
@@ -1825,6 +2189,7 @@
             } else {
                 banner.classList.add("hidden");
                 document.body.classList.remove("silent-mode-active");
+                updateKalimaGlowingRing(isNearWarning ? "warn" : "armed");
             }
         }
 
@@ -2039,8 +2404,22 @@
         function changeJamaatAutoMode() {
             const m = state.mosques[state.activeMosque];
             m.jamaatAutoMode = document.getElementById("select-jamaat-auto-mode").value;
+            const slotModeSel = document.getElementById("select-slot-jamaat-mode");
+            if (slotModeSel) slotModeSel.value = m.jamaatAutoMode;
             saveState();
             renderAll();
+        }
+
+        function changeSlotJamaatModeFromSettings() {
+            const m = state.mosques[state.activeMosque];
+            const slotModeSel = document.getElementById("select-slot-jamaat-mode");
+            if (slotModeSel) {
+                m.jamaatAutoMode = slotModeSel.value;
+                const yrModeSel = document.getElementById("select-jamaat-auto-mode");
+                if (yrModeSel) yrModeSel.value = m.jamaatAutoMode;
+                saveState();
+                renderAll();
+            }
         }
 
         function toggleRamadanRule() {
@@ -2153,35 +2532,65 @@
                 colAzan.innerText = state.lang === "ur" ? "اول وقت (آغاز)" : "Start Time";
             }
 
-            // Mosque Switcher Buttons
+            // Mosque Switcher Buttons (3 Versatile Slots + Favorite Star)
             state.mosques.forEach((m, idx) => {
                 const btn = document.getElementById(`mosque-tab-${idx}`);
                 if (btn) {
                     const active = idx === state.activeMosque;
-                    const roleTag = idx === 0 ? "[بنیادی]" : `[آپشنل ${idx}]`;
-                    btn.innerText = `🕌 ${roleTag} ${state.lang === "ur" ? m.nameUr : m.nameEn} ${active ? ' ✓' : ''}`;
+                    const isFav = idx === state.favoriteMosque;
+                    const slotTag = state.lang === "ur" ? `[سلاٹ ${idx + 1}${isFav ? ' ⭐ فیورٹ' : ''}]` : `[Slot ${idx + 1}${isFav ? ' ⭐ Fav' : ''}]`;
+                    btn.innerText = `🕌 ${slotTag} ${state.lang === "ur" ? m.nameUr : m.nameEn} ${active ? ' ✓' : ''}`;
                     btn.className = active
                         ? "spacious-btn inner-box text-xs font-bold w-full text-yellow-400"
                         : "spacious-btn inner-box text-xs font-bold w-full text-gray-400";
                 }
             });
 
+            const favBtn = document.getElementById("btn-set-fav-mosque");
+            if (favBtn) {
+                const isCurrentFav = state.activeMosque === state.favoriteMosque;
+                favBtn.innerText = isCurrentFav
+                    ? (state.lang === "ur" ? "⭐ یہ آپ کی فیورٹ مسجد ہے ✓" : "⭐ Favorite Mosque ✓")
+                    : (state.lang === "ur" ? "⭐ اسے فیورٹ مسجد بنائیں" : "⭐ Set as Favorite Mosque");
+                favBtn.className = isCurrentFav
+                    ? "spacious-btn inner-box text-xs font-bold text-emerald-400"
+                    : "spacious-btn inner-box text-xs font-bold text-amber-300";
+            }
+
             const switcherList = document.getElementById("mosque-switcher-list");
             if (switcherList) {
                 switcherList.innerHTML = state.mosques.map((m, idx) => {
                     const active = idx === state.activeMosque;
+                    const isFav = idx === state.favoriteMosque;
                     const title = state.lang === "ur" ? m.nameUr : m.nameEn;
                     const sectTitle = state.lang === "ur" ? SECT_INFO[m.sect].ur : SECT_INFO[m.sect].en;
-                    const roleText = idx === 0 ? "⭐ بنیادی مسجد (فکسڈ ڈریم ایونیو بورڈ)" : `🔹 آپشنل مسجد ${idx} (جمعہ: ${format12Hour(m.jamaat.jumma)})`;
+                    const modeTag = m.jamaatAutoMode === "imd_board"
+                        ? (state.lang === "ur" ? "ڈریم ایونیو آٹو بورڈ" : "Dream Avenue Auto Board")
+                        : (state.lang === "ur" ? `جمعہ: ${format12Hour(m.jamaat.jumma)}` : `Jumu'ah: ${format12Hour(m.jamaat.jumma)}`);
+                    const roleText = state.lang === "ur"
+                        ? `سلاٹ ${idx + 1} ${isFav ? '• ⭐ فیورٹ مسجد' : ''} (${modeTag})`
+                        : `Slot ${idx + 1} ${isFav ? '• ⭐ Favorite' : ''} (${modeTag})`;
                     return `
-                        <button onclick="selectMosque(${idx}); closeModal('mosque-switcher-modal');" class="inner-box p-3.5 flex justify-between items-center text-start ${active ? 'next-prayer-highlight' : ''}">
-                            <div>
+                        <div class="inner-box p-3 flex justify-between items-center text-start ${active ? 'next-prayer-highlight' : ''}">
+                            <div onclick="selectMosque(${idx}); closeModal('mosque-switcher-modal');" class="cursor-pointer flex-1">
                                 <div class="text-[10px] text-cyan-300 font-bold">${roleText}</div>
                                 <div class="font-bold text-sm ${active ? 'text-yellow-400' : 'text-gray-200'} leading-loose">🕌 ${title}</div>
                                 <div class="text-[11px] text-gray-400">${sectTitle}</div>
                             </div>
-                            <span class="text-xs font-bold ${active ? 'text-emerald-400' : 'text-gray-400'}">${active ? '✓ فعال' : 'منتخب کریں'}</span>
-                        </button>
+                            <div class="flex flex-col gap-1.5 items-end ms-2 shrink-0">
+                                <button type="button" onclick="selectMosque(${idx}); closeModal('mosque-switcher-modal');" class="inner-box px-2.5 py-1 text-[11px] font-bold ${active ? 'text-emerald-400' : 'text-gray-300'}">
+                                    ${active ? (state.lang === 'ur' ? '✓ فعال' : '✓ Active') : (state.lang === 'ur' ? 'منتخب کریں' : 'Select')}
+                                </button>
+                                <div class="flex gap-1">
+                                    <button type="button" onclick="editMosqueNameFromSwitcher(${idx})" class="inner-box px-2 py-0.5 text-[10px] font-bold text-cyan-300">
+                                        ✏️ نام بدلیں
+                                    </button>
+                                    <button type="button" onclick="setFavoriteMosque(${idx})" class="inner-box px-2 py-0.5 text-[10px] font-bold ${isFav ? 'text-yellow-400' : 'text-gray-400'}">
+                                        ${isFav ? '⭐ فیورٹ' : '☆ فیورٹ'}
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
                     `;
                 }).join("");
             }
@@ -2195,28 +2604,27 @@
             document.getElementById("active-sect-subtitle").innerText =
                 state.lang === "ur" ? `${locText} • ${sectObj.ur}` : `${locText} • ${sectObj.en}`;
 
-            // Upcoming Jamaat Change Banner & Yearly Schedule Button
+            // Upcoming Jamaat Change Banner (Shown when IMD Board is selected or custom alert exists)
+            const upBox = document.getElementById("home-upcoming-banner-box");
             const upPrefix = document.getElementById("lbl-upcoming-prefix");
             const upBanner = document.getElementById("home-upcoming-change-text");
             const editSchedBtn = document.getElementById("btn-edit-schedule");
-            const yearlyBtn = document.getElementById("lbl-yearly-btn");
             if (upPrefix) upPrefix.innerText = state.lang === "ur" ? "🔔 اگلی تبدیلی:" : "🔔 Next Change:";
             if (editSchedBtn) editSchedBtn.innerText = state.lang === "ur" ? "ترمیم" : "Edit";
-            if (yearlyBtn) {
-                yearlyBtn.innerText = state.lang === "ur"
-                    ? "ڈریم ایونیو سالانہ بورڈ چارٹ / 12 ماہ کا شیڈول دیکھیں"
-                    : "View Dream Avenue Annual Board Chart / 12-Month Schedule";
-            }
             if (activeM.jamaatAutoMode === "imd_board") {
+                if (upBox) upBox.classList.remove("hidden");
                 const nextTr = getNextImdBoardTransition(now);
                 upBanner.innerText = state.lang === "ur"
                     ? `${nextTr.day} ${nextTr.monthUr} سے ${nextTr.prayer} کی جماعت کا وقت ${nextTr.time} ہوگا (ڈریم ایونیو بورڈ)۔`
                     : `From ${nextTr.day} ${nextTr.monthEn}, ${nextTr.prayerEn} Jamaat will be at ${nextTr.time} (IMD Board).`;
-            } else {
-                const al = activeM.alert || { prayer: "عصر", day: "جمعہ", time: "15:45" };
+            } else if (activeM.customAlertEnabled && activeM.alert) {
+                if (upBox) upBox.classList.remove("hidden");
+                const al = activeM.alert;
                 upBanner.innerText = state.lang === "ur"
                     ? `${al.day} سے ${al.prayer} کی جماعت کا وقت ${format12Hour(al.time)} ہوگا۔`
                     : `From ${al.day}, ${al.prayer} Jamaat will be at ${format12Hour(al.time)}.`;
+            } else {
+                if (upBox) upBox.classList.add("hidden");
             }
 
             // Sects Tab & Mouj Sync Footer Language Sync
@@ -2256,10 +2664,10 @@
             const moujSigEl = document.getElementById("mouj-signature-text");
             if (moujDuaEl && moujSigEl) {
                 if (state.lang === "ur") {
-                    moujDuaEl.innerHTML = "یہ کاوش محض اللہ کی رضا اور صدقہ جاریہ کے لیے ہے۔<br>براہِ کرم اپنی دعاؤں میں ہمیں بھی یاد رکھیں۔<br>اللہ پاک ہماری اس کوشش کو دنیا اور آخرت میں ہماری مغفرت کا سبب بنائے، آمین۔";
+                    moujDuaEl.innerHTML = "یہ ادنیٰ سی کاوش محض اللہ تعالیٰ کی رضا اور نماز کے ادب کے لیے ہے۔<br>اللہ پاک اس کوشش کو ہم سب کی دنیا اور آخرت میں مغفرت و نجات کا ذریعہ بنائے، اور مساجد کا وقار قائم رکھنے کی توفیق عطا فرمائے، آمین۔";
                     moujSigEl.innerText = "طالبِ دعا: موج سنک";
                 } else {
-                    moujDuaEl.innerHTML = "This effort is purely for the sake of Allah and Sadaqah Jariyah.<br>Please remember us in your prayers.<br>May Allah accept this effort as a means of our forgiveness in this world and the Hereafter. Ameen.";
+                    moujDuaEl.innerHTML = "This humble effort is solely for the pleasure of Allah and the sanctity of prayer.<br>May Allah make this a means of forgiveness and salvation for all of us in this world and the Hereafter. Ameen.";
                     moujSigEl.innerText = "Requested for Prayers: MOUJ SYNC";
                 }
             }
@@ -2370,6 +2778,24 @@
 
         function tickClock() {
             const now = new Date();
+            if (state.testSilentUntilMs) {
+                const remMs = state.testSilentUntilMs - Date.now();
+                if (remMs > 0) {
+                    const totSec = Math.ceil(remMs / 1000);
+                    const mm = Math.floor(totSec / 60).toString().padStart(2, "0");
+                    const ss = (totSec % 60).toString().padStart(2, "0");
+                    const title = document.getElementById("silent-banner-title");
+                    if (title) {
+                        title.innerText = state.lang === "ur"
+                            ? `📵 ٹیسٹ سائلنٹ موڈ فعال ہے (${mm}:${ss} باقی)`
+                            : `📵 Test Silent Mode Active (${mm}:${ss} left)`;
+                    }
+                } else {
+                    state.testSilentUntilMs = 0;
+                    setHardwareSilentMode(false, 0, "TestEnd");
+                    evaluateAutoSilentState(now, state.mosques[state.activeMosque]);
+                }
+            }
             let h = now.getHours();
             const m = now.getMinutes().toString().padStart(2, "0");
             const s = now.getSeconds().toString().padStart(2, "0");
@@ -2510,15 +2936,22 @@
         }
 
         function selectMosque(idx) {
+            // Suppress immediate DND trigger if user manually switches mosques mid-window
+            state.suppressImmediateDndOnSwitch = true;
             state.activeMosque = idx;
+            state.lastSmartPayload = "";
             saveState();
             const m = state.mosques[state.activeMosque];
             document.getElementById("input-mosque-name-ur").value = m.nameUr;
             document.getElementById("input-mosque-name-en").value = m.nameEn;
+            const slotModeEl = document.getElementById("select-slot-jamaat-mode");
+            if (slotModeEl) slotModeEl.value = m.jamaatAutoMode || "manual";
             document.getElementById("select-sect").value = m.sect;
             document.getElementById("select-calendar-engine").value = m.calendarEngine || "lahore_chart";
+            populateCityDropdown("");
             document.getElementById("select-city").value = m.city || "lahore";
             renderAll();
+            setTimeout(() => { state.suppressImmediateDndOnSwitch = false; }, 65000);
         }
 
         function openModal(id) {
@@ -2526,8 +2959,13 @@
             if (id === "settings-modal") {
                 document.getElementById("input-mosque-name-ur").value = m.nameUr;
                 document.getElementById("input-mosque-name-en").value = m.nameEn;
+            const slotModeEl = document.getElementById("select-slot-jamaat-mode");
+            if (slotModeEl) slotModeEl.value = m.jamaatAutoMode || "manual";
                 document.getElementById("select-sect").value = m.sect;
                 document.getElementById("select-calendar-engine").value = m.calendarEngine || "lahore_chart";
+                const searchInp = document.getElementById("input-city-search");
+                if (searchInp) searchInp.value = "";
+                populateCityDropdown("");
                 document.getElementById("select-city").value = m.city || "lahore";
                 document.getElementById("chk-auto-silent").checked = state.autoSilentEnabled;
                 const preSel = document.getElementById("select-silent-pre");
@@ -2598,6 +3036,7 @@
 
         function saveScheduleAlert() {
             const m = state.mosques[state.activeMosque];
+            m.customAlertEnabled = true;
             m.alert = {
                 prayer: document.getElementById("sched-prayer").value,
                 day: document.getElementById("sched-day").value,
@@ -2609,8 +3048,10 @@
         }
 
         window.onload = () => {
+            populateCityDropdown("");
             renderAll();
             tickClock();
+            evaluateAutoSilentState(new Date(), state.mosques[state.activeMosque]);
             setInterval(tickClock, 1000);
             requestScreenWakeLock();
             if ('serviceWorker' in navigator) {
